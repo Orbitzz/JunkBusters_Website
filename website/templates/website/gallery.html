@@ -1,0 +1,41 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Project Gallery — Junk Removal &amp; Cleaning in Nashville, TN | Junk Busters{% endblock %}
+{% block meta_desc %}View our junk removal and cleaning project gallery. Before and after photos from Nashville, White House &amp; Middle Tennessee. Call Junk Busters at 615-881-2505.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>OUR WORK</h1>
+    <p>Real jobs, real results — junk removal and cleaning across Nashville and Middle Tennessee.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title text-center">Recent Projects</h2>
+    <p class="section-subtitle text-center">From single-item pickups to full estate clean-outs — we've seen it all</p>
+
+    <!-- Gallery grid — using placeholder colored tiles styled like the original site -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:32px;">
+      {% for i in gallery_items %}
+      <div style="background:var(--navy-light);aspect-ratio:1;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;">
+        {{ i.icon }}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="text-align:center;margin-top:32px;">
+      <p style="color:var(--text-muted);margin-bottom:16px;">Want to see your project next? Call or book online today.</p>
+      <a href="/book/" class="btn btn-yellow">Book a Service</a>
+      &nbsp;
+      <a href="/quote/" class="btn btn-navy">Get a Free Quote</a>
+    </div>
+  </div>
+</section>
+
+{% include "website/_reviews.html" with reviews=google_reviews is_live=google_reviews_live summary=google_summary review_url=review_url qr_code_exists=qr_code_exists %}
+
+{% endblock %}

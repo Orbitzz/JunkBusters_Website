@@ -1,0 +1,77 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Get a Free Quote — {{ BUSINESS_NAME }}{% endblock %}
+
+{% block content %}
+<div class="form-page">
+  <div class="container">
+    <div class="form-card">
+      <h1>Get a Free Quote</h1>
+      <p class="subtitle">Fill out the form below and we'll get back to you within 1 business day with a no-obligation estimate.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="id_first_name">{{ form.first_name.label }}</label>
+            <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required>
+            {% if form.first_name.errors %}<span class="error">{{ form.first_name.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="form-group">
+            <label for="id_last_name">{{ form.last_name.label }}</label>
+            <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required>
+            {% if form.last_name.errors %}<span class="error">{{ form.last_name.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="form-group">
+            <label for="id_email">{{ form.email.label }}</label>
+            <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
+            {% if form.email.errors %}<span class="error">{{ form.email.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="form-group">
+            <label for="id_phone">{{ form.phone.label }}</label>
+            <input type="tel" name="phone" id="id_phone" value="{{ form.phone.value|default:'' }}" required>
+            {% if form.phone.errors %}<span class="error">{{ form.phone.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="form-group full">
+            <label for="id_service_type">{{ form.service_type.label }}</label>
+            <select name="service_type" id="id_service_type" required>
+              {% for val, label in form.service_type.field.choices %}
+              <option value="{{ val }}" {% if form.service_type.value == val %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+            {% if form.service_type.errors %}<span class="error">{{ form.service_type.errors.0 }}</span>{% endif %}
+          </div>
+          <div class="form-group">
+            <label for="id_address">Property Address</label>
+            <input type="text" name="address" id="id_address" value="{{ form.address.value|default:'' }}" placeholder="123 Main St">
+          </div>
+          <div class="form-group">
+            <label for="id_city">City</label>
+            <input type="text" name="city" id="id_city" value="{{ form.city.value|default:'' }}">
+          </div>
+          <div class="form-group">
+            <label for="id_state">State</label>
+            <input type="text" name="state" id="id_state" value="{{ form.state.value|default:'TN' }}">
+          </div>
+          <div class="form-group">
+            <label for="id_zip_code">Zip Code</label>
+            <input type="text" name="zip_code" id="id_zip_code" value="{{ form.zip_code.value|default:'' }}">
+          </div>
+          <div class="form-group full">
+            <label for="id_description">{{ form.description.label }}</label>
+            <textarea name="description" id="id_description" rows="4" placeholder="Describe what needs to be removed or cleaned...">{{ form.description.value|default:'' }}</textarea>
+          </div>
+        </div>
+        <div class="form-submit">
+          <button type="submit" class="btn btn-yellow">Submit Quote Request</button>
+        </div>
+      </form>
+
+      <p style="margin-top:20px;font-size:13px;color:var(--text-muted);text-align:center;">
+        Prefer to call? <a href="tel:{{ BUSINESS_PHONE }}" style="color:var(--yellow-dark);font-weight:700;">{{ BUSINESS_PHONE }}</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

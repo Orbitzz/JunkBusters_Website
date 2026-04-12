@@ -1,0 +1,118 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}{{ city.meta_title }}{% endblock %}
+{% block meta_desc %}{{ city.meta_desc }}{% endblock %}
+{% block meta_keywords %}{{ city.meta_keywords }}{% endblock %}
+{% block canonical %}https://www.junkbustershauling.com/{{ city.slug }}/{% endblock %}
+{% block og_title %}{{ city.meta_title }}{% endblock %}
+{% block og_desc %}{{ city.meta_desc }}{% endblock %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Junk Busters LLC",
+  "description": "{{ city.meta_desc }}",
+  "telephone": "+16158812505",
+  "url": "https://www.junkbustershauling.com/{{ city.slug }}/",
+  "address": {"@type": "PostalAddress", "addressLocality": "Orlinda", "addressRegion": "TN"},
+  "areaServed": "{{ city.area_served }}"
+}
+</script>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<div class="service-hero">
+  <div class="container">
+    <h1>{{ city.hero_h1 }}</h1>
+    <p>{{ city.hero_sub }}</p>
+    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="/quote/" class="btn btn-yellow">Get a Free Estimate</a>
+      <a href="tel:6158812505" class="btn btn-outline">📞 615-881-2505</a>
+    </div>
+  </div>
+</div>
+
+<!-- Intro + Services -->
+<section class="section">
+  <div class="container">
+
+    {% for para in city.intro %}
+    <p style="color:var(--text-muted);font-size:15px;line-height:1.75;margin-bottom:14px;">{{ para }}</p>
+    {% endfor %}
+
+    <h2 style="font-size:22px;font-weight:800;margin:36px 0 16px;">Our Services in {{ city.city_name }}</h2>
+    <div class="yellow-cards">
+      {% for svc in city.services %}
+      <a href="/{{ svc.slug }}/" style="text-decoration:none;color:inherit;display:block;">
+        <div class="yellow-card" style="height:100%;transition:transform 0.18s,box-shadow 0.18s;" onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 8px 24px rgba(0,0,0,0.12)';" onmouseout="this.style.transform='';this.style.boxShadow='';">
+          <h3>{{ svc.name }}</h3>
+          <p>{{ svc.desc }}</p>
+          <p style="margin-top:10px;font-size:13px;font-weight:700;color:var(--yellow-dark);">Learn more →</p>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Trust box -->
+    <div class="trust-box">
+      <div>
+        <p>{{ city.trust_body }}</p>
+        <a href="/quote/" class="btn btn-yellow" style="padding:10px 24px;font-size:14px;">Get a Free Estimate</a>
+      </div>
+      <div class="trust-box-img">🚛</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Service areas -->
+<section class="section section-alt" style="padding:32px 0;">
+  <div class="container">
+    <h2 style="font-size:20px;font-weight:800;margin-bottom:16px;">Junk Busters Serves All of {{ city.region_name }}:</h2>
+    <div class="location-grid">
+      {% for loc in city.local_areas %}
+      <span>{{ loc }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% include "website/_reviews.html" with reviews=google_reviews is_live=google_reviews_live summary=google_summary review_url=review_url qr_code_exists=qr_code_exists %}
+
+<!-- Inquire / Find Us -->
+<div class="inquire-section">
+  <div class="container">
+    <div class="inquire-grid">
+      <div>
+        <h2 style="font-size:22px;font-weight:800;text-transform:uppercase;margin-bottom:20px;">Inquire</h2>
+        <form method="post" action="/quote/" class="inquire-form">
+          {% csrf_token %}
+          <input type="text" name="first_name" placeholder="Name" required>
+          <input type="tel" name="phone" placeholder="Phone" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="description" rows="4" placeholder="Message"></textarea>
+          <input type="hidden" name="service_type" value="Junk Removal — {{ city.city_name }}">
+          <input type="hidden" name="last_name" value=".">
+          <button type="submit" class="btn btn-yellow" style="width:100%;padding:12px;">Send Message →</button>
+        </form>
+      </div>
+      <div>
+        <h2 style="font-size:22px;font-weight:800;text-transform:uppercase;margin-bottom:20px;">Find Us</h2>
+        <div class="map-placeholder-box">
+          <div style="text-align:center;">
+            <div style="font-size:36px;margin-bottom:8px;">📍</div>
+            <div style="font-weight:700;color:var(--navy-dark);">{{ city.region_name }}</div>
+            <div style="margin-top:8px;"><a href="tel:6158812505" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;">📞 615-881-2505</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

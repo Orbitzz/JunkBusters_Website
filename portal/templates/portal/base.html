@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Customer Portal{% endblock %} — JunkBusters</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+</head>
+<body>
+
+<nav class="portal-nav">
+  <div class="container">
+    <a href="/" class="brand">Junk<span>Busters</span> <span style="color:#64748b;font-weight:400;font-size:13px;">/ My Account</span></a>
+    <div class="nav-right">
+      <a href="{% url 'portal:dashboard' %}">My Jobs</a>
+      <a href="/">Website</a>
+      <a href="{% url 'portal:logout' %}" style="color:#ef4444;">Log Out</a>
+    </div>
+  </div>
+</nav>
+
+<div class="portal-page">
+  <div class="container" style="max-width:900px;">
+    {% block content %}{% endblock %}
+  </div>
+</div>
+
+</body>
+</html>

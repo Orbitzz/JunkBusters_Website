@@ -1,0 +1,59 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Our Services — {{ BUSINESS_NAME }}{% endblock %}
+
+{% block content %}
+
+<section class="hero" style="padding:48px 0 40px;">
+  <div class="container">
+    <h1>Our Services</h1>
+    <p>Full-service junk removal, estate cleanouts, shed demolition, scrap metal buying, and cleaning solutions for homes and businesses across Middle TN &amp; Southern KY.</p>
+    <div class="hero-actions" style="margin-top:20px;">
+      <a href="{% url 'website:quote' %}" class="btn btn-yellow">Get a Free Quote</a>
+      <a href="tel:{{ BUSINESS_PHONE }}" class="btn btn-outline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:middle;margin-right:6px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        {{ BUSINESS_PHONE }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="section-title text-center">Everything We Offer</h2>
+    <p class="section-subtitle text-center">From single-item pickups to full property clean-outs</p>
+    <div class="services-grid">
+      {% for svc in all_services %}
+      <div class="service-card">
+        <div class="service-card-img" style="background:var(--navy-light);font-size:48px;display:flex;align-items:center;justify-content:center;">
+          {{ svc.icon|safe }}
+        </div>
+        <div class="service-card-body">
+          <h3>{{ svc.name }}</h3>
+          <p>{{ svc.desc }}</p>
+          <a href="{% url 'website:quote' %}">Get a Quote →</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<div class="cta-banner">
+  <div class="container">
+    <div>
+      <h2>Don't See Your Service?</h2>
+      <p>Give us a call — we handle almost any hauling or cleaning job.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <a href="tel:{{ BUSINESS_PHONE }}" class="btn btn-yellow">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:middle;margin-right:6px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Call {{ BUSINESS_PHONE }}
+      </a>
+      <a href="{% url 'website:quote' %}" class="btn btn-outline">Get a Quote</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

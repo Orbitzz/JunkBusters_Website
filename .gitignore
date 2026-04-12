@@ -1,0 +1,23 @@
+# Environment & secrets
+.env
+*.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+
+# Django
+db.sqlite3
+staticfiles/
+media/
+
+# Google OAuth cache
+website/_google_reviews_cache.json
+website/_oauth_tokens.json
+
+# OS
+.DS_Store
+Thumbs.db

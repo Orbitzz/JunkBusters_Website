@@ -1,0 +1,79 @@
+{% extends "portal/base.html" %}
+
+{% block title %}My Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Welcome header -->
+<div style="margin-bottom:24px;">
+  <h1 style="font-size:26px;font-weight:800;color:var(--navy-dark);">Welcome back, {{ customer.first_name }}!</h1>
+  <p style="color:var(--text-muted);font-size:15px;">{{ customer.email }}</p>
+</div>
+
+<!-- Stats row -->
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
+  <div class="portal-card" style="text-align:center;padding:20px;">
+    <div style="font-size:28px;font-weight:800;color:var(--navy-dark);">{{ jobs|length }}</div>
+    <div style="font-size:13px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Total Jobs</div>
+  </div>
+  <div class="portal-card" style="text-align:center;padding:20px;">
+    <div style="font-size:28px;font-weight:800;color:var(--navy-dark);">${{ total_spent|floatformat:0 }}</div>
+    <div style="font-size:13px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Total Spent</div>
+  </div>
+  <div class="portal-card" style="text-align:center;padding:20px;">
+    <a href="/quote/" class="btn btn-yellow" style="padding:10px 20px;font-size:14px;">+ New Quote</a>
+  </div>
+</div>
+
+<!-- Job list -->
+<div class="portal-card">
+  <h2>My Jobs</h2>
+  {% if jobs %}
+    {% for job in jobs %}
+    <div class="job-row">
+      <div>
+        <strong>{{ job.title|default:"Service Job" }}</strong>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+          {% if job.scheduled_datetime %}
+            {{ job.scheduled_datetime|date:"M d, Y" }}
+          {% else %}
+            Unscheduled
+          {% endif %}
+        </div>
+      </div>
+      <div>
+        <span class="status-badge status-{{ job.status }}">{{ job.get_status_display }}</span>
+      </div>
+      <div style="font-weight:700;color:var(--navy-dark);">
+        {% if job.total_price %}${{ job.total_price|floatformat:2 }}{% else %}—{% endif %}
+      </div>
+      <div style="display:flex;gap:8px;">
+        <a href="{% url 'portal:job_detail' job.pk %}" style="font-size:13px;font-weight:700;color:var(--navy);">Details</a>
+        {% if job.status == 'completed' %}
+        <a href="{% url 'portal:invoice' job.pk %}" style="font-size:13px;font-weight:700;color:var(--yellow-dark);">Invoice</a>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div style="padding:32px;text-align:center;color:var(--text-muted);">
+      <div style="font-size:40px;margin-bottom:12px;">📋</div>
+      <p>No jobs yet.</p>
+      <a href="/book/" class="btn btn-yellow" style="margin-top:16px;padding:10px 24px;font-size:14px;">Book Your First Service</a>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Contact info card -->
+<div class="portal-card" style="margin-top:20px;">
+  <h2>My Contact Info</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:14px;">
+    <div><span style="color:var(--text-muted);">Name:</span> <strong>{{ customer.display_name }}</strong></div>
+    <div><span style="color:var(--text-muted);">Email:</span> <strong>{{ customer.email }}</strong></div>
+    <div><span style="color:var(--text-muted);">Phone:</span> <strong>{{ customer.phone|default:"—" }}</strong></div>
+    <div><span style="color:var(--text-muted);">Address:</span> <strong>{{ customer.address|default:"—" }}{% if customer.city %}, {{ customer.city }}{% endif %}</strong></div>
+  </div>
+  <p style="margin-top:14px;font-size:13px;color:var(--text-muted);">Need to update your info? Call us at <a href="tel:615-881-2505" style="color:var(--yellow-dark);font-weight:700;">615-881-2505</a></p>
+</div>
+
+{% endblock %}

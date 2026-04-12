@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice #{{ job.pk }} — JunkBusters</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <style>
+    @media print { .no-print { display: none !important; } body { background: white; } }
+    body { background: #f5f5f5; }
+    .invoice-page { max-width: 720px; margin: 40px auto; background: white; padding: 48px; border-radius: 12px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    @media print { .invoice-page { box-shadow: none; margin: 0; border-radius: 0; } }
+    .inv-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
+    .inv-brand { font-size: 24px; font-weight: 900; color: var(--navy-dark); }
+    .inv-brand span { color: var(--yellow-dark); }
+    .inv-meta { text-align: right; font-size: 14px; color: var(--text-muted); }
+    .inv-meta strong { color: var(--navy-dark); }
+    .inv-parties { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+    .inv-party h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
+    .inv-party p { font-size: 14px; line-height: 1.6; }
+    .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; }
+    .inv-table th { background: var(--navy); color: white; padding: 10px 14px; font-size: 12px; text-align: left; }
+    .inv-table td { padding: 12px 14px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .inv-table tr:last-child td { border-bottom: none; }
+    .inv-totals { margin-left: auto; width: 280px; }
+    .inv-totals-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; }
+    .inv-totals-row.total { border-top: 2px solid var(--navy); margin-top: 6px; padding-top: 10px; font-size: 17px; font-weight: 800; color: var(--navy-dark); }
+    .inv-footer { margin-top: 48px; text-align: center; font-size: 13px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<div class="no-print" style="background:var(--navy);padding:12px 0;margin-bottom:0;">
+  <div style="max-width:720px;margin:0 auto;padding:0 20px;display:flex;justify-content:space-between;align-items:center;">
+    <a href="{% url 'portal:job_detail' job.pk %}" style="color:#90a4ae;font-size:14px;">← Back to Job</a>
+    <button onclick="window.print()" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;">🖨️ Print Invoice</button>
+  </div>
+</div>
+
+<div class="invoice-page">
+  <div class="inv-header">
+    <div>
+      <div class="inv-brand">Junk<span>Busters</span></div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:6px;">Hauling &amp; Junk Removal</div>
+      <div style="font-size:13px;color:var(--text-muted);">White House &amp; Nashville, TN</div>
+      <div style="font-size:13px;color:var(--text-muted);">615-881-2505</div>
+    </div>
+    <div class="inv-meta">
+      <div style="font-size:22px;font-weight:800;color:var(--navy-dark);margin-bottom:6px;">INVOICE</div>
+      <div>Invoice #{{ job.pk }}</div>
+      <div>Date: <strong>{% if job.scheduled_datetime %}{{ job.scheduled_datetime|date:"M d, Y" }}{% else %}{{ job.created_at|date:"M d, Y" }}{% endif %}</strong></div>
+      <div style="margin-top:8px;">
+        <span style="background:{% if job.status == 'completed' %}#dcfce7{% else %}#fef9c3{% endif %};
+                     color:{% if job.status == 'completed' %}#15803d{% else %}#854d0e{% endif %};
+                     padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;">
+          {{ job.get_status_display|upper }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="inv-parties">
+    <div class="inv-party">
+      <h3>From</h3>
+      <p><strong>Junk Busters Hauling &amp; Junk Removal</strong><br>White House &amp; Nashville, TN<br>615-881-2505<br>info@junkbustershauling.com</p>
+    </div>
+    <div class="inv-party">
+      <h3>Bill To</h3>
+      <p>
+        <strong>{{ customer.display_name }}</strong><br>
+        {{ customer.email }}<br>
+        {% if customer.phone %}{{ customer.phone }}<br>{% endif %}
+        {% if customer.address %}{{ customer.address }}{% if customer.city %}, {{ customer.city }}, {{ customer.state }}{% endif %}{% endif %}
+      </p>
+    </div>
+  </div>
+
+  <table class="inv-table">
+    <thead>
+      <tr>
+        <th style="width:60%;">Service Description</th>
+        <th style="text-align:right;">Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in job.service_items.all %}
+      <tr>
+        <td>{{ item.name }}{% if item.description %}<br><span style="font-size:12px;color:var(--text-muted);">{{ item.description }}</span>{% endif %}</td>
+        <td style="text-align:right;">${{ item.price|floatformat:2 }}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td>{{ job.title|default:"Junk Removal Service" }}{% if job.description %}<br><span style="font-size:12px;color:var(--text-muted);">{{ job.description }}</span>{% endif %}</td>
+        <td style="text-align:right;">${{ job.total_price|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="inv-totals">
+    {% if job.discount_amount %}
+    <div class="inv-totals-row">
+      <span>Discount</span>
+      <span style="color:#16a34a;">-${{ job.discount_amount|floatformat:2 }}</span>
+    </div>
+    {% endif %}
+    {% if job.tax_amount %}
+    <div class="inv-totals-row">
+      <span>Tax ({{ job.tax_rate }}%)</span>
+      <span>${{ job.tax_amount|floatformat:2 }}</span>
+    </div>
+    {% endif %}
+    <div class="inv-totals-row total">
+      <span>Total Due</span>
+      <span>${{ job.total_price|floatformat:2 }}</span>
+    </div>
+  </div>
+
+  <div class="inv-footer">
+    <p>Thank you for choosing Junk Busters! We appreciate your business.</p>
+    <p style="margin-top:6px;">Questions? Call <strong>615-881-2505</strong> or email <strong>info@junkbustershauling.com</strong></p>
+  </div>
+</div>
+
+</body>
+</html>

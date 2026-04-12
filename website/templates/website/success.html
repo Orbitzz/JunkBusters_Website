@@ -1,0 +1,17 @@
+{% extends "website/base.html" %}
+
+{% block title %}{{ title }} — {{ BUSINESS_NAME }}{% endblock %}
+
+{% block content %}
+<div class="success-page">
+  <div class="success-card">
+    <div class="success-icon">✅</div>
+    <h1>{{ title }}</h1>
+    <p>{{ message }}</p>
+    <a href="{{ cta_url }}" class="btn btn-yellow">{{ cta_text }}</a>
+    <p style="margin-top:20px;font-size:13px;color:var(--text-muted);">
+      Questions? Call us at <a href="tel:{{ BUSINESS_PHONE }}" style="color:var(--yellow-dark);font-weight:700;">{{ BUSINESS_PHONE }}</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

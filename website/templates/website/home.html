@@ -1,0 +1,366 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Junk Removal Nashville &amp; Southern KY | Junk Busters LLC{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero" id="hero-slideshow">
+  <div class="hero-slide active" style="background-image:url('{% static 'img/Herocard 1.jpg' %}')"></div>
+  <div class="hero-slide" style="background-image:url('{% static 'img/Herocard 2.jpg' %}')"></div>
+  <div class="hero-slide" style="background-image:url('{% static 'img/herocard3.jpg' %}')"></div>
+  <div class="hero-slide" style="background-image:url('{% static 'img/herocard4.png' %}')"></div>
+  <div class="hero-slide" style="background-image:url('{% static 'img/herocard5.jpg' %}')"></div>
+  <div class="hero-slide" style="background-image:url('{% static 'img/herocard6.jpg' %}')"></div>
+  <div class="hero-overlay"></div>
+  <div class="container hero-content">
+    <div class="hero-text">
+      <h1>Junk Busters: Nashville &amp; Southern KY</h1>
+      <p>Serving Middle TN &amp; Southern KY — including Nashville, Clarksville, &amp; Bowling Green</p>
+      <div class="hero-actions">
+        <a href="{% url 'website:contact' %}" class="btn btn-yellow">Contact Us</a>
+        <a href="tel:{{ BUSINESS_PHONE }}" class="btn btn-outline">{{ BUSINESS_PHONE }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Top 3 Services -->
+<section style="padding:0 0 40px;background:#fff;border-bottom:1px solid #e5e7eb;">
+  <div class="container home-services-wrap">
+    <div class="home-services-3">
+
+      <div class="home-svc-card">
+        <div class="home-svc-photo">
+          <img src="{% static 'img/1000003360.jpg' %}" alt="Junk Removal">
+        </div>
+        <div class="home-svc-body">
+          <h3>Junk Removal</h3>
+          <p>We haul away furniture, appliances, yard debris, and more. Fast scheduling, upfront pricing.</p>
+          <a href="{% url 'website:service_page' 'junk-removal' %}" class="home-svc-link">Learn More &rarr;</a>
+        </div>
+      </div>
+
+      <div class="home-svc-card">
+        <div class="home-svc-photo">
+          <img src="{% static 'img/Recurring Maid Services.jpg' %}" alt="Residential Cleaning">
+        </div>
+        <div class="home-svc-body">
+          <h3>Residential Cleaning</h3>
+          <p>Move-in/move-out cleaning, recurring maid services, and deep cleans. Your home, spotless.</p>
+          <a href="{% url 'website:service_page' 'residential-cleaning' %}" class="home-svc-link">Learn More &rarr;</a>
+        </div>
+      </div>
+
+      <div class="home-svc-card">
+        <div class="home-svc-photo">
+          <img src="{% static 'img/dump-trailer.jpg' %}" alt="Dump Trailer Rental">
+        </div>
+        <div class="home-svc-body">
+          <h3>Dump Trailer Rental</h3>
+          <p>Rent one of our dump trailers for your own haul-away project. Flexible scheduling, competitive rates.</p>
+          <a href="{% url 'website:quote' %}" class="home-svc-link">Learn More &rarr;</a>
+        </div>
+      </div>
+
+      <div class="home-svc-card">
+        <div class="home-svc-photo">
+          <img src="{% static 'img/demolition.png' %}" alt="Demolition">
+        </div>
+        <div class="home-svc-body">
+          <h3>Demolition</h3>
+          <p>Selective interior demolition — sheds, decks, walls, and structures removed safely and efficiently.</p>
+          <a href="{% url 'website:quote' %}" class="home-svc-link">Learn More &rarr;</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA Bar 1 -->
+<div class="cta-bar">
+  <div class="container cta-bar-inner">
+    <div class="cta-bar-phone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="vertical-align:middle;margin-right:8px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      CALL US: {{ BUSINESS_PHONE }}
+    </div>
+    <a href="{% url 'website:quote' %}" class="btn btn-yellow">GET AN ESTIMATE</a>
+  </div>
+</div>
+
+<!-- Why Choose Us -->
+<section class="why-section">
+  <div class="container">
+    <h2 class="why-heading">Why Choose Us?</h2>
+    <div class="why-grid">
+      <div class="why-photo-slot">
+        <img src="{% static 'img/whychoooseus.png' %}" alt="Junk Busters crew — Middle TN &amp; Southern KY" class="why-team-photo">
+      </div>
+      <div class="why-accordion">
+
+        <div class="why-item">
+          <button class="why-item-btn" aria-expanded="false">
+            <span>Locally Owned &amp; Operated Junk Removal &amp; Cleaning Company</span>
+            <span class="why-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="why-item-body">
+            <p>As a locally owned and operated junk removal and cleaning company, we take pride in serving our community with dependable and efficient services. Our team is dedicated to providing top-notch junk hauling and deep cleaning solutions tailored to your needs.</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <button class="why-item-btn" aria-expanded="false">
+            <span>Work Directly with the Owner</span>
+            <span class="why-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="why-item-body">
+            <p>When you choose our junk removal and cleaning services, you work directly with the owner, ensuring personalized attention and quality service. We prioritize customer satisfaction by handling every job with professionalism and hands-on expertise.</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <button class="why-item-btn" aria-expanded="false">
+            <span>Easy Communication</span>
+            <span class="why-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="why-item-body">
+            <p>We make scheduling your junk removal or cleaning service simple with fast response times and clear communication. Whether you prefer a call, text, or email, we are always available to answer questions and provide updates.</p>
+          </div>
+        </div>
+
+        <div class="why-item">
+          <button class="why-item-btn" aria-expanded="false">
+            <span>Cost-Effective</span>
+            <span class="why-chevron">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><polyline points="6 9 12 15 18 9"/></svg>
+            </span>
+          </button>
+          <div class="why-item-body">
+            <p>Our junk removal and cleaning services are designed to be budget-friendly while maintaining the highest level of quality. We offer transparent pricing with no hidden fees, making it easy to clear out clutter without breaking the bank.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- About Us (dark) -->
+<section class="about-dark">
+  <div class="container about-dark-grid">
+    <div class="about-dark-text">
+      <h2>About Us</h2>
+      <p>Junk Busters LLC is a family-owned business dedicated to providing premier debris removal and professional cleaning across Middle Tennessee and Southern Kentucky. While our fleet is stationed in Orlinda, we maintain a dedicated office in the heart of Nashville to better serve our growing community.</p>
+      <p>What started with a single truck has grown into a regional operation built on a simple commitment: delivering reliable, affordable service with a neighborly touch. Whether you need a single-item pickup in White House, a full estate clean-out in Clarksville, or commercial services in Bowling Green, our background-checked and insured crew handles every job with professionalism and care.</p>
+      <p>We take pride in our "fleet-to-front-door" efficiency and our eco-friendly disposal practices that help keep our local communities clean. From the Nashville city center to the rural reaches of Southern KY, Junk Busters LLC is ready to make your space clutter-free. Give us a call today to schedule your service.</p>
+      <a href="{% url 'website:contact' %}" class="btn btn-yellow" style="margin-top:20px;">Contact Us</a>
+    </div>
+    <div class="about-dark-photos">
+      <img src="{% static 'img/crewbgremoved.png' %}" alt="Junk Busters crew" class="about-team-photo">
+    </div>
+  </div>
+</section>
+
+<!-- Additional Services -->
+<section style="padding:60px 0;background:#fff;">
+  <div class="container">
+    <h2 class="section-title text-center" style="margin-bottom:6px;">Additional Services</h2>
+    <p class="section-subtitle text-center">Whatever's cluttering your space — we handle it</p>
+    <div class="add-services-grid">
+
+      <a href="{% url 'website:service_page' 'move-in-move-out-cleaning' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/image_2.jpg' %}" alt="Move In Move Out Cleaning">
+        </div>
+        <div class="add-svc-body">
+          <h3>Move In/Move Out Cleaning</h3>
+          <p>Thorough cleaning for transitions between tenants or new homeowners.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'recurring-maid-services' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Recurring Maid Services.jpg' %}" alt="Recurring Maid Services">
+        </div>
+        <div class="add-svc-body">
+          <h3>Recurring Maid Services</h3>
+          <p>Weekly, bi-weekly, or monthly cleaning to keep your home consistently clean.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'fence-removal' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Fence Removal.jpg' %}" alt="Fence Removal">
+        </div>
+        <div class="add-svc-body">
+          <h3>Fence Removal</h3>
+          <p>Dismantling and removal of old or damaged fencing — wood, metal, or vinyl.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'estate-clean-out' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/1000003685.jpg' %}" alt="Estate Clean-Out">
+        </div>
+        <div class="add-svc-body">
+          <h3>Estate Clean-Out</h3>
+          <p>Compassionate, full-service estate cleanouts — handling everything with care.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'eviction-clean-out' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Eviction cleanout.jpg' %}" alt="Eviction Clean-Out">
+        </div>
+        <div class="add-svc-body">
+          <h3>Eviction Clean-Out</h3>
+          <p>Rapid property restoration for landlords and property managers after evictions.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'foreclosure-clean-out' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Foreclosure.jpg' %}" alt="Foreclosure Clean-Out">
+        </div>
+        <div class="add-svc-body">
+          <h3>Foreclosure Clean-Out</h3>
+          <p>Full-service foreclosure property cleanouts — fast, professional, transparent pricing.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'bulk-cardboard-removal' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/5124041345.jpg' %}" alt="Bulk Cardboard Removal">
+        </div>
+        <div class="add-svc-body">
+          <h3>Bulk Cardboard Removal &amp; Pickup</h3>
+          <p>Eco-friendly cardboard recycling for homes and commercial clients.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'garage-clean-out' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/1000005705.jpg' %}" alt="Garage Clean-Out">
+        </div>
+        <div class="add-svc-body">
+          <h3>Garage Clean-Out</h3>
+          <p>Reclaim your garage — we sort, haul, donate, and dispose responsibly.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'storage-unit-clean-out' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Storage Unit.jpg' %}" alt="Storage Unit Clean-Out">
+        </div>
+        <div class="add-svc-body">
+          <h3>Storage Unit Clean-Out</h3>
+          <p>Clear out your storage unit fast — we handle all sizes and contents.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'hot-tub-removal' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Hottub Removal.jpg' %}" alt="Hot Tub Removal">
+        </div>
+        <div class="add-svc-body">
+          <h3>Hot Tub Removal</h3>
+          <p>Safe disconnection, disassembly, and disposal of unwanted hot tubs.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+      <a href="{% url 'website:service_page' 'air-bnb-cleaning' %}" class="add-svc-card">
+        <div class="add-svc-img">
+          <img src="{% static 'img/Move In Move Out Cleaning.jpg' %}" alt="Air BnB Cleaning" style="object-position: center top;">
+        </div>
+        <div class="add-svc-body">
+          <h3>Air BnB Cleaning</h3>
+          <p>Fast turnover cleaning for short-term rentals. Keep guests happy and your ratings high.</p>
+          <span class="add-svc-link">Learn More &rarr;</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA Bar 2 -->
+<div class="cta-bar">
+  <div class="container cta-bar-inner">
+    <div class="cta-bar-phone">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20" style="vertical-align:middle;margin-right:8px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+      CALL US: {{ BUSINESS_PHONE }}
+    </div>
+    <a href="{% url 'website:quote' %}" class="btn btn-yellow">GET AN ESTIMATE</a>
+  </div>
+</div>
+
+<!-- Dependable section (dark) -->
+<section class="depend-section">
+  <div class="container depend-grid">
+    <div class="depend-text">
+      <h2>Dependable Junk Removal and Cleaning Services Across the Nashville–Clarksville–Bowling Green Triangle</h2>
+      <p>Junk Busters LLC operates as a regional hauling and cleaning company serving the Nashville, Clarksville, and Bowling Green corridor. We handle everything from single-item pickups and shed demolitions to full estate cleanouts, foreclosure cleanouts, eviction cleanouts, and scrap metal (copper &amp; aluminum) buying. Our background-checked crews bring the knowledge, equipment, and professionalism to tackle heavy, bulky, or hazardous items safely. Every job is done with upfront pricing, eco-conscious disposal, and a commitment to leaving your space clutter-free. Call now to schedule service anywhere in Middle TN or Southern KY.</p>
+      <a href="{% url 'website:contact' %}" class="btn btn-yellow" style="margin-top:20px;">Contact Us</a>
+    </div>
+    <div class="depend-photo">
+      <div class="depend-crew-row">
+        <img src="{% static 'img/crew-1.png' %}" alt="Junk Busters crew member" class="depend-crew-img">
+        <img src="{% static 'img/crew-2.png' %}" alt="Junk Busters crew member" class="depend-crew-img">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Reviews -->
+{% include "website/_reviews.html" with reviews=google_reviews is_live=google_reviews_live summary=google_summary review_url=review_url qr_code_exists=qr_code_exists %}
+
+<!-- Service Areas -->
+<section style="padding:48px 0;background:var(--gray);">
+  <div class="container">
+    <h2 class="section-title text-center">Service Areas</h2>
+    <p class="section-subtitle text-center">Serving the Nashville–Clarksville–Bowling Green triangle and surrounding communities</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;">
+      {% for area in service_areas %}
+      <span style="background:#fff;border:1px solid #e2e8f0;padding:7px 16px;border-radius:20px;font-size:14px;font-weight:600;color:var(--navy);">{{ area }}</span>
+      {% endfor %}
+    </div>
+    <div style="text-align:center;margin-top:28px;">
+      <a href="{% url 'website:areas' %}" class="btn btn-navy">View All Service Areas</a>
+    </div>
+  </div>
+</section>
+
+{% block extra_scripts %}
+<script>
+(function() {
+  var slides = document.querySelectorAll('#hero-slideshow .hero-slide');
+  var current = 0;
+  if (slides.length < 2) return;
+  setInterval(function() {
+    slides[current].classList.remove('active');
+    current = (current + 1) % slides.length;
+    slides[current].classList.add('active');
+  }, 4000);
+})();
+</script>
+{% endblock %}
+
+{% endblock %}

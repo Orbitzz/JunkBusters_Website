@@ -1,0 +1,88 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Contact Us — Nashville Junk Removal | Junk Busters{% endblock %}
+{% block meta_desc %}Contact Junk Busters Hauling for junk removal and cleaning services in Nashville &amp; Middle Tennessee. Call 615-881-2505 or fill out the form for a free estimate.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>CONTACT US</h1>
+    <p>Get in touch for a free estimate or to schedule a service.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;">
+
+      <!-- Contact info -->
+      <div>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:24px;">Get in touch with us</h2>
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Phone</h3>
+          <p><a href="tel:6158812505" style="font-size:18px;font-weight:700;color:var(--navy-dark);">615-881-2505</a></p>
+        </div>
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Location</h3>
+          <p style="font-size:15px;">Nashville &amp; White House, Tennessee</p>
+          <p style="font-size:13px;color:var(--text-muted);">Serving all of Middle Tennessee</p>
+        </div>
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Business Hours</h3>
+          <p style="font-size:15px;">Mon - Sun &nbsp;&nbsp; Open 24 Hours</p>
+        </div>
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Counties Served</h3>
+          <p style="font-size:14px;color:var(--text-muted);line-height:1.8;">
+            Davidson County · Robertson County · Sumner County<br>
+            Williamson County · Wilson County · Rutherford County<br>
+            Cheatham County · Montgomery County
+          </p>
+        </div>
+        <div style="background:#e2e8f0;border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-muted);">
+          <div style="text-align:center;">
+            <div style="font-size:32px;margin-bottom:8px;">📍</div>
+            <div>Nashville &amp; White House, Tennessee</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div>
+        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Inquire Below Or Book Online</h2>
+        <a href="/book/" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;margin-bottom:20px;display:inline-block;">Book Online</a>
+
+        {% if success %}
+        <div style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:16px;border-radius:8px;margin-bottom:20px;">
+          ✅ Message sent! We'll get back to you within 1 business day.
+        </div>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Name</label>
+            <input type="text" name="name" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Email</label>
+            <input type="email" name="email" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Phone Number</label>
+            <input type="tel" name="phone" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+          </div>
+          <div style="margin-bottom:20px;">
+            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Message</label>
+            <textarea name="message" rows="4" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;font-family:inherit;"></textarea>
+          </div>
+          <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Send Message →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
