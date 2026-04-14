@@ -79,7 +79,7 @@
   </script>
   {% block extra_schema %}{% endblock %}
 
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}?v=6">
 
   <!-- ── Google Tag (GTM + GA4 + Google Ads) ──────────────────────────── -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=GT-WBZM8Z5H"></script>
@@ -353,5 +353,143 @@ document.querySelectorAll('.why-item-btn').forEach(function(btn) {
 </script>
 
 {% block extra_scripts %}{% endblock %}
+
+<!-- ── FieldCommand live chat widget ─────────────────────────────────── -->
+<script>
+(function(){
+  var KEY = "davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI";
+  var API = "http://127.0.0.1:8000/marketing/api/embed/chat/";
+
+  /* ── Button ── */
+  var btn = document.createElement('button');
+  btn.setAttribute('aria-label', 'Chat with us');
+  btn.style.cssText = [
+    'position:fixed;right:28px;bottom:28px;z-index:99999',
+    'width:58px;height:58px;border-radius:50%',
+    'background:#F5A500;border:none;cursor:pointer',
+    'display:flex;align-items:center;justify-content:center',
+    'box-shadow:0 4px 16px rgba(0,0,0,0.22)',
+    'transition:transform .2s,box-shadow .2s'
+  ].join(';');
+  btn.innerHTML = '<svg id="jb-ico-chat" viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.2" width="26" height="26"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
+                + '<svg id="jb-ico-x" viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.5" width="24" height="24" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+  btn.onmouseenter = function(){ btn.style.transform='scale(1.08)'; btn.style.boxShadow='0 6px 24px rgba(0,0,0,0.28)'; };
+  btn.onmouseleave = function(){ btn.style.transform=''; btn.style.boxShadow='0 4px 16px rgba(0,0,0,0.22)'; };
+
+  /* ── Panel ── */
+  var box = document.createElement('div');
+  box.style.cssText = [
+    'position:fixed;right:28px;bottom:98px;z-index:99999',
+    'width:320px;max-width:calc(100vw - 40px)',
+    'background:#fff;border-radius:14px',
+    'box-shadow:0 8px 32px rgba(0,0,0,0.18)',
+    'font-family:inherit;overflow:hidden;display:none'
+  ].join(';');
+
+  var inp = function(id, ph, type){
+    return '<input id="'+id+'" type="'+(type||'text')+'" placeholder="'+ph+'" style="'
+      +'width:100%;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;'
+      +'font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;">';
+  };
+
+  box.innerHTML =
+    /* header */
+    '<div style="background:#1a2e4a;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">'
+      +'<div style="display:flex;align-items:center;gap:10px;">'
+        +'<div style="width:36px;height:36px;border-radius:50%;background:#F5A500;display:flex;align-items:center;justify-content:center;">'
+          +'<svg viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
+        +'</div>'
+        +'<div>'
+          +'<div style="font-weight:800;font-size:14px;color:#fff;">Junk Busters</div>'
+          +'<div style="font-size:11px;color:#94a3b8;">Typically replies in minutes</div>'
+        +'</div>'
+      +'</div>'
+      +'<button id="jb-chat-close" style="background:none;border:none;cursor:pointer;padding:4px;color:#94a3b8;line-height:1;">'
+        +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+      +'</button>'
+    +'</div>'
+    /* body */
+    +'<div style="padding:16px;">'
+      +'<p style="font-size:13px;color:#64748b;margin:0 0 14px;">Send us a message and we\'ll get back to you right away.</p>'
+      +inp('jb-name',  'Your name')
+      +inp('jb-phone', 'Phone (optional)', 'tel')
+      +inp('jb-email', 'Email (optional)',  'email')
+      +'<textarea id="jb-msg" placeholder="How can we help?" style="'
+        +'width:100%;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;'
+        +'font-size:14px;font-family:inherit;min-height:90px;resize:vertical;'
+        +'box-sizing:border-box;margin-bottom:10px;"></textarea>'
+      +'<button id="jb-send" style="'
+        +'width:100%;padding:12px;background:#F5A500;color:#1a2e4a;border:none;'
+        +'border-radius:6px;font-weight:800;font-size:14px;cursor:pointer;'
+        +'font-family:inherit;">Send Message</button>'
+      +'<div id="jb-status" style="margin-top:8px;font-size:13px;text-align:center;color:#64748b;min-height:18px;"></div>'
+    +'</div>';
+
+  /* ── Toggle ── */
+  var isOpen = false;
+  function open(){
+    isOpen = true;
+    box.style.display = 'block';
+    document.getElementById('jb-ico-chat').style.display = 'none';
+    document.getElementById('jb-ico-x').style.display   = '';
+  }
+  function close(){
+    isOpen = false;
+    box.style.display = 'none';
+    document.getElementById('jb-ico-chat').style.display = '';
+    document.getElementById('jb-ico-x').style.display   = 'none';
+  }
+  btn.addEventListener('click', function(){ isOpen ? close() : open(); });
+
+  /* ── Send ── */
+  box.querySelector('#jb-chat-close').addEventListener('click', close);
+  box.querySelector('#jb-send').addEventListener('click', function(){
+    var payload = {
+      name:    box.querySelector('#jb-name').value.trim()  || 'Website visitor',
+      phone:   box.querySelector('#jb-phone').value.trim(),
+      email:   box.querySelector('#jb-email').value.trim(),
+      message: box.querySelector('#jb-msg').value.trim()
+    };
+    if (!payload.message) {
+      document.getElementById('jb-status').textContent = 'Please enter a message.';
+      document.getElementById('jb-status').style.color = '#dc2626';
+      return;
+    }
+    document.getElementById('jb-status').textContent = 'Sending…';
+    document.getElementById('jb-status').style.color = '#64748b';
+    fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-FC-EMBED-KEY': KEY },
+      body: JSON.stringify(payload)
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if (j.success) {
+        document.getElementById('jb-status').textContent = "✓ Message sent! We'll be in touch shortly.";
+        document.getElementById('jb-status').style.color = '#16a34a';
+        box.querySelector('#jb-msg').value   = '';
+        box.querySelector('#jb-name').value  = '';
+        box.querySelector('#jb-phone').value = '';
+        box.querySelector('#jb-email').value = '';
+      } else {
+        document.getElementById('jb-status').textContent = j.message || 'Something went wrong.';
+        document.getElementById('jb-status').style.color = '#dc2626';
+      }
+    })
+    .catch(function(){
+      document.getElementById('jb-status').textContent = 'Could not connect. Please call us at 615-881-2505.';
+      document.getElementById('jb-status').style.color = '#dc2626';
+    });
+  });
+
+  /* ── Close on outside click ── */
+  document.addEventListener('click', function(e){
+    if (isOpen && !btn.contains(e.target) && !box.contains(e.target)) close();
+  });
+
+  document.body.appendChild(box);
+  document.body.appendChild(btn);
+})();
+</script>
 </body>
 </html>

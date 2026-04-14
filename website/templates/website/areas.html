@@ -12,7 +12,7 @@
     <h1>SERVICE AREA</h1>
     <p>Proudly serving the Nashville–Clarksville–Bowling Green triangle — Middle TN &amp; Southern KY.</p>
     <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
-      <a href="tel:6158812505" class="btn btn-yellow">📞 Call 615-881-2505</a>
+      <a href="tel:6158812505" class="btn btn-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align:middle;margin-right:6px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call 615-881-2505</a>
       <a href="/quote/" class="btn btn-outline">Get a Free Estimate</a>
     </div>
   </div>
@@ -23,15 +23,15 @@
     <div style="max-width:820px;margin:0 auto;">
       <div style="background:var(--white);border:1px solid #e2e8f0;border-radius:12px;padding:32px;">
         <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
-          <div style="font-size:48px;flex-shrink:0;">📍</div>
+          <div style="flex-shrink:0;color:var(--yellow);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
           <div style="flex:1;">
             <h2 style="font-size:22px;font-weight:800;margin-bottom:20px;">Where We Serve</h2>
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 24px;font-size:14px;margin-bottom:24px;">
               {% for area in primary_areas %}
-              <span style="padding:4px 0;border-bottom:1px solid #f1f5f9;">📍 {{ area }}</span>
+              <a href="{{ area.url }}" style="padding:4px 0;border-bottom:1px solid #f1f5f9;color:var(--navy);text-decoration:none;display:flex;align-items:center;gap:4px;font-weight:600;transition:color .15s;" onmouseover="this.style.color='var(--yellow-dark)'" onmouseout="this.style.color='var(--navy)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="flex-shrink:0;color:var(--yellow);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ area.name }}</a>
               {% endfor %}
               {% for area in secondary_areas %}
-              <span style="padding:4px 0;border-bottom:1px solid #f1f5f9;">📍 {{ area }}</span>
+              <a href="{{ area.url }}" style="padding:4px 0;border-bottom:1px solid #f1f5f9;color:var(--navy);text-decoration:none;display:flex;align-items:center;gap:4px;font-weight:500;transition:color .15s;" onmouseover="this.style.color='var(--yellow-dark)'" onmouseout="this.style.color='var(--navy)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12" style="flex-shrink:0;color:var(--yellow);"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ area.name }}</a>
               {% endfor %}
             </div>
             <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -72,7 +72,7 @@
       <p>We may still serve your area — give us a call and we'll let you know.</p>
     </div>
     <div class="cta-banner-actions">
-      <a href="tel:6158812505" class="btn btn-yellow">📞 615-881-2505</a>
+      <a href="tel:6158812505" class="btn btn-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align:middle;margin-right:6px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>615-881-2505</a>
       <a href="/quote/" class="btn btn-outline">Get a Quote</a>
     </div>
   </div>

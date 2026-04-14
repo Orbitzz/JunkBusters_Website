@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
+from django.core.mail import EmailMessage
+from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest
 
@@ -13,16 +15,90 @@ REVIEWS = [
     {'stars': 5, 'text': "Needed a shed cleaned out and Christian and his wife did an amazing job! They were very thorough and got the job done quickly and painlessly! Would definitely use them again if needed!", 'author': 'Leslie D.'},
 ]
 
+CITY_URL_MAP = {
+    'Nashville, TN': '/junk-removal-nashville/',
+    'East Nashville, TN': '/junk-removal-nashville/',
+    'Antioch, TN': '/junk-removal-nashville/',
+    'Donelson, TN': '/junk-removal-nashville/',
+    'Bellevue, TN': '/junk-removal-nashville/',
+    'Hermitage, TN': '/junk-removal-nashville/',
+    'Madison, TN': '/junk-removal-nashville/',
+    'Berry Hill, TN': '/junk-removal-nashville/',
+    'Old Hickory, TN': '/junk-removal-nashville/',
+    'Clarksville, TN': '/junk-removal-clarksville/',
+    'Fort Campbell, KY': '/junk-removal-clarksville/',
+    'Oak Grove, KY': '/junk-removal-clarksville/',
+    'Hopkinsville, KY': '/junk-removal-clarksville/',
+    'Cunningham, TN': '/junk-removal-clarksville/',
+    'Bowling Green, KY': '/junk-removal-bowling-green/',
+    'Alvaton, KY': '/junk-removal-bowling-green/',
+    'Smiths Grove, KY': '/junk-removal-bowling-green/',
+    'White House, TN': '/junk-removal-white-house-tn/',
+    'Greenbrier, TN': '/junk-removal-white-house-tn/',
+    'Millersville, TN': '/junk-removal-white-house-tn/',
+    'Cottontown, TN': '/junk-removal-white-house-tn/',
+    'Cedar Hill, TN': '/junk-removal-white-house-tn/',
+    'Hendersonville, TN': '/junk-removal-hendersonville-tn/',
+    'Gallatin, TN': '/junk-removal-gallatin-tn/',
+    'Westmoreland, TN': '/junk-removal-gallatin-tn/',
+    'Bethpage, TN': '/junk-removal-gallatin-tn/',
+    'Portland, TN': '/junk-removal-portland-tn/',
+    'Mitchellville, TN': '/junk-removal-portland-tn/',
+    'Springfield, TN': '/junk-removal-springfield-tn/',
+    'Coopertown, TN': '/junk-removal-springfield-tn/',
+    'Adams, TN': '/junk-removal-springfield-tn/',
+    'Franklin, TN': '/junk-removal-franklin-tn/',
+    'Brentwood, TN': '/junk-removal-franklin-tn/',
+    'Spring Hill, TN': '/junk-removal-franklin-tn/',
+    'Nolensville, TN': '/junk-removal-franklin-tn/',
+    'Goodlettsville, TN': '/junk-removal-goodlettsville-tn/',
+    'Ridgetop, TN': '/junk-removal-goodlettsville-tn/',
+    'Orlinda, TN': '/areas-we-serve/',
+    'Russellville, KY': '/kentucky/',
+    'Scottsville, KY': '/kentucky/',
+    'Adairville, KY': '/kentucky/',
+    'Franklin, KY': '/kentucky/',
+    'Auburn, KY': '/kentucky/',
+    'Lewisburg, KY': '/kentucky/',
+    'Oakland, KY': '/kentucky/',
+    'Woodburn, KY': '/kentucky/',
+    'Rockfield, KY': '/kentucky/',
+    'Morgantown, KY': '/kentucky/',
+}
+
+
+def enrich_areas(areas):
+    """Convert a list of area name strings to dicts with name + url."""
+    return [{'name': a, 'url': CITY_URL_MAP.get(a, '/areas-we-serve/')} for a in areas]
+
+
 SERVICE_AREAS_PRIMARY = [
-    'Orlinda, TN', 'White House, TN', 'Goodlettsville, TN', 'Gallatin, TN',
-    'Hendersonville, TN', 'Nashville, TN', 'Bowling Green, KY', 'Franklin, TN',
-    'Portland, TN', 'Springfield, TN', 'Clarksville, TN',
+    {'name': 'Nashville, TN',      'url': '/junk-removal-nashville/'},
+    {'name': 'White House, TN',    'url': '/junk-removal-white-house-tn/'},
+    {'name': 'Goodlettsville, TN', 'url': '/junk-removal-goodlettsville-tn/'},
+    {'name': 'Gallatin, TN',       'url': '/junk-removal-gallatin-tn/'},
+    {'name': 'Hendersonville, TN', 'url': '/junk-removal-hendersonville-tn/'},
+    {'name': 'Clarksville, TN',    'url': '/junk-removal-clarksville/'},
+    {'name': 'Bowling Green, KY',  'url': '/junk-removal-bowling-green/'},
+    {'name': 'Franklin, TN',       'url': '/junk-removal-franklin-tn/'},
+    {'name': 'Portland, TN',       'url': '/junk-removal-portland-tn/'},
+    {'name': 'Springfield, TN',    'url': '/junk-removal-springfield-tn/'},
+    {'name': 'Orlinda, TN',        'url': '/areas-we-serve/'},
 ]
 SERVICE_AREAS_SECONDARY = [
-    'Adairville, KY', 'Scottsville, KY', 'Russellville, KY', 'Robertson County, TN',
-    'Sumner County, TN', 'Davidson County, TN', 'Williamson County, TN',
-    'Logan County, KY', 'Wilson County, TN', 'Rutherford County, TN',
-    'Cheatham County, TN', 'Montgomery County, TN', 'Middle, TN',
+    {'name': 'Adairville, KY',        'url': '/kentucky/'},
+    {'name': 'Scottsville, KY',       'url': '/kentucky/'},
+    {'name': 'Russellville, KY',      'url': '/kentucky/'},
+    {'name': 'Robertson County, TN',  'url': '/areas-we-serve/'},
+    {'name': 'Sumner County, TN',     'url': '/areas-we-serve/'},
+    {'name': 'Davidson County, TN',   'url': '/areas-we-serve/'},
+    {'name': 'Williamson County, TN', 'url': '/areas-we-serve/'},
+    {'name': 'Logan County, KY',      'url': '/kentucky/'},
+    {'name': 'Wilson County, TN',     'url': '/areas-we-serve/'},
+    {'name': 'Rutherford County, TN', 'url': '/areas-we-serve/'},
+    {'name': 'Cheatham County, TN',   'url': '/areas-we-serve/'},
+    {'name': 'Montgomery County, TN', 'url': '/junk-removal-clarksville/'},
+    {'name': 'Middle, TN',            'url': '/areas-we-serve/'},
 ]
 
 NASHVILLE_AREAS = [
@@ -670,6 +746,222 @@ CITY_PAGES = {
         'trust_body': "Junk Busters LLC is based right at the Tennessee–Kentucky border in Orlinda, TN — which makes us genuinely local to Southern Kentucky in a way that Nashville-based companies simply aren't. We serve Warren, Simpson, Logan, and Allen Counties with the same professionalism, speed, and fair pricing we bring to every job across Middle TN. Call 615-881-2505 for a free estimate.",
         'local_areas': ['Bowling Green, KY', 'Franklin, KY', 'Russellville, KY', 'Scottsville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Smiths Grove, KY', 'Oakland, KY', 'Alvaton, KY', 'Morgantown, KY', 'Woodburn, KY'],
     },
+    'nashville': {
+        'slug': 'junk-removal-nashville',
+        'city_name': 'Nashville, TN',
+        'region_name': 'Davidson County & Metro Nashville',
+        'meta_title': 'Junk Removal Nashville TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Nashville, TN with fast junk removal, estate cleanouts, eviction cleanouts, move-out cleaning & scrap metal pickup. Davidson County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Nashville TN, estate cleanout Nashville, eviction cleanout Davidson County, move out cleaning Nashville, junk hauling Nashville, foreclosure cleanout Nashville TN',
+        'hero_h1': 'Junk Removal & Cleanout Services in Nashville, TN',
+        'hero_sub': 'Serving all of Davidson County — East Nashville, Bellevue, Antioch, Donelson & beyond. Fully insured. Same-day availability. Call 615-881-2505.',
+        'area_served': 'Nashville TN, Davidson County TN, East Nashville, Antioch TN, Donelson TN',
+        'intro': [
+            'Junk Busters LLC is Nashville\'s dependable junk removal and cleanout company. From single-item pickups in East Nashville to full estate cleanouts in Bellevue, our background-checked crews cover all of Davidson County with upfront pricing and same-day availability.',
+            'Nashville\'s booming rental market and constant real estate activity mean landlords, property managers, and homeowners need a reliable hauling partner they can call on short notice. We built our company around exactly that demand — fast scheduling, fair pricing, and crews that show up when they say they will.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for furniture, appliances, yard debris, and more. Upfront pricing, no hidden fees.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate full-estate clearing for probate, senior downsizing, and real estate readiness in Davidson County.', 'slug': 'estate-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Rapid eviction trash-outs for Nashville landlords and property managers. We turn units fast.', 'slug': 'eviction-clean-out'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Nashville foreclosed and REO properties market-ready fast. Full-service cleanouts.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for Nashville apartments and rental homes.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Nashville garage — we sort, haul, and dispose responsibly.', 'slug': 'garage-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub disassembly and removal anywhere in Davidson County.', 'slug': 'hot-tub-removal'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We come to your Nashville location and pay cash on the spot for copper, aluminum & brass.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC has served hundreds of Nashville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. We are locally owned, fully insured, and committed to leaving your space clutter-free. Call 615-881-2505 today for a free estimate.',
+        'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Goodlettsville, TN', 'Berry Hill, TN', 'Oak Hill, TN', 'Forest Hills, TN', 'Brentwood, TN'],
+    },
+    'white-house': {
+        'slug': 'junk-removal-white-house-tn',
+        'city_name': 'White House, TN',
+        'region_name': 'Robertson & Sumner County',
+        'meta_title': 'Junk Removal White House TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves White House, TN with junk removal, estate cleanouts, eviction cleanouts & more. Robertson & Sumner County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal White House TN, estate cleanout White House, eviction cleanout Robertson County, junk hauling Sumner County TN, cleanout services White House Tennessee',
+        'hero_h1': 'Junk Removal & Cleanout Services in White House, TN',
+        'hero_sub': 'Serving White House, Greenbrier, Millersville & all of Robertson and Sumner County. Background-checked crews. Call 615-881-2505.',
+        'area_served': 'White House TN, Robertson County TN, Sumner County TN, Greenbrier TN',
+        'intro': [
+            'Junk Busters LLC is headquartered in Orlinda, TN — making White House one of our closest and most frequently served communities. We know the roads, the neighborhoods, and the people here, and we take pride in delivering fast, reliable junk removal and cleanout services to Robertson and Sumner County residents.',
+            'Whether you need a quick furniture pickup, a full garage cleanout, or an estate cleared after a loss, our team is ready to help. No long wait times, no hidden fees — just honest work done right.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Fast furniture, appliance, and debris haul-away for White House homes and businesses.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate full-estate clearing for Robertson and Sumner County families.', 'slug': 'estate-clean-out'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your garage — we haul away everything you no longer need.', 'slug': 'garage-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for White House landlords and property managers.', 'slug': 'eviction-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub disassembly and removal in White House and surrounding areas.', 'slug': 'hot-tub-removal'},
+            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for White House rental properties.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Light Demolition', 'desc': 'Shed teardown, deck removal, fence demo — we knock it down and haul it away.', 'slug': 'junk-removal'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the White House area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'As a Robertson County-based company, Junk Busters LLC is your local junk removal expert in White House, TN. We offer same-day and next-day service, upfront pricing, and a crew that treats your property with respect. Call 615-881-2505 for a free estimate.',
+        'local_areas': ['White House, TN', 'Greenbrier, TN', 'Millersville, TN', 'Orlinda, TN', 'Cottontown, TN', 'Cedar Hill, TN', 'Ridgetop, TN', 'Goodlettsville, TN', 'Springfield, TN', 'Bethpage, TN', 'Gallatin, TN', 'Hendersonville, TN'],
+    },
+    'hendersonville': {
+        'slug': 'junk-removal-hendersonville-tn',
+        'city_name': 'Hendersonville, TN',
+        'region_name': 'Sumner County',
+        'meta_title': 'Junk Removal Hendersonville TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Hendersonville, TN with junk removal, estate cleanouts, garage cleanouts & more. Sumner County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Hendersonville TN, estate cleanout Hendersonville, garage cleanout Sumner County, junk hauling Hendersonville Tennessee, cleanout services Hendersonville TN',
+        'hero_h1': 'Junk Removal & Cleanout Services in Hendersonville, TN',
+        'hero_sub': 'Serving Hendersonville, Gallatin, Goodlettsville & all of Sumner County. Background-checked and insured. Call 615-881-2505.',
+        'area_served': 'Hendersonville TN, Sumner County TN, Gallatin TN, Goodlettsville TN',
+        'intro': [
+            'Junk Busters LLC serves Hendersonville and all of Sumner County with professional junk removal, estate cleanouts, and property cleanup services. Our crews are background-checked, fully insured, and ready to handle everything from single-item pickups to complete property cleanouts.',
+            'Hendersonville\'s growing residential community and active real estate market mean we\'re regularly helping homeowners, landlords, and real estate agents clear properties quickly and cleanly. Call us and we\'ll have a crew out to you fast.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Hendersonville homes and rental properties.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Thorough and compassionate estate clearing for Sumner County families.', 'slug': 'estate-clean-out'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Hendersonville garage — we remove everything you no longer need.', 'slug': 'garage-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast turnaround eviction cleanouts for Hendersonville landlords.', 'slug': 'eviction-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Hendersonville and Sumner County.', 'slug': 'hot-tub-removal'},
+            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Hendersonville rental properties.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Hendersonville REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Hendersonville area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC brings dependable, upfront-priced junk removal and cleanout services to Hendersonville and all of Sumner County. Locally owned, fully insured, and always on time. Call 615-881-2505 for a free estimate.',
+        'local_areas': ['Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Cottontown, TN', 'Millersville, TN', 'Madison, TN', 'Old Hickory, TN', 'Ridgetop, TN'],
+    },
+    'gallatin': {
+        'slug': 'junk-removal-gallatin-tn',
+        'city_name': 'Gallatin, TN',
+        'region_name': 'Sumner County Seat',
+        'meta_title': 'Junk Removal Gallatin TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Gallatin, TN with junk removal, estate cleanouts, eviction cleanouts & more. Sumner County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Gallatin TN, estate cleanout Gallatin, eviction cleanout Sumner County, junk hauling Gallatin Tennessee, cleanout services Gallatin TN',
+        'hero_h1': 'Junk Removal & Cleanout Services in Gallatin, TN',
+        'hero_sub': 'Serving Gallatin, Hendersonville, Portland & all of Sumner County. Upfront pricing, fully insured. Call 615-881-2505.',
+        'area_served': 'Gallatin TN, Sumner County TN, Hendersonville TN, Portland TN',
+        'intro': [
+            'Junk Busters LLC serves Gallatin and all of Sumner County with reliable, affordable junk removal and cleanout services. As the county seat, Gallatin has a mix of historic properties, growing neighborhoods, and active rental markets — all of which create regular demand for fast, professional cleanout crews.',
+            'Our background-checked team handles everything from single-item furniture removal to complete estate cleanouts. We arrive on time, work efficiently, and haul everything away so you don\'t have to make a single dump run.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Gallatin homes, rentals, and businesses.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Sumner County families and real estate agents.', 'slug': 'estate-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Gallatin landlords and property managers.', 'slug': 'eviction-clean-out'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Gallatin garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Gallatin and Sumner County.', 'slug': 'hot-tub-removal'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Gallatin REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Gallatin rental properties.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the Gallatin area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Gallatin, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
+        'local_areas': ['Gallatin, TN', 'Hendersonville, TN', 'Portland, TN', 'Westmoreland, TN', 'White House, TN', 'Goodlettsville, TN', 'Millersville, TN', 'Bethpage, TN', 'Cottontown, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Old Hickory, TN'],
+    },
+    'springfield': {
+        'slug': 'junk-removal-springfield-tn',
+        'city_name': 'Springfield, TN',
+        'region_name': 'Robertson County Seat',
+        'meta_title': 'Junk Removal Springfield TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Springfield, TN with junk removal, estate cleanouts, eviction cleanouts & more. Robertson County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Springfield TN, estate cleanout Springfield, eviction cleanout Robertson County, junk hauling Springfield Tennessee, cleanout services Robertson County TN',
+        'hero_h1': 'Junk Removal & Cleanout Services in Springfield, TN',
+        'hero_sub': 'Serving Springfield, White House, Greenbrier & all of Robertson County. Background-checked crews. Call 615-881-2505.',
+        'area_served': 'Springfield TN, Robertson County TN, White House TN, Greenbrier TN',
+        'intro': [
+            'Junk Busters LLC serves Springfield and Robertson County with fast, professional junk removal and property cleanout services. Based in nearby Orlinda, we\'re one of the closest hauling companies to Springfield — which means faster response times and lower costs for our Robertson County customers.',
+            'From clearing out old farm equipment to estate cleanouts and rental property turnovers, our crew handles jobs of all sizes with the same level of care and professionalism. Call us today and we\'ll have an estimate to you quickly.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Springfield homes, farms, and businesses.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Robertson County families.', 'slug': 'estate-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Springfield landlords and property managers.', 'slug': 'eviction-clean-out'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your garage or outbuilding — we haul everything away.', 'slug': 'garage-clean-out'},
+            {'name': 'Light Demolition', 'desc': 'Shed teardown, fence removal, and deck demolition in Robertson County.', 'slug': 'junk-removal'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Springfield and surrounding areas.', 'slug': 'hot-tub-removal'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Robertson County REO and bank-owned properties market-ready.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Springfield area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC is Robertson County\'s local junk removal and cleanout company. Headquartered in Orlinda, we\'re just minutes from Springfield and ready to serve. Upfront pricing, no hidden fees, and crews that show up when they say they will. Call 615-881-2505 today.',
+        'local_areas': ['Springfield, TN', 'White House, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Robertson County, TN', 'Pleasant View, TN'],
+    },
+    'franklin': {
+        'slug': 'junk-removal-franklin-tn',
+        'city_name': 'Franklin, TN',
+        'region_name': 'Williamson County',
+        'meta_title': 'Junk Removal Franklin TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Franklin, TN with junk removal, estate cleanouts, move-out cleaning & more. Williamson County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Franklin TN, estate cleanout Franklin, move out cleaning Williamson County, junk hauling Franklin Tennessee, cleanout services Franklin TN, Brentwood junk removal',
+        'hero_h1': 'Junk Removal & Cleanout Services in Franklin, TN',
+        'hero_sub': 'Serving Franklin, Brentwood, Spring Hill & all of Williamson County. Background-checked and fully insured. Call 615-881-2505.',
+        'area_served': 'Franklin TN, Williamson County TN, Brentwood TN, Spring Hill TN',
+        'intro': [
+            'Junk Busters LLC serves Franklin and Williamson County with premium junk removal and cleanout services. Franklin\'s upscale residential market and active real estate scene create consistent demand for reliable, professional hauling — and that\'s exactly what we deliver.',
+            'Our background-checked, insured crews handle everything from single furniture pickups to complete estate cleanouts. We work quickly and efficiently, leaving your property spotless and ready for its next chapter.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Franklin homes and Williamson County properties.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate and thorough estate clearing for Williamson County families.', 'slug': 'estate-clean-out'},
+            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for Franklin rental properties.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Franklin garage — we sort, haul, and dispose responsibly.', 'slug': 'garage-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Franklin and Williamson County.', 'slug': 'hot-tub-removal'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Franklin landlords and property managers.', 'slug': 'eviction-clean-out'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Williamson County REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Franklin area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC brings dependable, professionally priced junk removal to Franklin and all of Williamson County. Our crews are background-checked, insured, and committed to exceptional service. Call 615-881-2505 for a free on-site estimate.',
+        'local_areas': ['Franklin, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN', 'Thompson\'s Station, TN', 'Fairview, TN', 'College Grove, TN', 'Arrington, TN', 'Triune, TN', 'Williamson County, TN', 'Nashville, TN', 'Antioch, TN'],
+    },
+    'goodlettsville': {
+        'slug': 'junk-removal-goodlettsville-tn',
+        'city_name': 'Goodlettsville, TN',
+        'region_name': 'Davidson & Sumner County Border',
+        'meta_title': 'Junk Removal Goodlettsville TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Goodlettsville, TN with junk removal, estate cleanouts, garage cleanouts & more. Davidson & Sumner County border community. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Goodlettsville TN, estate cleanout Goodlettsville, garage cleanout Goodlettsville, junk hauling Goodlettsville Tennessee',
+        'hero_h1': 'Junk Removal & Cleanout Services in Goodlettsville, TN',
+        'hero_sub': 'Serving Goodlettsville, Millersville, Greenbrier & the Davidson-Sumner County border area. Fully insured. Call 615-881-2505.',
+        'area_served': 'Goodlettsville TN, Davidson County TN, Sumner County TN, Millersville TN',
+        'intro': [
+            'Junk Busters LLC serves Goodlettsville and the surrounding Davidson-Sumner County border area with fast, professional junk removal and cleanout services. Conveniently positioned between Nashville and the northern suburbs, Goodlettsville is one of our most frequently served communities.',
+            'Whether you\'re clearing a garage, hauling away furniture, or need a full estate cleanout, our crew is ready to help. Same-day and next-day appointments are often available.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Goodlettsville homes and businesses.', 'slug': 'junk-removal'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Goodlettsville garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for the Goodlettsville area.', 'slug': 'estate-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Goodlettsville landlords.', 'slug': 'eviction-clean-out'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Goodlettsville.', 'slug': 'hot-tub-removal'},
+            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Goodlettsville rental properties.', 'slug': 'move-in-move-out-cleaning'},
+            {'name': 'Light Demolition', 'desc': 'Shed and deck removal for Goodlettsville homeowners.', 'slug': 'junk-removal'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in Goodlettsville.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC is Goodlettsville\'s go-to junk removal and cleanout crew. We offer upfront pricing, same-day availability, and a team that takes pride in every job. Call 615-881-2505 for a free estimate.',
+        'local_areas': ['Goodlettsville, TN', 'Millersville, TN', 'Greenbrier, TN', 'White House, TN', 'Madison, TN', 'Hendersonville, TN', 'Ridgetop, TN', 'Old Hickory, TN', 'Gallatin, TN', 'Nashville, TN', 'Cottontown, TN', 'Antioch, TN'],
+    },
+    'portland': {
+        'slug': 'junk-removal-portland-tn',
+        'city_name': 'Portland, TN',
+        'region_name': 'Northern Sumner County',
+        'meta_title': 'Junk Removal Portland TN | Junk Busters LLC',
+        'meta_desc': 'Junk Busters LLC serves Portland, TN with junk removal, estate cleanouts, garage cleanouts & more. Northern Sumner County specialists. Call 615-881-2505.',
+        'meta_keywords': 'junk removal Portland TN, estate cleanout Portland Tennessee, garage cleanout Sumner County, junk hauling Portland TN',
+        'hero_h1': 'Junk Removal & Cleanout Services in Portland, TN',
+        'hero_sub': 'Serving Portland, Westmoreland, Bethpage & northern Sumner County. Background-checked crews, upfront pricing. Call 615-881-2505.',
+        'area_served': 'Portland TN, Sumner County TN, Westmoreland TN, Bethpage TN',
+        'intro': [
+            'Junk Busters LLC serves Portland and the northern Sumner County area with dependable junk removal and cleanout services. Portland\'s rural character and growing community create steady demand for hauling services that the big national franchises rarely reach — and we fill that gap.',
+            'Our crew makes the drive to Portland regularly, bringing the same upfront pricing and professional service we offer across all of Middle TN. From farm cleanouts to estate clearances, we handle it all.',
+        ],
+        'services': [
+            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Portland homes, farms, and businesses.', 'slug': 'junk-removal'},
+            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Portland and northern Sumner County families.', 'slug': 'estate-clean-out'},
+            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Portland garage or outbuilding — we haul everything away.', 'slug': 'garage-clean-out'},
+            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Portland landlords and property managers.', 'slug': 'eviction-clean-out'},
+            {'name': 'Light Demolition', 'desc': 'Shed teardown, fence removal, and deck demo in the Portland area.', 'slug': 'junk-removal'},
+            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Portland and Sumner County.', 'slug': 'hot-tub-removal'},
+            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Portland REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
+            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Portland area.', 'slug': 'scrap-metal-pickup'},
+        ],
+        'trust_body': 'Junk Busters LLC makes the drive to Portland and northern Sumner County so you don\'t have to haul it yourself. We offer upfront pricing, same-day scheduling when available, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate.',
+        'local_areas': ['Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Gallatin, TN', 'White House, TN', 'Hendersonville, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Greenbrier, TN', 'Cottontown, TN', 'Orlinda, TN', 'Springfield, TN'],
+    },
 }
 
 ADDITIONAL_SERVICES = [
@@ -686,25 +978,25 @@ ADDITIONAL_SERVICES = [
 ]
 
 ALL_SERVICES = [
-    {'name': 'Junk Removal', 'desc': 'We haul away furniture, appliances, yard debris, mattresses, and more. Upfront pricing with no hidden fees.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>', 'slug': 'junk-removal'},
-    {'name': 'Residential Cleaning', 'desc': 'Deep cleaning for homes of all sizes. We leave every room spotless and fresh.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', 'slug': 'residential-cleaning'},
-    {'name': 'Move In/Move Out Cleaning', 'desc': 'Thorough move-in or move-out cleaning so your property is ready for its next chapter.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M5 12H3l9-9 9 9h-2"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M10 22v-6h4v6"/></svg>', 'slug': 'move-in-move-out-cleaning'},
-    {'name': 'Recurring Maid Services', 'desc': 'Flexible weekly, bi-weekly, or monthly cleaning plans to keep your home in top shape.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg>', 'slug': 'recurring-maid-services'},
-    {'name': 'Air BnB Cleaning', 'desc': 'Keep your short-term rental spotless and guest-ready between every booking.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M2 7h20v13a2 2 0 01-2 2H4a2 2 0 01-2-2V7z"/><path d="M2 7a5 5 0 015-5h10a5 5 0 015 5"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>', 'slug': 'air-bnb-cleaning'},
-    {'name': 'Fence Removal', 'desc': 'Old wood, chain-link, or metal fencing — we dismantle and haul it all away.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><line x1="4" y1="4" x2="4" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="20" y1="4" x2="20" y2="20"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="16" x2="22" y2="16"/></svg>', 'slug': 'fence-removal'},
-    {'name': 'Estate Clean-Out', 'desc': "Complete estate clearing done with care and efficiency during life's big transitions.", 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', 'slug': 'estate-clean-out'},
-    {'name': 'Eviction Clean-Out', 'desc': 'Rapid clean-outs for landlords needing units turned over quickly and professionally.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 11-7.778 7.778 5.5 5.5 0 017.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>', 'slug': 'eviction-clean-out'},
-    {'name': 'Foreclosure Clean-Out', 'desc': 'Get foreclosed properties market-ready with our efficient, thorough clean-out service.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>', 'slug': 'foreclosure-clean-out'},
-    {'name': 'Bulk Cardboard Removal', 'desc': 'We pick up and recycle bulk cardboard for businesses and homes — eco-friendly disposal.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>', 'slug': 'bulk-cardboard-removal'},
-    {'name': 'Garage Clean-Out', 'desc': 'Reclaim your garage space — we remove everything you no longer need, quickly and cleanly.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>', 'slug': 'garage-clean-out'},
-    {'name': 'Storage Unit Clean-Out', 'desc': 'Clear out storage units efficiently, saving you time and avoiding extra rental fees.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><rect x="2" y="7" width="20" height="14" rx="1"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>', 'slug': 'storage-unit-clean-out'},
-    {'name': 'Hot Tub Removal', 'desc': 'Safe disassembly and full removal of old hot tubs and spas from any location.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M9 6c0-1.1.9-2 2-2h2a2 2 0 012 2v1H9V6z"/><rect x="3" y="7" width="18" height="12" rx="2"/><path d="M7 12c1-1.5 3-1.5 4 0s3 1.5 4 0"/></svg>', 'slug': 'hot-tub-removal'},
-    {'name': 'Estate & Hoarder Cleanouts', 'desc': 'Compassionate probate assistance, senior downsizing, and hoarder home restoration. Real estate readiness included.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>', 'slug': 'estate-hoarder-cleanout'},
-    {'name': 'Property Manager Hub', 'desc': 'Fast eviction cleanouts and foreclosure trash-outs for landlords, REO agents, and property management companies.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>', 'slug': 'property-manager-hub'},
-    {'name': 'Mobile Scrap Metal Buying', 'desc': 'We come to you — buying copper, aluminum, and brass with on-site weighing and immediate payment.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>', 'slug': 'scrap-metal-pickup'},
-    {'name': 'Short-Term Rental Turnover', 'desc': 'Hotel-ready Airbnb and vacation rental turnovers with photo reports and calendar-synced scheduling.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M2 7h20v13a2 2 0 01-2 2H4a2 2 0 01-2-2V7z"/><path d="M2 7a5 5 0 015-5h10a5 5 0 015 5"/><line x1="12" y1="12" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>', 'slug': 'short-term-rental-turnover'},
-    {'name': 'Move-Out Deep Cleaning', 'desc': 'Thorough move-in/move-out cleaning — appliances, cabinets, baseboards, and every inch. Security-deposit ready.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><path d="M5 12H3l9-9 9 9h-2"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M10 22v-6h4v6"/></svg>', 'slug': 'move-out-deep-cleaning'},
-    {'name': 'Light Demolition', 'desc': 'Shed demolition, deck teardown, fence removal, and hot tub removal — we tear it down and haul it away in one visit.', 'icon': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="44" height="44"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>', 'slug': 'light-demolition'},
+    {'name': 'Junk Removal', 'desc': 'We haul away furniture, appliances, yard debris, mattresses, and more. Upfront pricing with no hidden fees.', 'slug': 'junk-removal', 'image': 'img/1000003360.jpg'},
+    {'name': 'Residential Cleaning', 'desc': 'Deep cleaning for homes of all sizes. We leave every room spotless and fresh.', 'slug': 'residential-cleaning', 'image': 'img/Recurring Maid Services.jpg'},
+    {'name': 'Move In/Move Out Cleaning', 'desc': 'Thorough move-in or move-out cleaning so your property is ready for its next chapter.', 'slug': 'move-in-move-out-cleaning', 'image': 'img/image_2.jpg'},
+    {'name': 'Recurring Maid Services', 'desc': 'Flexible weekly, bi-weekly, or monthly cleaning plans to keep your home in top shape.', 'slug': 'recurring-maid-services', 'image': 'img/Recurring Maid Services.jpg'},
+    {'name': 'Air BnB Cleaning', 'desc': 'Keep your short-term rental spotless and guest-ready between every booking.', 'slug': 'air-bnb-cleaning', 'image': 'img/Move In Move Out Cleaning.jpg'},
+    {'name': 'Fence Removal', 'desc': 'Old wood, chain-link, or metal fencing — we dismantle and haul it all away.', 'slug': 'fence-removal', 'image': 'img/Fence Removal.jpg'},
+    {'name': 'Estate Clean-Out', 'desc': "Complete estate clearing done with care and efficiency during life's big transitions.", 'slug': 'estate-clean-out', 'image': 'img/1000003685.jpg'},
+    {'name': 'Eviction Clean-Out', 'desc': 'Rapid clean-outs for landlords needing units turned over quickly and professionally.', 'slug': 'eviction-clean-out', 'image': 'img/Eviction cleanout.jpg'},
+    {'name': 'Foreclosure Clean-Out', 'desc': 'Get foreclosed properties market-ready with our efficient, thorough clean-out service.', 'slug': 'foreclosure-clean-out', 'image': 'img/Foreclosure.jpg'},
+    {'name': 'Bulk Cardboard Removal', 'desc': 'We pick up and recycle bulk cardboard for businesses and homes — eco-friendly disposal.', 'slug': 'bulk-cardboard-removal', 'image': 'img/5124041345.jpg'},
+    {'name': 'Garage Clean-Out', 'desc': 'Reclaim your garage space — we remove everything you no longer need, quickly and cleanly.', 'slug': 'garage-clean-out', 'image': 'img/1000005705.jpg'},
+    {'name': 'Storage Unit Clean-Out', 'desc': 'Clear out storage units efficiently, saving you time and avoiding extra rental fees.', 'slug': 'storage-unit-clean-out', 'image': 'img/Storage Unit.jpg'},
+    {'name': 'Hot Tub Removal', 'desc': 'Safe disassembly and full removal of old hot tubs and spas from any location.', 'slug': 'hot-tub-removal', 'image': 'img/Hottub Removal.jpg'},
+    {'name': 'Estate & Hoarder Cleanouts', 'desc': 'Compassionate probate assistance, senior downsizing, and hoarder home restoration. Real estate readiness included.', 'slug': 'estate-hoarder-cleanout', 'image': 'img/1000003685.jpg'},
+    {'name': 'Property Manager Hub', 'desc': 'Fast eviction cleanouts and foreclosure trash-outs for landlords, REO agents, and property management companies.', 'slug': 'property-manager-hub', 'image': 'img/Foreclosure.jpg'},
+    {'name': 'Mobile Scrap Metal Buying', 'desc': 'We come to you — buying copper, aluminum, and brass with on-site weighing and immediate payment.', 'slug': 'scrap-metal-pickup', 'image': 'img/1000005980.jpg'},
+    {'name': 'Short-Term Rental Turnover', 'desc': 'Hotel-ready Airbnb and vacation rental turnovers with photo reports and calendar-synced scheduling.', 'slug': 'short-term-rental-turnover', 'image': 'img/Move In Move Out Cleaning.jpg'},
+    {'name': 'Move-Out Deep Cleaning', 'desc': 'Thorough move-in/move-out cleaning — appliances, cabinets, baseboards, and every inch. Security-deposit ready.', 'slug': 'move-out-deep-cleaning', 'image': 'img/image_2.jpg'},
+    {'name': 'Light Demolition', 'desc': 'Shed demolition, deck teardown, fence removal, and hot tub removal — we tear it down and haul it away in one visit.', 'slug': 'light-demolition', 'image': 'img/demolition.png'},
 ]
 
 SERVICE_AREAS = [
@@ -733,29 +1025,79 @@ def service_page(request, slug):
     if not svc:
         raise Http404
     template = svc.get('custom_template', 'website/service_detail.html')
-    return render(request, template, {'svc': svc})
+    return render(request, template, {
+        'svc': svc,
+        'local_areas': enrich_areas(svc.get('local_areas', [])),
+    })
 
 
 def city_clarksville(request):
-    return render(request, 'website/city_landing.html', {'city': CITY_PAGES['clarksville']})
+    city = CITY_PAGES['clarksville']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
 
 
 def city_bowling_green(request):
-    return render(request, 'website/city_landing.html', {'city': CITY_PAGES['bowling-green']})
+    city = CITY_PAGES['bowling-green']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
 
 
 def city_kentucky(request):
-    return render(request, 'website/city_landing.html', {'city': CITY_PAGES['kentucky']})
+    city = CITY_PAGES['kentucky']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_nashville(request):
+    city = CITY_PAGES['nashville']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_white_house(request):
+    city = CITY_PAGES['white-house']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_hendersonville(request):
+    city = CITY_PAGES['hendersonville']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_gallatin(request):
+    city = CITY_PAGES['gallatin']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_springfield(request):
+    city = CITY_PAGES['springfield']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_franklin(request):
+    city = CITY_PAGES['franklin']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_goodlettsville(request):
+    city = CITY_PAGES['goodlettsville']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+
+
+def city_portland(request):
+    city = CITY_PAGES['portland']
+    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
 
 
 @require_http_methods(['GET', 'POST'])
 def quote(request):
     if request.method == 'POST':
-        form = QuoteForm(request.POST)
+        # Honeypot check — bots fill this hidden field, humans leave it blank
+        if request.POST.get('website_url', ''):
+            return redirect('website:quote_success')
+
+        form = QuoteForm(request.POST, request.FILES)
         if form.is_valid():
             d = form.cleaned_data
+            photo = request.FILES.get('photo')
             try:
-
                 BookingRequest.objects.create(
                     first_name=d['first_name'],
                     last_name=d.get('last_name') or '.',
@@ -771,6 +1113,30 @@ def quote(request):
                 )
             except Exception:
                 pass
+
+            # Send email notification
+            try:
+                body = (
+                    f"New inquiry from {d['first_name']} {d.get('last_name', '')}\n\n"
+                    f"Phone:   {d['phone']}\n"
+                    f"Email:   {d['email']}\n"
+                    f"Service: {d.get('service_type', '')}\n"
+                    f"Address: {d.get('address', '')} {d.get('city', '')} {d.get('state', '')} {d.get('zip_code', '')}\n\n"
+                    f"Message:\n{d.get('description', '')}\n"
+                )
+                msg = EmailMessage(
+                    subject=f"New Junk Busters Inquiry — {d.get('service_type', 'General')}",
+                    body=body,
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[settings.CONTACT_EMAIL],
+                    reply_to=[d['email']],
+                )
+                if photo:
+                    msg.attach(photo.name, photo.read(), photo.content_type)
+                msg.send(fail_silently=True)
+            except Exception:
+                pass
+
             return redirect('website:quote_success')
     else:
         service_pre = request.GET.get('service', '')
@@ -847,38 +1213,140 @@ def areas(request):
 
 def gallery(request):
     gallery_items = [
-        {'icon': '🚛'}, {'icon': '🗑️'}, {'icon': '🏠'},
-        {'icon': '🔧'}, {'icon': '📦'}, {'icon': '🧹'},
-        {'icon': '🏡'}, {'icon': '🚗'}, {'icon': '🗄️'},
-        {'icon': '♨️'}, {'icon': '🌿'}, {'icon': '📋'},
-        {'icon': '🛋️'}, {'icon': '🔑'}, {'icon': '💨'},
+        {'img': 'img/1000003360.jpg', 'alt': 'Junk removal job'},
+        {'img': 'img/1000003685.jpg', 'alt': 'Estate clean-out'},
+        {'img': 'img/Eviction cleanout.jpg', 'alt': 'Eviction clean-out'},
+        {'img': 'img/Foreclosure.jpg', 'alt': 'Foreclosure clean-out'},
+        {'img': 'img/Fence Removal.jpg', 'alt': 'Fence removal'},
+        {'img': 'img/Hottub Removal.jpg', 'alt': 'Hot tub removal'},
+        {'img': 'img/Storage Unit.jpg', 'alt': 'Storage unit clean-out'},
+        {'img': 'img/1000005705.jpg', 'alt': 'Garage clean-out'},
+        {'img': 'img/1000005980.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000005982.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000005833.jpg', 'alt': 'Clean-out project'},
+        {'img': 'img/1000005503.jpg', 'alt': 'Junk hauling'},
+        {'img': 'img/1000004397.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000004422.jpg', 'alt': 'Clean-out project'},
+        {'img': 'img/1000004302.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000004166.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000003906.jpg', 'alt': 'Clean-out project'},
+        {'img': 'img/1000003636.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000003336.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000003020.jpg', 'alt': 'Junk hauling'},
+        {'img': 'img/1000002704.jpg', 'alt': 'Clean-out project'},
+        {'img': 'img/tireremoval.jpg', 'alt': 'Tire removal'},
+        {'img': 'img/Basement Cleanout.jpg', 'alt': 'Basement clean-out'},
+        {'img': 'img/5124041345.jpg', 'alt': 'Bulk cardboard removal'},
+        {'img': 'img/dump-trailer.jpg', 'alt': 'Dump trailer'},
+        {'img': 'img/demolition.png', 'alt': 'Demolition project'},
+        {'img': 'img/1000002380.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000002205.jpg', 'alt': 'Junk removal project'},
+        {'img': 'img/1000002314.jpg', 'alt': 'Clean-out project'},
+        {'img': 'img/1000005703.jpg', 'alt': 'Junk removal project'},
     ]
     return render(request, 'website/gallery.html', {'gallery_items': gallery_items})
 
 
 def contact(request):
-    success = False
+    success = None
     if request.method == 'POST':
-        name = request.POST.get('name', '').strip()
-        phone = request.POST.get('phone', '').strip()
-        email = request.POST.get('email', '').strip()
-        message = request.POST.get('message', '').strip()
-        if name and (phone or email):
-            try:
+        if request.POST.get('website_url', ''):
+            return render(request, 'website/contact.html', {'success': None})
 
-                parts = name.split(' ', 1)
-                BookingRequest.objects.create(
-                    first_name=parts[0],
-                    last_name=parts[1] if len(parts) > 1 else '.',
-                    email=email or 'noemail@provided.com',
-                    phone=phone or '',
-                    service_requested='Contact form inquiry',
-                    notes=message,
-                    ip_address=request.META.get('REMOTE_ADDR'),
-                )
-            except Exception:
-                pass
-            success = True
+        form_type = request.POST.get('form_type', 'contact')
+
+        if form_type == 'apply':
+            name = request.POST.get('app_name', '').strip()
+            phone = request.POST.get('app_phone', '').strip()
+            email = request.POST.get('app_email', '').strip()
+            position = request.POST.get('app_position', '').strip()
+            availability = request.POST.get('app_availability', '').strip()
+            experience = request.POST.get('app_experience', '').strip()
+            resume = request.FILES.get('resume')
+
+            if name and phone and email:
+                try:
+                    parts = name.split(' ', 1)
+                    BookingRequest.objects.create(
+                        first_name=parts[0],
+                        last_name=parts[1] if len(parts) > 1 else '.',
+                        email=email,
+                        phone=phone,
+                        service_requested=f'JOB APPLICATION — {position}',
+                        notes=f"Availability: {availability}\n\n{experience}",
+                        ip_address=request.META.get('REMOTE_ADDR'),
+                    )
+                except Exception:
+                    pass
+
+                try:
+                    body = (
+                        f"New Job Application from {name}\n\n"
+                        f"Phone:        {phone}\n"
+                        f"Email:        {email}\n"
+                        f"Position:     {position}\n"
+                        f"Availability: {availability}\n\n"
+                        f"About Applicant:\n{experience}\n"
+                    )
+                    msg = EmailMessage(
+                        subject=f"Job Application — {name} ({position})",
+                        body=body,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        to=[settings.CONTACT_EMAIL],
+                        reply_to=[email],
+                    )
+                    if resume:
+                        msg.attach(resume.name, resume.read(), resume.content_type)
+                    msg.send(fail_silently=True)
+                except Exception:
+                    pass
+
+                success = 'apply'
+
+        else:
+            name = request.POST.get('name', '').strip()
+            phone = request.POST.get('phone', '').strip()
+            email = request.POST.get('email', '').strip()
+            message = request.POST.get('message', '').strip()
+            photo = request.FILES.get('photo')
+
+            if name and (phone or email):
+                try:
+                    parts = name.split(' ', 1)
+                    BookingRequest.objects.create(
+                        first_name=parts[0],
+                        last_name=parts[1] if len(parts) > 1 else '.',
+                        email=email or 'noemail@provided.com',
+                        phone=phone or '',
+                        service_requested='Contact form inquiry',
+                        notes=message,
+                        ip_address=request.META.get('REMOTE_ADDR'),
+                    )
+                except Exception:
+                    pass
+
+                try:
+                    body = (
+                        f"New contact form message from {name}\n\n"
+                        f"Phone:   {phone}\n"
+                        f"Email:   {email}\n\n"
+                        f"Message:\n{message}\n"
+                    )
+                    msg = EmailMessage(
+                        subject=f"New Contact Message — {name}",
+                        body=body,
+                        from_email=settings.DEFAULT_FROM_EMAIL,
+                        to=[settings.CONTACT_EMAIL],
+                        reply_to=[email] if email else [],
+                    )
+                    if photo:
+                        msg.attach(photo.name, photo.read(), photo.content_type)
+                    msg.send(fail_silently=True)
+                except Exception:
+                    pass
+
+                success = 'contact'
+
     return render(request, 'website/contact.html', {'success': success})
 
 

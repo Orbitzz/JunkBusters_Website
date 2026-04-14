@@ -67,8 +67,7 @@ img { max-width: 100%; height: auto; }
 .why-photo-slot { border-radius: 8px; overflow: hidden; height: 380px; background: transparent; }
 .why-team-photo { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; display: block; }
 .about-team-photo { width: auto; max-width: 100%; height: 400px; object-fit: contain; object-position: center bottom; display: block; margin: 0 auto; }
-.depend-crew-row { display: flex; align-items: flex-end; justify-content: center; gap: 16px; height: 360px; }
-.depend-crew-img { height: 100%; width: auto; object-fit: contain; object-position: center bottom; display: block; flex: 0 0 auto; max-width: 48%; }
+.depend-crew-single { width: 100%; height: auto; display: block; }
 
 /* ── Buttons ─────────────────────────────────────────────────────────────── */
 .btn {
@@ -522,7 +521,7 @@ img { max-width: 100%; height: auto; }
 /* ── CTA Bar ─────────────────────────────────────────────────────────────── */
 .cta-bar {
   background: var(--navy);
-  padding: 28px 0;
+  padding: 12px 0;
 }
 .cta-bar-inner {
   display: flex;
@@ -620,29 +619,45 @@ img { max-width: 100%; height: auto; }
   background: var(--navy-dark);
   color: var(--white);
   padding: 0;
+  overflow: hidden;
 }
 .about-dark-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: stretch;
   gap: 48px;
+  max-height: 460px;
 }
 .about-dark-text {
-  padding: 60px 0;
+  padding: 28px 0;
 }
 .about-dark h2 {
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 900;
   color: var(--yellow);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   text-transform: uppercase;
 }
 .about-dark-photos {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  height: 100%;
-  overflow: hidden;
+  height: 460px;
+  overflow: visible;
+  position: relative;
+  padding-top: 40px;
+}
+.about-dark-photos::before {
+  content: '';
+  position: absolute;
+  bottom: 14%;
+  left: 55%;
+  transform: translateX(-50%);
+  width: 68%;
+  height: 55%;
+  background: var(--yellow);
+  border-radius: 28px;
+  z-index: 0;
 }
 .about-dark-photos .about-team-photo {
   width: auto;
@@ -652,12 +667,14 @@ img { max-width: 100%; height: auto; }
   object-fit: contain;
   object-position: center bottom;
   display: block;
+  position: relative;
+  z-index: 1;
 }
 .about-dark p {
   color: #b0bec5;
-  font-size: 15px;
-  line-height: 1.75;
-  margin-bottom: 14px;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 10px;
 }
 .about-photo-box {
   background: rgba(255,255,255,0.08);
@@ -722,23 +739,24 @@ img { max-width: 100%; height: auto; }
 .depend-section {
   background: var(--navy);
   color: var(--white);
-  padding: 60px 0;
+  padding: 12px 0 24px;
+  border-top: 2px solid rgba(255,255,255,0.08);
 }
 .depend-grid {
   display: grid;
   grid-template-columns: 3fr 2fr;
-  gap: 40px;
+  gap: 24px;
   align-items: center;
 }
 .depend-text h2 {
   font-size: 20px;
   font-weight: 900;
   color: var(--yellow);
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-transform: uppercase;
   line-height: 1.3;
 }
-.depend-text p { color: #b0bec5; font-size: 14px; line-height: 1.8; }
+.depend-text p { color: #b0bec5; font-size: 14px; line-height: 1.7; margin-bottom: 0; }
 
 /* ── Section Headers ─────────────────────────────────────────────────────── */
 .section { padding: 64px 0; }
@@ -878,7 +896,6 @@ img { max-width: 100%; height: auto; }
   border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   margin: 0 auto 24px;
-  font-size: 36px;
 }
 .success-card h1 { font-size: 26px; font-weight: 800; color: var(--navy-dark); margin-bottom: 12px; }
 .success-card p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 28px; }

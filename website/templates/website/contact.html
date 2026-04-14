@@ -25,9 +25,14 @@
           <p><a href="tel:6158812505" style="font-size:18px;font-weight:700;color:var(--navy-dark);">615-881-2505</a></p>
         </div>
         <div style="margin-bottom:20px;">
-          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Location</h3>
-          <p style="font-size:15px;">Nashville &amp; White House, Tennessee</p>
-          <p style="font-size:13px;color:var(--text-muted);">Serving all of Middle Tennessee</p>
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Nashville Office</h3>
+          <p style="font-size:15px;font-weight:600;">159 4th Ave North, Ste 236</p>
+          <p style="font-size:14px;color:var(--text-muted);">Nashville, TN 37219</p>
+        </div>
+        <div style="margin-bottom:20px;">
+          <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Main Dispatch &amp; Fleet</h3>
+          <p style="font-size:15px;font-weight:600;">Orlinda, TN</p>
+          <p style="font-size:13px;color:var(--text-muted);">Robertson County — serving Middle TN &amp; Southern KY</p>
         </div>
         <div style="margin-bottom:20px;">
           <h3 style="font-size:13px;font-weight:700;text-transform:uppercase;color:var(--text-muted);margin-bottom:4px;">Business Hours</h3>
@@ -41,46 +46,159 @@
             Cheatham County · Montgomery County
           </p>
         </div>
-        <div style="background:#e2e8f0;border-radius:8px;height:200px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-muted);">
-          <div style="text-align:center;">
-            <div style="font-size:32px;margin-bottom:8px;">📍</div>
-            <div>Nashville &amp; White House, Tennessee</div>
-          </div>
+        <div style="border-radius:8px;overflow:hidden;border:1px solid #e2e8f0;">
+          <iframe
+            src="https://maps.google.com/maps?q=159+4th+Ave+North+Nashville+TN+37219&z=15&output=embed"
+            width="100%"
+            height="220"
+            style="border:0;display:block;"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            title="Junk Busters Nashville Office">
+          </iframe>
         </div>
       </div>
 
-      <!-- Contact form -->
+      <!-- Right column: tabbed forms -->
       <div>
-        <h2 style="font-size:22px;font-weight:800;margin-bottom:8px;">Inquire Below Or Book Online</h2>
-        <a href="/book/" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;margin-bottom:20px;display:inline-block;">Book Online</a>
 
-        {% if success %}
-        <div style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:16px;border-radius:8px;margin-bottom:20px;">
-          ✅ Message sent! We'll get back to you within 1 business day.
+        <!-- Tab buttons -->
+        <div style="display:flex;border-bottom:2px solid #e2e8f0;margin-bottom:24px;">
+          <button id="tab-contact" onclick="showTab('contact')" style="padding:10px 20px;font-size:14px;font-weight:700;background:none;border:none;border-bottom:3px solid var(--yellow);margin-bottom:-2px;color:var(--navy-dark);cursor:pointer;">Contact Us</button>
+          <button id="tab-apply" onclick="showTab('apply')" style="padding:10px 20px;font-size:14px;font-weight:700;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;color:var(--text-muted);cursor:pointer;">Apply Now</button>
         </div>
-        {% endif %}
 
-        <form method="post">
-          {% csrf_token %}
-          <div style="margin-bottom:12px;">
-            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Name</label>
-            <input type="text" name="name" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+        <!-- ── Contact tab ── -->
+        <div id="panel-contact">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;">
+            <a href="/book/" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;">Book Online</a>
+            <a href="tel:6158812505" class="btn btn-navy" style="padding:8px 20px;font-size:13px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:middle;margin-right:5px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>Call Us
+            </a>
+            <a href="mailto:c.thompson@junkbusters.info" class="btn btn-outline" style="padding:8px 20px;font-size:13px;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="vertical-align:middle;margin-right:5px;"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email Us
+            </a>
           </div>
-          <div style="margin-bottom:12px;">
-            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Email</label>
-            <input type="email" name="email" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+
+          {% if success == 'contact' %}
+          <div style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:16px;border-radius:8px;margin-bottom:20px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>Message sent! We'll get back to you within 1 business day.
           </div>
-          <div style="margin-bottom:12px;">
-            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Phone Number</label>
-            <input type="tel" name="phone" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="contact">
+            <input type="text" name="website_url" style="display:none;" tabindex="-1" autocomplete="off">
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Name</label>
+              <input type="text" name="name" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Email</label>
+              <input type="email" name="email" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Phone Number</label>
+              <input type="tel" name="phone" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Message</label>
+              <textarea name="message" rows="4" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;font-family:inherit;"></textarea>
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Upload a Photo <span style="font-weight:400;text-transform:none;">(optional)</span></label>
+              <div style="border:2px dashed #d1d5db;border-radius:6px;padding:16px;text-align:center;background:#f8fafc;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28" style="color:#94a3b8;margin-bottom:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p style="font-size:13px;color:#64748b;margin-bottom:8px;">Drag &amp; drop or click to browse</p>
+                <input type="file" name="photo" accept="image/*" style="font-size:13px;color:#374151;">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Send Message →</button>
+          </form>
+        </div>
+
+        <!-- ── Apply Now tab ── -->
+        <div id="panel-apply" style="display:none;">
+          <p style="font-size:14px;color:var(--text-muted);margin-bottom:20px;">Interested in joining the Junk Busters crew? Fill out the form below and we'll be in touch.</p>
+
+          {% if success == 'apply' %}
+          <div style="background:#dcfce7;border:1px solid #86efac;color:#15803d;padding:16px;border-radius:8px;margin-bottom:20px;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>Application received! We'll review it and reach out soon.
           </div>
-          <div style="margin-bottom:20px;">
-            <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Your Message</label>
-            <textarea name="message" rows="4" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;font-family:inherit;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Send Message →</button>
-        </form>
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" name="form_type" value="apply">
+            <input type="text" name="website_url" style="display:none;" tabindex="-1" autocomplete="off">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+              <div>
+                <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Full Name</label>
+                <input type="text" name="app_name" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+              </div>
+              <div>
+                <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Phone</label>
+                <input type="tel" name="app_phone" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+              </div>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Email Address</label>
+              <input type="email" name="app_email" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;">
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Position Interest</label>
+              <select name="app_position" required style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;background:#fff;">
+                <option value="">— Select a position —</option>
+                <option>Crew Member / Driver</option>
+                <option>Cleaner / Maid Service</option>
+                <option>General Labor</option>
+                <option>Office / Admin</option>
+              </select>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Availability</label>
+              <select name="app_availability" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;background:#fff;">
+                <option value="">— Select availability —</option>
+                <option>Full-Time</option>
+                <option>Part-Time</option>
+                <option>Weekdays Only</option>
+                <option>Weekends Only</option>
+                <option>Flexible / Any</option>
+              </select>
+            </div>
+            <div style="margin-bottom:12px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:4px;">Tell Us About Yourself <span style="font-weight:400;text-transform:none;">(experience, why you want to join, etc.)</span></label>
+              <textarea name="app_experience" rows="4" style="width:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:4px;font-size:14px;font-family:inherit;"></textarea>
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px;">Resume or Photo <span style="font-weight:400;text-transform:none;">(optional — PDF, Word, or image)</span></label>
+              <div style="border:2px dashed #d1d5db;border-radius:6px;padding:16px;text-align:center;background:#f8fafc;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="28" height="28" style="color:#94a3b8;margin-bottom:6px;"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p style="font-size:13px;color:#64748b;margin-bottom:8px;">Drag &amp; drop or click to browse</p>
+                <input type="file" name="resume" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="font-size:13px;color:#374151;">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Submit Application →</button>
+          </form>
+        </div>
+
       </div>
+
+<script>
+function showTab(tab) {
+  document.getElementById('panel-contact').style.display = tab === 'contact' ? '' : 'none';
+  document.getElementById('panel-apply').style.display   = tab === 'apply'   ? '' : 'none';
+  document.getElementById('tab-contact').style.borderBottomColor = tab === 'contact' ? 'var(--yellow)' : 'transparent';
+  document.getElementById('tab-contact').style.color = tab === 'contact' ? 'var(--navy-dark)' : 'var(--text-muted)';
+  document.getElementById('tab-apply').style.borderBottomColor = tab === 'apply' ? 'var(--yellow)' : 'transparent';
+  document.getElementById('tab-apply').style.color = tab === 'apply' ? 'var(--navy-dark)' : 'var(--text-muted)';
+  history.replaceState(null, '', tab === 'apply' ? '#apply' : '#');
+}
+// Open apply tab if URL hash is #apply or if application was just submitted
+if (window.location.hash === '#apply' || '{{ success }}' === 'apply') { showTab('apply'); }
+</script>
     </div>
   </div>
 </section>

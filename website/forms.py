@@ -41,6 +41,11 @@ class QuoteForm(forms.Form):
         label='Describe what you need removed or cleaned',
         required=False,
     )
+    photo = forms.FileField(
+        required=False,
+        label='Upload a photo (optional)',
+        widget=forms.FileInput(attrs={'accept': 'image/*'}),
+    )
 
 
 class BookingForm(forms.Form):

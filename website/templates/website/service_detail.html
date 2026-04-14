@@ -35,7 +35,7 @@
     <p>{{ svc.hero_sub }}</p>
     <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
       <a href="/quote/" class="btn btn-yellow">Get a Free Estimate</a>
-      <a href="tel:6158812505" class="btn btn-outline">📞 615-881-2505</a>
+      <a href="tel:6158812505" class="btn btn-outline"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" style="vertical-align:middle;margin-right:6px;"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>615-881-2505</a>
     </div>
   </div>
 </div>
@@ -84,7 +84,7 @@
         <p>{{ svc.trust_body }}</p>
         <a href="/contact/" class="btn btn-yellow" style="padding:10px 24px;font-size:14px;">Contact Us</a>
       </div>
-      <div class="trust-box-img">🚛</div>
+      <div class="trust-box-img"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="52" height="52"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
     </div>
   </div>
 </section>
@@ -95,8 +95,8 @@
   <div class="container">
     <h2 style="font-size:20px;font-weight:800;margin-bottom:16px;">{{ svc.title }} — Areas We Serve:</h2>
     <div class="location-grid">
-      {% for loc in svc.local_areas %}
-      <span>{{ loc }}</span>
+      {% for loc in local_areas %}
+      <a href="{{ loc.url }}" style="color:var(--navy);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='var(--yellow-dark)'" onmouseout="this.style.color='var(--navy)'"><img src="{% static 'img/mappin.png' %}" alt="" width="16" height="16" style="flex-shrink:0;">{{ loc.name }}</a>
       {% endfor %}
     </div>
   </div>
@@ -111,12 +111,16 @@
     <div class="inquire-grid">
       <div>
         <h2 style="font-size:22px;font-weight:800;text-transform:uppercase;margin-bottom:20px;">Inquire</h2>
-        <form method="post" action="/quote/" class="inquire-form">
+        <form method="post" action="/quote/" class="inquire-form" enctype="multipart/form-data">
           {% csrf_token %}
+          {# Honeypot — hidden from humans, bots fill it in #}
+          <input type="text" name="website_url" style="display:none;" tabindex="-1" autocomplete="off">
           <input type="text" name="first_name" placeholder="Name" required>
           <input type="tel" name="phone" placeholder="Phone" required>
           <input type="email" name="email" placeholder="Email" required>
           <textarea name="description" rows="4" placeholder="Message"></textarea>
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:4px;">Upload a Photo (optional)</label>
+          <input type="file" name="photo" accept="image/*" style="margin-bottom:12px;width:100%;">
           <input type="hidden" name="service_type" value="{{ svc.title }}">
           <input type="hidden" name="last_name" value=".">
           <button type="submit" class="btn btn-yellow" style="width:100%;padding:12px;">Send Message →</button>
@@ -124,13 +128,15 @@
       </div>
       <div>
         <h2 style="font-size:22px;font-weight:800;text-transform:uppercase;margin-bottom:20px;">Find Us</h2>
-        <div class="map-placeholder-box">
-          <div style="text-align:center;">
-            <div style="font-size:36px;margin-bottom:8px;">📍</div>
-            <div style="font-weight:700;color:var(--navy-dark);">Middle TN &amp; Southern KY</div>
-            <div style="margin-top:8px;"><a href="tel:6158812505" class="btn btn-yellow" style="padding:8px 20px;font-size:13px;">📞 615-881-2505</a></div>
-          </div>
-        </div>
+        <iframe
+          src="https://maps.google.com/maps?q=36.1630896,-86.7788583&z=12&output=embed"
+          width="100%"
+          height="420"
+          style="border:0;border-radius:8px;display:block;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
       </div>
     </div>
   </div>
