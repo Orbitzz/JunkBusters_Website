@@ -329,6 +329,18 @@
 <!-- Reviews -->
 {% include "website/_reviews.html" with reviews=google_reviews is_live=google_reviews_live summary=google_summary review_url=review_url qr_code_exists=qr_code_exists %}
 
+<!-- Referral Banner -->
+<section style="padding:56px 0;background:var(--navy-dark);">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+    <div>
+      <div style="font-size:13px;font-weight:800;color:var(--yellow);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Referral Program</div>
+      <h2 style="font-size:28px;font-weight:900;color:#fff;margin-bottom:8px;">Give $50, Get $50</h2>
+      <p style="color:#94a3b8;font-size:15px;max-width:460px;">Refer a friend who books a service and you both get $50 credit toward your next job. No limit on referrals.</p>
+    </div>
+    <a href="/referral/" class="btn btn-yellow" style="white-space:nowrap;padding:14px 32px;font-size:15px;">Refer a Friend &rarr;</a>
+  </div>
+</section>
+
 <!-- Service Areas -->
 <section style="padding:48px 0;background:var(--gray);">
   <div class="container">

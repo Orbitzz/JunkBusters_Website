@@ -1,0 +1,143 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Refer a Friend — Earn $50 | Junk Busters Nashville{% endblock %}
+{% block meta_desc %}Refer a friend to Junk Busters and you both earn $50 credit toward your next service. Junk removal and cleaning across Nashville and Middle Tennessee.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>GIVE $50, GET $50</h1>
+    <p>Refer a friend who books a service — you both get $50 credit toward your next job.</p>
+  </div>
+</div>
+
+<!-- How it works -->
+<section class="section" style="background:#f8fafc;padding:48px 0;">
+  <div class="container">
+    <h2 class="section-title text-center">How It Works</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:32px;text-align:center;">
+      <div>
+        <div style="width:56px;height:56px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;font-weight:900;color:var(--navy-dark);">1</div>
+        <h3 style="font-size:16px;font-weight:800;margin-bottom:8px;">You Refer</h3>
+        <p style="font-size:14px;color:var(--text-muted);">Fill out the form below with your friend's contact info.</p>
+      </div>
+      <div>
+        <div style="width:56px;height:56px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;font-weight:900;color:var(--navy-dark);">2</div>
+        <h3 style="font-size:16px;font-weight:800;margin-bottom:8px;">They Book</h3>
+        <p style="font-size:14px;color:var(--text-muted);">We reach out to your friend and they schedule a service.</p>
+      </div>
+      <div>
+        <div style="width:56px;height:56px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;font-weight:900;color:var(--navy-dark);">3</div>
+        <h3 style="font-size:16px;font-weight:800;margin-bottom:8px;">You Both Win</h3>
+        <p style="font-size:14px;color:var(--text-muted);">You get $50 credit. Your friend gets $50 off their first job.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Form / Success -->
+<section class="section">
+  <div class="container" style="max-width:760px;">
+
+    {% if sent %}
+    <!-- Success state -->
+    <div style="text-align:center;padding:48px 24px;">
+      <div style="width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:32px;">✓</div>
+      <h2 style="font-size:28px;font-weight:900;color:var(--navy-dark);margin-bottom:12px;">Referral Sent!</h2>
+      <p style="font-size:16px;color:var(--text-muted);max-width:480px;margin:0 auto 28px;">
+        We'll reach out to your friend soon. Once they complete their first service, you'll both receive your $50 credit.
+      </p>
+      <a href="/" class="btn btn-yellow">Back to Home</a>
+      &nbsp;
+      <a href="/referral/" class="btn btn-navy">Refer Another Friend</a>
+    </div>
+
+    {% else %}
+    <!-- Referral form -->
+    <h2 class="section-title text-center">Send a Referral</h2>
+    <p class="section-subtitle text-center" style="margin-bottom:32px;">Fill in your info and your friend's info — we'll take it from there.</p>
+
+    <form method="post" action="/referral/">
+      {% csrf_token %}
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+
+        <!-- Left: Your Info -->
+        <div>
+          <h3 style="font-size:16px;font-weight:800;color:var(--navy-dark);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--yellow);">Your Info</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div>
+              <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">First Name *</label>
+              <input type="text" name="referrer_first_name" required
+                     style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Last Name</label>
+              <input type="text" name="referrer_last_name"
+                     style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+            </div>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Your Email *</label>
+            <input type="email" name="referrer_email" required
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Your Phone</label>
+            <input type="tel" name="referrer_phone"
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+        </div>
+
+        <!-- Right: Friend's Info -->
+        <div>
+          <h3 style="font-size:16px;font-weight:800;color:var(--navy-dark);margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--yellow);">Friend's Info</h3>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Friend's Name *</label>
+            <input type="text" name="referred_name" required
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Friend's Phone *</label>
+            <input type="tel" name="referred_phone" required
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Friend's Email <span style="color:#94a3b8;font-weight:400;">(optional)</span></label>
+            <input type="email" name="referred_email"
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:28px;text-align:center;">
+        <button type="submit" class="btn btn-yellow" style="padding:14px 48px;font-size:16px;">Send Referral</button>
+      </div>
+
+      <p style="text-align:center;font-size:12px;color:#94a3b8;margin-top:16px;">
+        $50 credit applied after referred friend completes their first paid service. No cash value.
+      </p>
+    </form>
+    {% endif %}
+
+  </div>
+</section>
+
+<!-- CTA Banner -->
+<div class="cta-banner">
+  <div class="container">
+    <div>
+      <h2>Questions About the Referral Program?</h2>
+      <p>Call or text us — we're happy to help.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <a href="tel:615-881-2505" class="btn btn-yellow">Call 615-881-2505</a>
+      <a href="/contact/" class="btn btn-outline">Contact Us</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -6,6 +6,24 @@ from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest
 
+def _post_to_fc(endpoint, payload):
+    """Forward data to FieldCommand embed API. Fail silently if FC is down."""
+    try:
+        import urllib.request as _ur, json as _j
+        data = _j.dumps(payload).encode()
+        req = _ur.Request(
+            f'http://127.0.0.1:8000/marketing/api/embed/{endpoint}/',
+            data=data,
+            headers={
+                'Content-Type': 'application/json',
+                'X-FC-EMBED-KEY': 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI',
+            }
+        )
+        _ur.urlopen(req, timeout=3)
+    except Exception:
+        pass
+
+
 # ── Shared data ───────────────────────────────────────────────────────────────
 
 REVIEWS = [
@@ -1114,6 +1132,20 @@ def quote(request):
             except Exception:
                 pass
 
+            # Forward to FieldCommand as a BookingRequest lead
+            _post_to_fc('quote', {
+                'first_name': d['first_name'],
+                'last_name': d.get('last_name', ''),
+                'email': d['email'],
+                'phone': d['phone'],
+                'service_requested': d['service_type'] + ((' — ' + d['description']) if d.get('description') else ''),
+                'address': d.get('address', ''),
+                'city': d.get('city', ''),
+                'state': d.get('state', ''),
+                'zip_code': d.get('zip_code', ''),
+                'notes': d.get('description', ''),
+            })
+
             # Send email notification
             try:
                 body = (
@@ -1178,6 +1210,22 @@ def booking(request):
                 )
             except Exception:
                 pass
+
+            # Forward to FieldCommand — creates Customer + Scheduled Job
+            _post_to_fc('schedule', {
+                'first_name': d['first_name'],
+                'last_name': d['last_name'],
+                'email': d['email'],
+                'phone': d['phone'],
+                'address': d.get('address', ''),
+                'city': d.get('city', ''),
+                'state': d.get('state', ''),
+                'zip_code': d.get('zip_code', ''),
+                'preferred_datetime': (
+                    str(d['preferred_date']) + 'T' + (d.get('preferred_time') or '09:00')
+                    if d.get('preferred_date') else ''
+                ),
+            })
             return redirect('website:booking_success')
     else:
         form = BookingForm()
@@ -1348,6 +1396,23 @@ def contact(request):
                 success = 'contact'
 
     return render(request, 'website/contact.html', {'success': success})
+
+
+@require_http_methods(['GET', 'POST'])
+def referral(request):
+    sent = False
+    if request.method == 'POST':
+        _post_to_fc('referral', {
+            'referrer_first_name': request.POST.get('referrer_first_name', ''),
+            'referrer_last_name':  request.POST.get('referrer_last_name', ''),
+            'referrer_email':      request.POST.get('referrer_email', ''),
+            'referrer_phone':      request.POST.get('referrer_phone', ''),
+            'referred_name':       request.POST.get('referred_name', ''),
+            'referred_phone':      request.POST.get('referred_phone', ''),
+            'referred_email':      request.POST.get('referred_email', ''),
+        })
+        sent = True
+    return render(request, 'website/referral.html', {'sent': sent})
 
 
 def sitemap(request):

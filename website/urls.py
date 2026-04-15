@@ -13,6 +13,7 @@ urlpatterns = [
     path('areas-we-serve/', views.areas, name='areas'),
     path('gallery/', views.gallery, name='gallery'),
     path('contact/', views.contact, name='contact'),
+    path('referral/', views.referral, name='referral'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
     path('robots.txt', views.robots, name='robots'),
     # City landing pages — before catch-all
