@@ -1,0 +1,136 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Track My Service — Junk Busters Nashville{% endblock %}
+{% block meta_desc %}Look up your Junk Busters service history. Check job status, view invoices, and pay online.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>TRACK MY SERVICE</h1>
+    <p>Look up your recent jobs — view status, invoices, and pay online.</p>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container" style="max-width:680px;">
+
+    <!-- Lookup form (always shown at top) -->
+    <div style="background:#f8fafc;border-radius:12px;padding:28px;margin-bottom:32px;">
+      <h2 style="font-size:18px;font-weight:800;color:var(--navy-dark);margin-bottom:16px;">Look Up Your Account</h2>
+      <form method="post" action="/track/">
+        {% csrf_token %}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+          <div>
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Email</label>
+            <input type="email" name="email" placeholder="your@email.com"
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+          <div>
+            <label style="display:block;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:4px;">Or Phone</label>
+            <input type="tel" name="phone" placeholder="615-000-0000"
+                   style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-yellow" style="width:100%;">Find My Jobs</button>
+      </form>
+    </div>
+
+    <!-- Results -->
+    {% if result is not None %}
+
+      {% if not result.success %}
+      <div style="background:#fff3cd;border-radius:8px;padding:20px;text-align:center;">
+        <p style="color:#856404;font-size:14px;">Unable to load service data right now. Please call <a href="tel:615-881-2505" style="color:#856404;font-weight:700;">615-881-2505</a> for help.</p>
+      </div>
+
+      {% elif not result.found %}
+      <div style="text-align:center;padding:32px;background:#f8fafc;border-radius:12px;">
+        <div style="font-size:32px;margin-bottom:12px;">🔍</div>
+        <h3 style="font-weight:800;color:var(--navy-dark);margin-bottom:8px;">No Account Found</h3>
+        <p style="font-size:14px;color:var(--text-muted);max-width:400px;margin:0 auto 20px;">We couldn't find an account matching that email or phone. Try a different email, or give us a call.</p>
+        <a href="tel:615-881-2505" class="btn btn-yellow">Call 615-881-2505</a>
+      </div>
+
+      {% else %}
+      <!-- Job list -->
+      <h3 style="font-size:18px;font-weight:800;color:var(--navy-dark);margin-bottom:16px;">
+        Jobs for {{ result.customer_name }}
+      </h3>
+
+      {% if result.jobs %}
+        {% for job in result.jobs %}
+        <div style="background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+            <div>
+              <div style="font-weight:800;font-size:15px;color:var(--navy-dark);margin-bottom:4px;">{{ job.service }}</div>
+              {% if job.scheduled_datetime %}
+              <div style="font-size:13px;color:var(--text-muted);">{{ job.scheduled_datetime|slice:":10" }}</div>
+              {% endif %}
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <!-- Status badge -->
+              <span style="padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;
+                {% if job.status == 'Completed' %}background:#dcfce7;color:#15803d;
+                {% elif job.status == 'Cancelled' %}background:#fee2e2;color:#dc2626;
+                {% elif job.status == 'In Progress' or job.status == 'En Route' %}background:#fef3c7;color:#d97706;
+                {% else %}background:#dbeafe;color:#1d4ed8;{% endif %}">
+                {{ job.status }}
+              </span>
+              {% if job.total_price %}
+              <span style="font-weight:800;font-size:15px;color:var(--navy-dark);">${{ job.total_price|floatformat:2 }}</span>
+              {% endif %}
+            </div>
+          </div>
+          <!-- Action links -->
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <a href="{{ job.urls.status }}" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:#f1f5f9;color:var(--navy-dark);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              View Status
+            </a>
+            <a href="{{ job.urls.invoice }}" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:#f1f5f9;color:var(--navy-dark);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              View Invoice
+            </a>
+            {% if job.status != 'Completed' and job.status != 'Cancelled' %}
+            <a href="{{ job.urls.payment }}" target="_blank" rel="noopener"
+               style="display:inline-flex;align-items:center;gap:5px;padding:7px 14px;background:var(--yellow);color:var(--navy-dark);border-radius:6px;font-size:13px;font-weight:700;text-decoration:none;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+              Pay Now
+            </a>
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+      {% else %}
+      <div style="text-align:center;padding:24px;color:var(--text-muted);">No jobs found for this account yet.</div>
+      {% endif %}
+
+      <div style="margin-top:20px;text-align:center;">
+        <a href="/book/" class="btn btn-yellow">Book a New Service</a>
+      </div>
+      {% endif %}
+
+    {% endif %}
+
+  </div>
+</section>
+
+<div class="cta-banner">
+  <div class="container">
+    <div>
+      <h2>Need Help?</h2>
+      <p>Call or text us directly — we're always happy to assist.</p>
+    </div>
+    <div class="cta-banner-actions">
+      <a href="tel:615-881-2505" class="btn btn-yellow">Call 615-881-2505</a>
+      <a href="/contact/" class="btn btn-outline">Contact Us</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

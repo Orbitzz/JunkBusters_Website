@@ -61,6 +61,7 @@
           <div class="form-group">
             <label for="id_preferred_date">Preferred Date</label>
             <input type="date" name="preferred_date" id="id_preferred_date" value="{{ form.preferred_date.value|default:'' }}">
+            <div id="date-notice" style="font-size:12px;margin-top:5px;min-height:16px;"></div>
           </div>
           <div class="form-group full">
             <label for="id_preferred_time">Preferred Time Window</label>
@@ -86,4 +87,42 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+(function() {
+  var KEY = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI';
+  var API = 'http://127.0.0.1:8000/marketing/api/embed/availability/';
+  var busyDates = [];
+
+  function loadBusy(month) {
+    fetch(API, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'X-FC-EMBED-KEY': KEY},
+      body: JSON.stringify({month: month})
+    })
+    .then(function(r){ return r.json(); })
+    .then(function(d){ if (d.success) busyDates = d.busy_dates; })
+    .catch(function(){});
+  }
+
+  var today = new Date();
+  var m = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0');
+  loadBusy(m);
+
+  var dateInput = document.getElementById('id_preferred_date');
+  var notice    = document.getElementById('date-notice');
+  if (dateInput && notice) {
+    dateInput.addEventListener('change', function() {
+      if (busyDates.indexOf(this.value) !== -1) {
+        notice.textContent = 'High demand on this date — we recommend calling 615-881-2505 to confirm availability.';
+        notice.style.color = '#b45309';
+      } else {
+        notice.textContent = '';
+      }
+    });
+  }
+})();
+</script>
 {% endblock %}

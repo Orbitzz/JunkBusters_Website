@@ -6,6 +6,25 @@ from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest
 
+def _call_fc(endpoint, payload):
+    """Call FC embed API and return parsed JSON dict. Returns None on failure."""
+    try:
+        import urllib.request as _ur, json as _j
+        data = _j.dumps(payload).encode()
+        req = _ur.Request(
+            f'http://127.0.0.1:8000/marketing/api/embed/{endpoint}/',
+            data=data,
+            headers={
+                'Content-Type': 'application/json',
+                'X-FC-EMBED-KEY': 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI',
+            }
+        )
+        with _ur.urlopen(req, timeout=3) as resp:
+            return _j.loads(resp.read())
+    except Exception:
+        return None
+
+
 def _post_to_fc(endpoint, payload):
     """Forward data to FieldCommand embed API. Fail silently if FC is down."""
     try:
@@ -1396,6 +1415,28 @@ def contact(request):
                 success = 'contact'
 
     return render(request, 'website/contact.html', {'success': success})
+
+
+@require_http_methods(['GET', 'POST'])
+def loyalty(request):
+    result = None
+    email = ''
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        if email:
+            result = _call_fc('loyalty', {'email': email})
+    return render(request, 'website/loyalty.html', {'result': result, 'email': email})
+
+
+@require_http_methods(['GET', 'POST'])
+def track(request):
+    result = None
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        if email or phone:
+            result = _call_fc('jobs', {'email': email, 'phone': phone})
+    return render(request, 'website/track.html', {'result': result})
 
 
 @require_http_methods(['GET', 'POST'])
