@@ -224,6 +224,14 @@
             <a href="{% url 'website:city_kentucky' %}">Kentucky</a>
           </div>
         </li>
+        <li class="nav-dropdown">
+          <a href="#" class="nav-dropdown-toggle">My Account &#9662;</a>
+          <div class="nav-dropdown-menu">
+            <a href="{% url 'website:track' %}">Track My Service</a>
+            <a href="{% url 'website:loyalty' %}">Loyalty Points</a>
+            <a href="{% url 'website:referral' %}">Refer a Friend — Earn $50</a>
+          </div>
+        </li>
         <li><a href="{% url 'website:contact' %}">Contact Us</a></li>
         </ul>
       </nav>
@@ -300,6 +308,10 @@
           <li><a href="{% url 'website:city_kentucky' %}">— Kentucky</a></li>
           <li><a href="{% url 'website:contact' %}">Contact Us</a></li>
           <li><a href="{{ review_url }}" target="_blank" rel="noopener">Reviews</a></li>
+          <li style="padding:6px 0 2px;font-size:11px;font-weight:800;color:var(--yellow);text-transform:uppercase;letter-spacing:1px;">My Account</li>
+          <li><a href="{% url 'website:track' %}">Track My Service</a></li>
+          <li><a href="{% url 'website:loyalty' %}">Loyalty Points</a></li>
+          <li><a href="{% url 'website:referral' %}">Refer a Friend</a></li>
         </ul>
       </div>
       <div>
