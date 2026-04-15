@@ -42,39 +42,36 @@
 
     {% if result and result.found %}
     <!-- Results panel -->
-    {% with tier=result.tier %}
-    {% if tier == 'Platinum' %}{% with color='#00b4d8' bg='#e0f7fa' %}
-    {% elif tier == 'Gold' %}{% with color='#d97706' bg='#fef3c7' %}
-    {% elif tier == 'Silver' %}{% with color='#64748b' bg='#f1f5f9' %}
-    {% else %}{% with color='#92400e' bg='#fef3c7' %}
-    {% endif %}
-
     <div style="text-align:center;margin-bottom:32px;">
+
+      <!-- Tier badge -->
       <div style="display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;
-        {% if tier == 'Platinum' %}background:#e0f7fa;color:#00b4d8;
-        {% elif tier == 'Gold' %}background:#fef3c7;color:#d97706;
-        {% elif tier == 'Silver' %}background:#f1f5f9;color:#64748b;
-        {% else %}background:#fef3c7;color:#92400e;{% endif %}">
-        {{ tier }} Member
+        {% if result.tier == 'Platinum' %}background:#e0f7fa;color:#00b4d8;
+        {% elif result.tier == 'Gold' %}background:#fef3c7;color:#d97706;
+        {% elif result.tier == 'Silver' %}background:#f1f5f9;color:#64748b;
+        {% else %}background:#fff3cd;color:#92400e;
+        {% endif %}">
+        {{ result.tier }} Member
       </div>
+
       <div style="font-size:42px;font-weight:900;color:var(--navy-dark);line-height:1;">{{ result.points }}</div>
       <div style="font-size:15px;color:var(--text-muted);margin-top:4px;">points available</div>
       {% if result.name %}<div style="font-size:16px;font-weight:700;color:var(--navy);margin-top:8px;">{{ result.name }}</div>{% endif %}
     </div>
 
     <!-- Progress bar -->
-    {% with pct=result.points|floatformat:0 %}
     <div style="margin-bottom:24px;">
       <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">
         <span>Progress to next reward</span>
         <span>{{ result.points }} / {{ result.reward_threshold }} pts</span>
       </div>
       <div style="background:#e5e7eb;border-radius:6px;height:10px;overflow:hidden;">
-        <div style="height:100%;background:var(--yellow);border-radius:6px;width:{% widthratio result.points result.reward_threshold 100 %}%;max-width:100%;transition:width 0.6s;"></div>
+        <div style="height:100%;background:var(--yellow);border-radius:6px;width:{% widthratio result.points result.reward_threshold 100 %}%;max-width:100%;"></div>
       </div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">{{ result.reward_threshold }} points = ${{ result.reward_amount|floatformat:0 }} off your next job</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
+        {{ result.reward_threshold }} points = ${{ result.reward_amount|floatformat:0 }} off your next job
+      </div>
     </div>
-    {% endwith %}
 
     {% if result.rewards_available %}
     <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:8px;padding:16px;text-align:center;margin-bottom:24px;">
@@ -89,9 +86,6 @@
       <div><span style="font-weight:700;color:var(--navy-dark);">Lifetime Points:</span> {{ result.lifetime_points }}</div>
       <div><span style="font-weight:700;color:var(--navy-dark);">Current Tier:</span> {{ result.tier }}</div>
     </div>
-
-    {% endwith %}
-    {% endwith %}
 
     <div style="text-align:center;">
       <a href="/book/" class="btn btn-yellow">Book a Service to Earn More</a>
