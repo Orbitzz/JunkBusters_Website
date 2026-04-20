@@ -21,8 +21,8 @@ def _rate_limited(key, max_calls, window_seconds):
     return False
 
 
-FC_EMBED_URL = 'http://127.0.0.1:8000/marketing/api/embed/{endpoint}/'
-FC_API_KEY   = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI'
+FC_EMBED_URL = settings.FIELDCOMMAND_EMBED_URL
+FC_API_KEY   = settings.FIELDCOMMAND_EMBED_API_KEY
 
 
 def _call_fc(endpoint, payload):
@@ -251,6 +251,20 @@ def profile_view(request):
     return render(request, 'portal/profile.html', {
         'profile': profile,
         'saved':   saved,
+    })
+
+
+@login_required(login_url='/portal/')
+def portal_invoice(request):
+    invoice_url = request.GET.get('url', '')
+    service     = request.GET.get('service', 'Junk Removal')
+    date        = request.GET.get('date', '')
+    amount      = request.GET.get('amount', '')
+    return render(request, 'portal/invoice.html', {
+        'invoice_url': invoice_url,
+        'service':     service,
+        'date':        date,
+        'amount':      amount,
     })
 
 

@@ -15,9 +15,13 @@ GOOGLE_OAUTH_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')
 GOOGLE_OAUTH_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')
 GOOGLE_OAUTH_REDIRECT_URI = config('GOOGLE_OAUTH_REDIRECT_URI', default='http://localhost:8001/google-auth/callback/')
 
-# FieldCommand integration — reviews API (replaces direct GBP OAuth on this site)
-FIELDCOMMAND_REVIEWS_URL = config('FIELDCOMMAND_REVIEWS_URL', default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
+# FieldCommand integration
+FIELDCOMMAND_REVIEWS_URL   = config('FIELDCOMMAND_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
+FIELDCOMMAND_EMBED_URL     = config('FIELDCOMMAND_EMBED_URL',     default='http://127.0.0.1:8000/marketing/api/embed/{endpoint}/')
 FIELDCOMMAND_EMBED_API_KEY = config('FIELDCOMMAND_EMBED_API_KEY', default='')
+
+# Google review URL
+GOOGLE_REVIEW_URL = config('GOOGLE_REVIEW_URL', default='https://g.page/r/CaQvxFrtKJyzEBM/review')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -64,11 +68,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'junkbusters.wsgi.application'
 
+import dj_database_url
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
+        conn_max_age=600,
+    )
 }
 
 AUTH_PASSWORD_VALIDATORS = []
@@ -87,6 +92,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SESSION_COOKIE_AGE = 86400
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+
+# HTTPS / production security
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS    = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
+SESSION_COOKIE_SECURE   = not DEBUG
+CSRF_COOKIE_SECURE      = not DEBUG
 
 BUSINESS_NAME = 'Junk Busters LLC'
 BUSINESS_PHONE = '615-881-2505'

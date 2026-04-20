@@ -1,12 +1,12 @@
 from pathlib import Path
 from django.conf import settings
 
-GOOGLE_REVIEW_URL = 'https://g.page/r/CaQvxFrtKJyzEBM/review'
+GOOGLE_REVIEW_URL = getattr(settings, 'GOOGLE_REVIEW_URL', 'https://g.page/r/CaQvxFrtKJyzEBM/review')
 QR_CODE_PATH = Path(settings.BASE_DIR) / 'static' / 'img' / 'Google Review QR.png'
 LOGO_PATH = Path(settings.BASE_DIR) / 'static' / 'img' / 'logo.png'
 
-FC_REVIEWS_URL = 'http://127.0.0.1:8000/marketing/api/widget/reviews/'
-FC_API_KEY     = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI'
+FC_REVIEWS_URL = settings.FIELDCOMMAND_REVIEWS_URL
+FC_API_KEY     = settings.FIELDCOMMAND_EMBED_API_KEY
 
 
 def _fetch_fc_reviews():

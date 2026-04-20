@@ -1,0 +1,83 @@
+{% extends "portal/base.html" %}
+{% load static %}
+
+{% block title %}Invoice{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:20px;">
+  <a href="{% url 'portal:dashboard' %}" style="font-size:13px;color:var(--text-muted);text-decoration:none;font-weight:600;">
+    ← Back to Dashboard
+  </a>
+</div>
+
+<!-- Invoice header card with logo -->
+<div class="p-card" style="text-align:center;padding:32px 24px 24px;">
+  <img src="{% static 'img/logo.png' %}" alt="Junk Busters"
+       style="width:100px;height:100px;object-fit:contain;mix-blend-mode:multiply;margin-bottom:12px;display:block;margin-left:auto;margin-right:auto;">
+  <div style="font-size:22px;font-weight:900;color:var(--navy-dark);">Junk Busters LLC</div>
+  <div style="font-size:13px;color:var(--text-muted);margin-top:2px;">615-881-2505 &nbsp;·&nbsp; junkbustershauling.com</div>
+  <div style="font-size:13px;color:var(--text-muted);">Orlinda, TN — Serving Middle TN &amp; Southern KY</div>
+</div>
+
+<!-- Job summary -->
+<div class="p-card">
+  <div class="p-card-title"><span>📋</span> Service Summary</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:4px;">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:3px;">Service</div>
+      <div style="font-weight:700;color:var(--navy-dark);">{{ service }}</div>
+    </div>
+    {% if date %}
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:3px;">Date</div>
+      <div style="font-weight:700;color:var(--navy-dark);">{{ date }}</div>
+    </div>
+    {% endif %}
+    {% if amount %}
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:3px;">Total</div>
+      <div style="font-size:22px;font-weight:900;color:var(--navy-dark);">${{ amount }}</div>
+    </div>
+    {% endif %}
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:3px;">Status</div>
+      <span class="p-pill p-pill-completed">Completed</span>
+    </div>
+  </div>
+
+  {% if invoice_url %}
+  <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;">
+    <a href="{{ invoice_url }}" target="_blank" rel="noopener" class="btn btn-yellow" style="font-size:14px;padding:11px 24px;">
+      View Full Invoice
+    </a>
+    <a href="{{ invoice_url }}" target="_blank" rel="noopener"
+       style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy-dark);text-decoration:none;padding:11px 20px;border:1.5px solid #e5e7eb;border-radius:8px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      Print / Download
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+{% if invoice_url %}
+<!-- Embedded invoice iframe -->
+<div class="p-card" style="padding:0;overflow:hidden;border-radius:14px;">
+  <div style="background:var(--navy-dark);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <span style="font-size:13px;font-weight:700;color:#fff;">Full Invoice</span>
+    <a href="{{ invoice_url }}" target="_blank" rel="noopener"
+       style="font-size:12px;color:var(--yellow);font-weight:700;text-decoration:none;">Open in new tab ↗</a>
+  </div>
+  <iframe src="{{ invoice_url }}"
+          style="width:100%;height:600px;border:none;display:block;"
+          title="Invoice"></iframe>
+</div>
+{% else %}
+<div class="p-card" style="text-align:center;padding:32px;">
+  <div class="p-empty-icon">📄</div>
+  <p>Invoice details are not available for this job. Please call us for a copy.</p>
+  <a href="tel:615-881-2505" class="btn btn-yellow" style="font-size:14px;padding:11px 28px;margin-top:8px;">Call 615-881-2505</a>
+</div>
+{% endif %}
+
+{% endblock %}

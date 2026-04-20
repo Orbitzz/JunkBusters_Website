@@ -26,11 +26,11 @@ def _call_fc(endpoint, payload):
         import urllib.request as _ur, json as _j
         data = _j.dumps(payload).encode()
         req = _ur.Request(
-            f'http://127.0.0.1:8000/marketing/api/embed/{endpoint}/',
+            settings.FIELDCOMMAND_EMBED_URL.format(endpoint=endpoint),
             data=data,
             headers={
                 'Content-Type': 'application/json',
-                'X-FC-EMBED-KEY': 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI',
+                'X-FC-EMBED-KEY': settings.FIELDCOMMAND_EMBED_API_KEY,
             }
         )
         with _ur.urlopen(req, timeout=3) as resp:
@@ -45,11 +45,11 @@ def _post_to_fc(endpoint, payload):
         import urllib.request as _ur, json as _j
         data = _j.dumps(payload).encode()
         req = _ur.Request(
-            f'http://127.0.0.1:8000/marketing/api/embed/{endpoint}/',
+            settings.FIELDCOMMAND_EMBED_URL.format(endpoint=endpoint),
             data=data,
             headers={
                 'Content-Type': 'application/json',
-                'X-FC-EMBED-KEY': 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI',
+                'X-FC-EMBED-KEY': settings.FIELDCOMMAND_EMBED_API_KEY,
             }
         )
         _ur.urlopen(req, timeout=3)
@@ -60,12 +60,14 @@ def _post_to_fc(endpoint, payload):
 import json as _json
 import uuid as _uuid
 import http.client as _http
+from urllib.parse import urlparse as _urlparse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-_FC_HOST = '127.0.0.1'
-_FC_PORT = 8000
-_FC_KEY  = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI'
+_fc_parsed = _urlparse(settings.FIELDCOMMAND_EMBED_URL.format(endpoint=''))
+_FC_HOST = _fc_parsed.hostname or '127.0.0.1'
+_FC_PORT = _fc_parsed.port or 8000
+_FC_KEY  = settings.FIELDCOMMAND_EMBED_API_KEY
 
 
 def _call_fc_multipart(endpoint, fields, files=None):

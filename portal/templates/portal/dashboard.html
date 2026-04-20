@@ -140,7 +140,7 @@
           </span>
         </div>
         <div class="p-job-links" style="margin-top:8px;justify-content:flex-start;">
-          <a href="{{ job.urls.invoice }}" target="_blank" rel="noopener" class="p-job-link">
+          <a href="{% url 'portal:invoice' %}?url={{ job.urls.invoice|urlencode }}&service={{ job.service|default:'Junk Removal'|urlencode }}&date={{ job.scheduled_datetime|slice:':10' }}&amount={{ job.total_price }}" class="p-job-link">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Invoice
           </a>
@@ -164,6 +164,21 @@
     </div>
   {% endif %}
 </div>
+
+<!-- Review nudge — shown only when customer has completed jobs -->
+{% if history %}
+<div class="p-card" style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#fff8e1,#fffde7);border:1.5px solid #fde68a;">
+  <img src="{% static 'img/logo.png' %}" alt="Junk Busters" style="width:64px;height:64px;object-fit:contain;mix-blend-mode:multiply;flex-shrink:0;">
+  <div style="flex:1;min-width:180px;">
+    <div style="font-weight:800;color:var(--navy-dark);font-size:15px;margin-bottom:4px;">How did we do?</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Your review helps other neighbors find a hauler they can trust — and it means a lot to our crew.</div>
+  </div>
+  <a href="{{ review_url }}" target="_blank" rel="noopener"
+     class="btn btn-yellow" style="font-size:13px;padding:10px 20px;white-space:nowrap;flex-shrink:0;">
+    ⭐ Leave a Review
+  </a>
+</div>
+{% endif %}
 
 <!-- Quick links -->
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
