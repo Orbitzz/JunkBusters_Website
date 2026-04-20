@@ -194,6 +194,9 @@ def dashboard(request):
 
     fc_online = jobs_data is not None
 
+    if fc_online:
+        _call_fc('engagement', {'email': user.email, 'event': 'portal_dashboard_view', 'source': 'portal'})
+
     jobs    = jobs_data.get('jobs', [])    if (jobs_data    and jobs_data.get('success'))    else []
     loyalty = loyalty_data                 if (loyalty_data  and loyalty_data.get('success') and loyalty_data.get('found')) else None
 

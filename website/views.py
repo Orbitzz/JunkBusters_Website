@@ -137,7 +137,9 @@ def chat_proxy(request):
     if not message:
         return JsonResponse({'success': False, 'message': 'Message is required.'}, status=400)
 
-    fields = {'name': name, 'phone': phone, 'email': email_val, 'message': message}
+    lead_source, referrer = _utm_info(request.session)
+    fields = {'name': name, 'phone': phone, 'email': email_val, 'message': message,
+              'lead_source': lead_source, 'referrer': referrer}
     if thread_id:
         fields['thread_id'] = thread_id
 
@@ -1248,59 +1250,32 @@ def service_page(request, slug):
     })
 
 
-def city_clarksville(request):
-    city = CITY_PAGES['clarksville']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+def _render_city(request, city_key):
+    city = CITY_PAGES[city_key]
+    _post_to_fc('page-view', {
+        'slug':       f'city-{city_key}',
+        'title':      city.get('name', city_key),
+        'type':       'city',
+        'referrer':   request.META.get('HTTP_REFERER', ''),
+        'utm_source': request.session.get('utm_source', ''),
+    })
+    return render(request, 'website/city_landing.html', {
+        'city': city,
+        'local_areas': enrich_areas(city.get('local_areas', [])),
+    })
 
 
-def city_bowling_green(request):
-    city = CITY_PAGES['bowling-green']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_kentucky(request):
-    city = CITY_PAGES['kentucky']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_nashville(request):
-    city = CITY_PAGES['nashville']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_white_house(request):
-    city = CITY_PAGES['white-house']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_hendersonville(request):
-    city = CITY_PAGES['hendersonville']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_gallatin(request):
-    city = CITY_PAGES['gallatin']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_springfield(request):
-    city = CITY_PAGES['springfield']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_franklin(request):
-    city = CITY_PAGES['franklin']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_goodlettsville(request):
-    city = CITY_PAGES['goodlettsville']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
-
-
-def city_portland(request):
-    city = CITY_PAGES['portland']
-    return render(request, 'website/city_landing.html', {'city': city, 'local_areas': enrich_areas(city.get('local_areas', []))})
+def city_clarksville(request):   return _render_city(request, 'clarksville')
+def city_bowling_green(request): return _render_city(request, 'bowling-green')
+def city_kentucky(request):      return _render_city(request, 'kentucky')
+def city_nashville(request):     return _render_city(request, 'nashville')
+def city_white_house(request):   return _render_city(request, 'white-house')
+def city_hendersonville(request):return _render_city(request, 'hendersonville')
+def city_gallatin(request):      return _render_city(request, 'gallatin')
+def city_springfield(request):   return _render_city(request, 'springfield')
+def city_franklin(request):      return _render_city(request, 'franklin')
+def city_goodlettsville(request):return _render_city(request, 'goodlettsville')
+def city_portland(request):      return _render_city(request, 'portland')
 
 
 @require_http_methods(['GET', 'POST'])
@@ -1568,12 +1543,14 @@ def contact(request):
                     pass
 
                 # Forward to FC Inbox as a lead thread
+                _job_src, _job_ref = _utm_info(request.session)
                 _call_fc('chat', {
                     'name': name,
                     'phone': phone,
                     'email': email,
                     'message': f"JOB APPLICATION — {position}\n\nAvailability: {availability}\n\n{experience}",
-                    'lead_source': 'Job Application',
+                    'lead_source': f'Job Application / {_job_src}',
+                    'referrer':    _job_ref,
                 })
 
                 success = 'apply'
@@ -1621,12 +1598,14 @@ def contact(request):
                     pass
 
                 # Forward to FC Inbox as a lead thread
+                _con_src, _con_ref = _utm_info(request.session)
                 _call_fc('chat', {
                     'name': name,
                     'phone': phone or '',
                     'email': email or '',
                     'message': message,
-                    'lead_source': 'Contact Form',
+                    'lead_source': _con_src,
+                    'referrer':    _con_ref,
                 })
 
                 success = 'contact'
@@ -1642,6 +1621,8 @@ def loyalty(request):
         email = request.POST.get('email', '').strip()
         if email:
             result = _call_fc('loyalty', {'email': email})
+            if result and result.get('success'):
+                _call_fc('engagement', {'email': email, 'event': 'loyalty_lookup', 'source': 'website'})
     return render(request, 'website/loyalty.html', {'result': result, 'email': email})
 
 
@@ -1653,6 +1634,9 @@ def track(request):
         phone = request.POST.get('phone', '').strip()
         if email or phone:
             result = _call_fc('jobs', {'email': email, 'phone': phone})
+            if result and result.get('success'):
+                _call_fc('engagement', {'email': email or '', 'phone': phone or '',
+                                        'event': 'job_track_lookup', 'source': 'website'})
     return render(request, 'website/track.html', {'result': result})
 
 
@@ -1660,6 +1644,7 @@ def track(request):
 def referral(request):
     sent = False
     if request.method == 'POST':
+        _ref_src, _ref_ref = _utm_info(request.session)
         _post_to_fc('referral', {
             'referrer_first_name': request.POST.get('referrer_first_name', ''),
             'referrer_last_name':  request.POST.get('referrer_last_name', ''),
@@ -1668,6 +1653,8 @@ def referral(request):
             'referred_name':       request.POST.get('referred_name', ''),
             'referred_phone':      request.POST.get('referred_phone', ''),
             'referred_email':      request.POST.get('referred_email', ''),
+            'lead_source':         _ref_src,
+            'referrer':            _ref_ref,
         })
         sent = True
     return render(request, 'website/referral.html', {'sent': sent})
