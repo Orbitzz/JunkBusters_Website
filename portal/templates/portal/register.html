@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Junk Busters Customer Portal</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <style>
+    body { background:#f1f5f9; min-height:100vh; display:flex; flex-direction:column; }
+    .auth-nav { background:var(--navy-dark); border-bottom:3px solid var(--yellow); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; }
+    .auth-nav .brand { font-size:17px; font-weight:900; color:#fff; text-decoration:none; }
+    .auth-nav .brand span { color:var(--yellow); }
+    .auth-nav a.back { font-size:13px; color:#90a4ae; text-decoration:none; font-weight:600; }
+    .auth-nav a.back:hover { color:#fff; }
+    .auth-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+    .auth-card { background:#fff; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.08); padding:48px 40px; width:100%; max-width:480px; }
+    @media(max-width:520px) { .auth-card { padding:32px 24px; } }
+    .auth-logo { text-align:center; margin-bottom:28px; }
+    .auth-logo h1 { font-size:22px; font-weight:800; color:var(--navy-dark); margin-bottom:4px; }
+    .auth-logo p { font-size:13px; color:var(--text-muted); }
+    .auth-error { background:#fee2e2; border:1px solid #fca5a5; color:#dc2626; padding:11px 14px; border-radius:8px; font-size:13px; margin-bottom:20px; }
+    .reg-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media(max-width:480px) { .reg-grid { grid-template-columns:1fr; } }
+    .reg-field { display:flex; flex-direction:column; gap:5px; }
+    .reg-field.full { grid-column:1/-1; }
+    .reg-field label { font-size:12px; font-weight:700; color:var(--navy-dark); text-transform:uppercase; letter-spacing:0.4px; }
+    .reg-field input { padding:11px 14px; border:1.5px solid #d1d5db; border-radius:7px; font-size:14px; font-family:inherit; box-sizing:border-box; transition:border-color .15s; }
+    .reg-field input:focus { outline:none; border-color:var(--yellow-dark); }
+    .reg-hint { font-size:11px; color:var(--text-muted); margin-top:2px; }
+    .auth-submit { width:100%; padding:14px; font-size:16px; margin-top:8px; }
+    .auth-terms { font-size:12px; color:var(--text-muted); text-align:center; margin-top:14px; line-height:1.6; }
+    .auth-divider { border:none; border-top:1px solid #f1f5f9; margin:20px 0; }
+    .auth-links { text-align:center; font-size:13px; color:var(--text-muted); }
+    .auth-links a { color:var(--yellow-dark); font-weight:700; text-decoration:none; }
+    .auth-links a:hover { text-decoration:underline; }
+    .auth-perks { background:#f8fafc; border-radius:10px; padding:16px 20px; margin-bottom:24px; }
+    .auth-perks ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:7px; }
+    .auth-perks li { font-size:13px; color:var(--navy-dark); display:flex; align-items:center; gap:8px; }
+    .auth-perks li::before { content:"✓"; color:#15803d; font-weight:800; }
+  </style>
+</head>
+<body>
+
+<div class="auth-nav">
+  <a href="/" class="brand">Junk<span>Busters</span></a>
+  <a href="{% url 'portal:login' %}" class="back">← Back to login</a>
+</div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <h1>Create Your Account</h1>
+      <p>Track jobs, earn loyalty points, and manage your services online.</p>
+    </div>
+
+    <div class="auth-perks">
+      <ul>
+        <li>View job status and invoices in real time</li>
+        <li>Track your loyalty points and rewards</li>
+        <li>Quick re-booking for repeat services</li>
+      </ul>
+    </div>
+
+    {% if error %}
+    <div class="auth-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="reg-grid">
+        <div class="reg-field">
+          <label for="first_name">First Name *</label>
+          <input type="text" name="first_name" id="first_name" required autofocus
+                 value="{{ form.first_name|default:'' }}" placeholder="Christian">
+        </div>
+        <div class="reg-field">
+          <label for="last_name">Last Name</label>
+          <input type="text" name="last_name" id="last_name"
+                 value="{{ form.last_name|default:'' }}" placeholder="Thompson">
+        </div>
+        <div class="reg-field full">
+          <label for="email">Email Address *</label>
+          <input type="email" name="email" id="email" required
+                 value="{{ form.email|default:'' }}" placeholder="your@email.com">
+          <span class="reg-hint">Use the same email you book services with so we can match your history.</span>
+        </div>
+        <div class="reg-field full">
+          <label for="phone">Phone Number</label>
+          <input type="tel" name="phone" id="phone"
+                 value="{{ form.phone|default:'' }}" placeholder="615-000-0000">
+        </div>
+        <div class="reg-field">
+          <label for="password">Password *</label>
+          <input type="password" name="password" id="password" required placeholder="••••••••">
+          <span class="reg-hint">Minimum 8 characters</span>
+        </div>
+        <div class="reg-field">
+          <label for="password2">Confirm Password *</label>
+          <input type="password" name="password2" id="password2" required placeholder="••••••••">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-yellow auth-submit">Create My Account</button>
+
+      <p class="auth-terms">
+        By creating an account you agree to our
+        <a href="#" style="color:var(--yellow-dark);" onclick="document.getElementById('tos-modal').style.display='flex';return false;">terms of service</a>.
+        We'll never share your information.
+      </p>
+    </form>
+
+    <!-- Terms of Service Modal -->
+    <div id="tos-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;padding:20px;" onclick="if(event.target===this)this.style.display='none';">
+      <div style="background:#fff;border-radius:14px;max-width:560px;width:100%;max-height:80vh;display:flex;flex-direction:column;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+        <div style="padding:20px 24px 16px;border-bottom:1px solid #f1f5f9;display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:16px;font-weight:800;color:var(--navy-dark);">Terms of Service</span>
+          <button type="button" onclick="document.getElementById('tos-modal').style.display='none'" style="background:none;border:none;font-size:20px;cursor:pointer;color:#94a3b8;line-height:1;">&times;</button>
+        </div>
+        <div style="overflow-y:auto;padding:20px 24px;font-size:13px;color:#374151;line-height:1.7;">
+          <p style="font-size:11px;color:#94a3b8;margin-bottom:16px;">Last updated: April 2026</p>
+
+          <p>Welcome to the Junk Busters LLC customer portal. By creating an account and using our services, you agree to the following terms.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">1. Account Use</h3>
+          <p>You are responsible for maintaining the confidentiality of your account credentials. You agree not to share your login with others. Junk Busters LLC reserves the right to suspend or terminate accounts that violate these terms.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">2. Services</h3>
+          <p>Junk Busters LLC provides junk removal, hauling, estate clean-out, and related services in Middle Tennessee and Southern Kentucky. Service availability, scheduling, and pricing are subject to change without notice. All quotes are estimates until confirmed by our team.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">3. Payment</h3>
+          <p>Payment is due upon completion of service unless otherwise agreed in writing. We accept cash, card, and digital payments. Returned checks are subject to a $35 fee.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">4. Cancellations</h3>
+          <p>We ask for at least 24 hours notice for cancellations or rescheduling. Same-day cancellations may incur a fee of up to $50 to cover scheduling and dispatch costs.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">5. Privacy</h3>
+          <p>We collect your name, email, phone number, and address solely to provide and improve our services. We do not sell or share your personal information with third parties for marketing purposes. Your data is stored securely and used only in connection with your service history and account.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">6. Liability</h3>
+          <p>Junk Busters LLC is not liable for items left behind after an agreed-upon clean-out unless negligence can be demonstrated. Customers are responsible for ensuring all items designated for removal are clearly identified. Our liability for any single job is limited to the value of that job.</p>
+
+          <h3 style="font-size:13px;font-weight:700;color:var(--navy-dark);margin:18px 0 6px;">7. Contact</h3>
+          <p>Questions about these terms? Call us at <strong>615-881-2505</strong> or email <strong>junkbustershauling@gmail.com</strong>.</p>
+        </div>
+        <div style="padding:14px 24px;border-top:1px solid #f1f5f9;text-align:right;">
+          <button type="button" onclick="document.getElementById('tos-modal').style.display='none'" style="padding:9px 22px;background:var(--yellow);border:none;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;color:var(--navy-dark);">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <hr class="auth-divider">
+
+    <div class="auth-links">
+      Already have an account? <a href="{% url 'portal:login' %}">Sign in</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

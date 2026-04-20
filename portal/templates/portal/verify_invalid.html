@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invalid Link — Junk Busters Customer Portal</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <style>
+    body { background:#f1f5f9; min-height:100vh; display:flex; flex-direction:column; }
+    .auth-nav { background:var(--navy-dark); border-bottom:3px solid var(--yellow); padding:0 24px; display:flex; align-items:center; justify-content:space-between; height:56px; }
+    .auth-nav .brand { font-size:17px; font-weight:900; color:#fff; text-decoration:none; }
+    .auth-nav .brand span { color:var(--yellow); }
+    .auth-wrap { flex:1; display:flex; align-items:center; justify-content:center; padding:40px 20px; }
+    .auth-card { background:#fff; border-radius:16px; box-shadow:0 4px 24px rgba(0,0,0,0.08); padding:48px 40px; width:100%; max-width:420px; text-align:center; }
+    @media(max-width:480px) { .auth-card { padding:32px 24px; } }
+    .icon { font-size:52px; margin-bottom:16px; }
+    .auth-card h1 { font-size:22px; font-weight:800; color:var(--navy-dark); margin-bottom:12px; }
+    .auth-card p { font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:12px; }
+    .auth-divider { border:none; border-top:1px solid #f1f5f9; margin:20px 0; }
+    .auth-links { font-size:13px; color:var(--text-muted); line-height:1.8; }
+    .auth-links a { color:var(--yellow-dark); font-weight:700; text-decoration:none; }
+    .auth-links a:hover { text-decoration:underline; }
+  </style>
+</head>
+<body>
+
+<div class="auth-nav">
+  <a href="/" class="brand">Junk<span>Busters</span></a>
+</div>
+
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="icon">⏰</div>
+    <h1>Link Expired or Invalid</h1>
+    <p>This verification link has expired or already been used. Links are valid for 3 days.</p>
+    <p style="font-size:13px;">Register again to get a fresh verification link, or call us if you need help.</p>
+
+    <hr class="auth-divider">
+
+    <div class="auth-links">
+      <a href="/portal/verify/resend/" class="btn btn-yellow" style="display:inline-block;padding:12px 28px;font-size:15px;text-decoration:none;margin-bottom:12px;">Resend Verification Email</a><br>
+      Already verified?
+      <a href="/portal/">Sign in</a><br>
+      Need help?
+      <a href="tel:615-881-2505">Call 615-881-2505</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

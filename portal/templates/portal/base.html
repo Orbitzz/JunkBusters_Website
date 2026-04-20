@@ -4,24 +4,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Customer Portal{% endblock %} — JunkBusters</title>
+  <title>{% block title %}My Account{% endblock %} — Junk Busters</title>
   <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <style>
+    /* Portal-specific overrides */
+    .p-nav { background: var(--navy-dark); border-bottom: 3px solid var(--yellow); }
+    .p-nav .p-nav-inner { display:flex; justify-content:space-between; align-items:center; height:56px; max-width:1200px; margin:0 auto; padding:0 24px; }
+    .p-nav .p-brand { font-size:17px; font-weight:900; color:#fff; text-decoration:none; letter-spacing:-0.3px; }
+    .p-nav .p-brand span { color:var(--yellow); }
+    .p-nav .p-brand small { color:#90a4ae; font-weight:400; font-size:12px; margin-left:6px; }
+    .p-nav-right { display:flex; align-items:center; gap:4px; }
+    .p-nav-right a { color:#90a4ae; font-size:13px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none; transition:color .15s, background .15s; }
+    .p-nav-right a:hover { color:#fff; background:rgba(255,255,255,0.08); }
+    .p-nav-right .p-logout { color:#f87171 !important; }
+    .p-nav-right .p-logout:hover { color:#fff !important; background:#ef4444 !important; }
+
+    /* Tab bar */
+    .p-tabs { background:var(--navy); }
+    .p-tabs-inner { display:flex; max-width:1200px; margin:0 auto; padding:0 20px; gap:2px; overflow-x:auto; }
+    .p-tab { display:flex; align-items:center; gap:6px; padding:12px 16px; font-size:13px; font-weight:700; color:#90a4ae; text-decoration:none; border-bottom:3px solid transparent; white-space:nowrap; transition:color .15s, border-color .15s; }
+    .p-tab:hover { color:#fff; }
+    .p-tab.active { color:var(--yellow); border-bottom-color:var(--yellow); }
+    .p-tab svg { opacity:.7; }
+    .p-tab.active svg { opacity:1; }
+
+    /* Page body */
+    .p-body { min-height: calc(100vh - 120px); background:#f1f5f9; padding:32px 0 60px; }
+    .p-container { max-width:960px; margin:0 auto; padding:0 24px; }
+
+    /* Cards */
+    .p-card { background:#fff; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,0.06); padding:28px; margin-bottom:20px; }
+    .p-card-title { font-size:16px; font-weight:800; color:var(--navy-dark); margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+    .p-card-title span { font-size:18px; }
+
+    /* Stat boxes */
+    .p-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+    @media(max-width:600px) { .p-stats { grid-template-columns:1fr 1fr; } }
+    .p-stat { background:#fff; border-radius:12px; box-shadow:0 1px 8px rgba(0,0,0,0.06); padding:20px; text-align:center; }
+    .p-stat-val { font-size:30px; font-weight:900; color:var(--navy-dark); line-height:1; margin-bottom:4px; }
+    .p-stat-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+
+    /* Job rows */
+    .p-job { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; padding:16px 0; border-bottom:1px solid #f1f5f9; }
+    .p-job:last-child { border-bottom:none; padding-bottom:0; }
+    .p-job-title { font-weight:700; color:var(--navy-dark); font-size:14px; margin-bottom:3px; }
+    .p-job-meta { font-size:12px; color:var(--text-muted); }
+    .p-job-right { display:flex; flex-direction:column; align-items:flex-end; gap:6px; }
+    .p-job-price { font-weight:800; font-size:15px; color:var(--navy-dark); }
+    .p-job-links { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+    .p-job-link { display:inline-flex; align-items:center; gap:4px; padding:5px 10px; background:#f1f5f9; color:var(--navy-dark); border-radius:6px; font-size:11px; font-weight:700; text-decoration:none; }
+    .p-job-link:hover { background:#e2e8f0; }
+    .p-job-link.pay { background:var(--yellow); color:var(--navy-dark); }
+    .p-job-link.pay:hover { background:var(--yellow-dark); }
+
+    /* Status pills */
+    .p-pill { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.3px; }
+    .p-pill-scheduled { background:#dbeafe; color:#1d4ed8; }
+    .p-pill-enroute, .p-pill-inprogress { background:#fef3c7; color:#d97706; }
+    .p-pill-completed { background:#dcfce7; color:#15803d; }
+    .p-pill-cancelled { background:#fee2e2; color:#dc2626; }
+    .p-pill-pending { background:#f3f4f6; color:#6b7280; }
+
+    /* Loyalty bar */
+    .p-loyalty { background:linear-gradient(135deg,var(--navy-dark) 0%,#1e3a5f 100%); border-radius:12px; padding:24px; color:#fff; margin-bottom:20px; }
+    .p-loyalty-tier { display:inline-block; padding:4px 14px; border-radius:20px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:1px; margin-bottom:10px; }
+    .p-loyalty-tier-bronze { background:#cd7f32; color:#fff; }
+    .p-loyalty-tier-silver { background:#94a3b8; color:#fff; }
+    .p-loyalty-tier-gold { background:#d97706; color:#fff; }
+    .p-loyalty-tier-platinum { background:#00b4d8; color:#fff; }
+    .p-loyalty-pts { font-size:38px; font-weight:900; line-height:1; }
+    .p-loyalty-bar-bg { background:rgba(255,255,255,0.2); border-radius:6px; height:8px; margin:12px 0 6px; overflow:hidden; }
+    .p-loyalty-bar { background:var(--yellow); height:100%; border-radius:6px; }
+
+    /* Offline banner */
+    .p-offline { background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:12px 16px; font-size:13px; color:#9a3412; margin-bottom:20px; display:flex; align-items:center; gap:8px; }
+
+    /* Form */
+    .p-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    @media(max-width:600px) { .p-form-grid { grid-template-columns:1fr; } }
+    .p-form-group { display:flex; flex-direction:column; gap:5px; }
+    .p-form-group label { font-size:12px; font-weight:700; color:var(--navy-dark); text-transform:uppercase; letter-spacing:0.4px; }
+    .p-form-group input, .p-form-group select { padding:10px 14px; border:1.5px solid #d1d5db; border-radius:7px; font-size:14px; font-family:inherit; transition:border-color .15s; }
+    .p-form-group input:focus, .p-form-group select:focus { outline:none; border-color:var(--yellow-dark); }
+    .p-full { grid-column:1/-1; }
+    .p-save-bar { display:flex; align-items:center; gap:12px; margin-top:20px; }
+    .p-saved { color:#15803d; font-size:13px; font-weight:700; }
+
+    /* Empty state */
+    .p-empty { text-align:center; padding:40px 20px; color:var(--text-muted); }
+    .p-empty-icon { font-size:44px; margin-bottom:12px; }
+    .p-empty p { font-size:14px; margin-bottom:16px; }
+  </style>
 </head>
 <body>
 
-<nav class="portal-nav">
-  <div class="container">
-    <a href="/" class="brand">Junk<span>Busters</span> <span style="color:#64748b;font-weight:400;font-size:13px;">/ My Account</span></a>
-    <div class="nav-right">
-      <a href="{% url 'portal:dashboard' %}">My Jobs</a>
-      <a href="/">Website</a>
-      <a href="{% url 'portal:logout' %}" style="color:#ef4444;">Log Out</a>
+<!-- Top nav -->
+<nav class="p-nav">
+  <div class="p-nav-inner">
+    <a href="/" class="p-brand">Junk<span>Busters</span> <small>/ My Account</small></a>
+    <div class="p-nav-right">
+      <a href="/">← Website</a>
+      <a href="{% url 'portal:logout' %}" class="p-logout">Log Out</a>
     </div>
   </div>
 </nav>
 
-<div class="portal-page">
-  <div class="container" style="max-width:900px;">
+<!-- Tab bar -->
+<div class="p-tabs">
+  <div class="p-tabs-inner">
+    <a href="{% url 'portal:dashboard' %}" class="p-tab {% block tab_dashboard %}{% endblock %}">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a href="/loyalty/" class="p-tab {% block tab_loyalty %}{% endblock %}">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Loyalty Points
+    </a>
+    <a href="/book/" class="p-tab">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Book Service
+    </a>
+    <a href="/referral/" class="p-tab">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      Refer a Friend
+    </a>
+    <a href="{% url 'portal:profile' %}" class="p-tab {% block tab_profile %}{% endblock %}">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      My Profile
+    </a>
+  </div>
+</div>
+
+<!-- Page body -->
+<div class="p-body">
+  <div class="p-container">
     {% block content %}{% endblock %}
   </div>
 </div>

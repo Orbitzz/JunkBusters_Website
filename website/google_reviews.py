@@ -283,19 +283,59 @@ def get_summary_from_places():
     return summary or {'rating': 5.0, 'total': 160}
 
 
+# ── FieldCommand reviews API ───────────────────────────────────────────────────
+
+def _fetch_fieldcommand_reviews():
+    """
+    Fetch reviews from FieldCommand's widget API (which pulls from GBP OAuth
+    stored in FieldCommand, falling back to FieldCommand's internal review DB).
+    Returns (reviews_list, None) or (None, None) on failure.
+    """
+    api_url = getattr(settings, 'FIELDCOMMAND_REVIEWS_URL', '')
+    api_key = getattr(settings, 'FIELDCOMMAND_EMBED_API_KEY', '')
+    if not api_url or not api_key:
+        return None, None
+    try:
+        url = f'{api_url.rstrip("/")}/?key={urllib.parse.quote(api_key, safe="")}'
+        req = urllib.request.Request(url)
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read())
+        if not data.get('success'):
+            return None, None
+        reviews = []
+        for r in data.get('reviews') or []:
+            reviews.append({
+                'author_name': r.get('name') or 'Customer',
+                'rating': int(r.get('rating') or 5),
+                'text': r.get('comment') or '',
+                'relative_time': _relative_time(r.get('created_at') or ''),
+                'profile_photo_url': '',
+            })
+        return (reviews, None) if reviews else (None, None)
+    except Exception:
+        return None, None
+
+
 # ── Public API ─────────────────────────────────────────────────────────────────
 
 def get_reviews():
     """
     Return (reviews_list, is_live).
-    Tries Business Profile API, then Places API, then static fallback.
+    Priority: FieldCommand API → Business Profile API → Places API → static fallback.
     Results cached for 24 hours.
     """
     cached = _load_cache()
     if cached is not None:
         return cached['reviews'], True
 
-    # Try Business Profile API first (all reviews)
+    # 1. Try FieldCommand (one source of truth — FieldCommand manages GBP OAuth)
+    reviews, _ = _fetch_fieldcommand_reviews()
+    if reviews:
+        summary = get_summary_from_places()
+        _save_cache(reviews, summary)
+        return reviews, True
+
+    # 2. Fall back to direct Business Profile API (if this site has its own tokens)
     access_token = get_valid_access_token()
     if access_token:
         reviews, summary = _fetch_business_profile_reviews(access_token)
@@ -303,7 +343,7 @@ def get_reviews():
             _save_cache(reviews, summary)
             return reviews, True
 
-    # Fallback: Places API (5 reviews)
+    # 3. Fall back to Places API (max 5 reviews)
     reviews, summary = _fetch_places_reviews()
     if reviews:
         _save_cache(reviews, summary)

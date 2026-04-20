@@ -31,6 +31,60 @@
   background: #131722;
   width: 100%;
   overflow: hidden;
+  position: relative;
+}
+.sm-ticker-inner {
+  overflow: hidden;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.sm-ticker-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: sm-ticker-scroll 28s linear infinite;
+  gap: 0;
+}
+.sm-ticker-track:hover { animation-play-state: paused; }
+@keyframes sm-ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.sm-tick-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 28px;
+}
+.sm-tick-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8a9bb0;
+  letter-spacing: 0.3px;
+}
+.sm-tick-price {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--yellow);
+}
+.sm-tick-unit {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  margin-left: 2px;
+}
+.sm-tick-sep {
+  color: #2a3550;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.sm-ticker-note {
+  text-align: center;
+  font-size: 10px;
+  color: #2a3550;
+  padding: 2px 0 3px;
+  letter-spacing: 0.3px;
 }
 
 .sm-hero {
@@ -572,26 +626,29 @@
 
 {% block content %}
 
-<!-- TradingView Live Ticker Tape -->
+<!-- Metal Price Reference Ticker -->
 <div class="sm-ticker-bar">
-  <div class="tradingview-widget-container">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-      "symbols": [
-        {"proName": "COMEX:HG1!", "title": "Copper"},
-        {"proName": "COMEX:SI1!", "title": "Silver"},
-        {"proName": "NYMEX:ALI1!", "title": "Aluminum"},
-        {"proName": "COMEX:GC1!", "title": "Gold"}
-      ],
-      "showSymbolLogo": true,
-      "isTransparent": false,
-      "displayMode": "adaptive",
-      "colorTheme": "dark",
-      "locale": "en"
-    }
-    </script>
+  <div class="sm-ticker-inner">
+    <div class="sm-ticker-track">
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:GC1 · Gold</span><span class="sm-tick-price">$4,766.00<span class="sm-tick-unit">/troy oz</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:SI1 · Silver</span><span class="sm-tick-price">$76.60<span class="sm-tick-unit">/troy oz</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:HG1 · Copper</span><span class="sm-tick-price">$5.85<span class="sm-tick-unit">/lb</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">NYMEX:ALI1 · Aluminum</span><span class="sm-tick-price">$1.56<span class="sm-tick-unit">/lb</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <!-- duplicate set for seamless loop -->
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:GC1 · Gold</span><span class="sm-tick-price">$4,766.00<span class="sm-tick-unit">/troy oz</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:SI1 · Silver</span><span class="sm-tick-price">$76.60<span class="sm-tick-unit">/troy oz</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">COMEX:HG1 · Copper</span><span class="sm-tick-price">$5.85<span class="sm-tick-unit">/lb</span></span></span>
+      <span class="sm-tick-sep">|</span>
+      <span class="sm-tick-item"><span class="sm-tick-label">NYMEX:ALI1 · Aluminum</span><span class="sm-tick-price">$1.56<span class="sm-tick-unit">/lb</span></span></span>
+    </div>
   </div>
+  <div class="sm-ticker-note">Reference prices — update in <code>scrap_metal.html</code> as market changes</div>
 </div>
 
 <!-- Hero -->
@@ -622,13 +679,13 @@
       <p>We smelt, alloy, and study the metals we acquire. Every pickup contributes to our growing understanding of regional material flows, refining processes, and the eventual goal of establishing a locally-owned, small-scale regional refinery to serve the Nashville–Clarksville–Bowling Green corridor.</p>
       <p>This passion is what sets us apart from a standard scrap yard. We are hands-on with every material. We care about provenance, purity, and process. And because we skip the middleman — no scrap yard markup, no third-party processing — we can pay you a higher percentage of melt value directly on-site, while you watch.</p>
       <div class="sm-refinery-vision">
-        <h3>🔬 The Refinery Vision</h3>
+        <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>The Refinery Vision</h3>
         <p>Our long-term mission is to build a small-scale regional metal refinery serving Middle TN and Southern KY — creating local jobs, reducing the region's reliance on out-of-state commodity processors, and building a sustainable, community-rooted metals economy. Every pickup brings us one step closer.</p>
       </div>
     </div>
     <div class="sm-passion-visual">
       <div class="sm-stat-card">
-        <div class="sm-stat-icon">⚗️</div>
+        <div class="sm-stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3v8L5.5 17A2 2 0 007.28 20h9.44A2 2 0 0018.5 17L15 11V3"/><line x1="9" y1="3" x2="15" y2="3"/></svg></div>
         <div>
           <div class="sm-stat-label">Our Approach</div>
           <div class="sm-stat-value">Smelt First</div>
@@ -636,7 +693,7 @@
         </div>
       </div>
       <div class="sm-stat-card">
-        <div class="sm-stat-icon">⚖️</div>
+        <div class="sm-stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M3 15l6-4 6 4"/><path d="M9 15l6-4 6 4"/><line x1="3" y1="21" x2="21" y2="21"/></svg></div>
         <div>
           <div class="sm-stat-label">Pricing Model</div>
           <div class="sm-stat-value">50–60% Melt Value</div>
@@ -652,7 +709,7 @@
         </div>
       </div>
       <div class="sm-stat-card">
-        <div class="sm-stat-icon">💵</div>
+        <div class="sm-stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
         <div>
           <div class="sm-stat-label">Payment</div>
           <div class="sm-stat-value">Same-Day</div>
@@ -698,7 +755,7 @@
       <!-- Copper -->
       <div class="sm-metal-card copper">
         <div class="sm-metal-header">
-          <div class="sm-metal-icon">🟠</div>
+          <div class="sm-metal-icon"><svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#f97316"/><text x="18" y="23" text-anchor="middle" font-size="13" font-weight="800" font-family="sans-serif" fill="#fff">Cu</text></svg></div>
           <div>
             <div class="sm-metal-name">Copper</div>
             <div class="sm-metal-ref">COMEX: HG1! — Priced per pound</div>
@@ -721,7 +778,7 @@
       <!-- Silver -->
       <div class="sm-metal-card silver">
         <div class="sm-metal-header">
-          <div class="sm-metal-icon">⬜</div>
+          <div class="sm-metal-icon"><svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#94a3b8"/><text x="18" y="23" text-anchor="middle" font-size="13" font-weight="800" font-family="sans-serif" fill="#fff">Ag</text></svg></div>
           <div>
             <div class="sm-metal-name">Silver</div>
             <div class="sm-metal-ref">COMEX: SI1! — Priced per troy oz</div>
@@ -742,7 +799,7 @@
       <!-- Aluminum -->
       <div class="sm-metal-card aluminum">
         <div class="sm-metal-header">
-          <div class="sm-metal-icon">🔵</div>
+          <div class="sm-metal-icon"><svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#3b82f6"/><text x="18" y="23" text-anchor="middle" font-size="13" font-weight="800" font-family="sans-serif" fill="#fff">Al</text></svg></div>
           <div>
             <div class="sm-metal-name">Aluminum</div>
             <div class="sm-metal-ref">NYMEX: ALI1! — Priced per pound</div>
@@ -764,7 +821,7 @@
       <!-- Brass -->
       <div class="sm-metal-card brass">
         <div class="sm-metal-header">
-          <div class="sm-metal-icon">🟡</div>
+          <div class="sm-metal-icon"><svg width="36" height="36" viewBox="0 0 36 36"><circle cx="18" cy="18" r="18" fill="#ca8a04"/><text x="18" y="23" text-anchor="middle" font-size="13" font-weight="800" font-family="sans-serif" fill="#fff">Br</text></svg></div>
           <div>
             <div class="sm-metal-name">Brass &amp; Mixed Non-Ferrous</div>
             <div class="sm-metal-ref">Spot-Referenced — Priced per pound</div>
@@ -830,7 +887,7 @@
         <div class="sm-result-label">Estimated Payout</div>
         <div class="sm-result-amount" id="result-amount">$0.00</div>
         <div class="sm-result-breakdown" id="result-breakdown"></div>
-        <div class="sm-result-disclaimer">⚠️ Estimates are for planning only. Final price determined on-site via NTEP-certified portable scales and live COMEX spot price at time of pickup. Contact us at 615-881-2505 for a pre-visit quote on larger loads.</div>
+        <div class="sm-result-disclaimer">Note: Estimates are for planning only. Final price determined on-site via NTEP-certified portable scales and live COMEX spot price at time of pickup. Contact us at 615-881-2505 for a pre-visit quote on larger loads.</div>
       </div>
 
       <div class="sm-spot-prices-note">

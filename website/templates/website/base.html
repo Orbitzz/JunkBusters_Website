@@ -197,6 +197,7 @@
             <a href="{% url 'website:service_page' 'property-manager-hub' %}">Property Manager Hub</a>
             <a href="{% url 'website:service_page' 'scrap-metal-pickup' %}">Scrap Metal Pickup &amp; Buying</a>
             <a href="{% url 'website:service_page' 'light-demolition' %}">Light Demolition</a>
+            <a href="{% url 'website:service_page' 'dump-trailer-rental' %}">Dump Trailer Rental</a>
           </div>
         </li>
 
@@ -225,11 +226,22 @@
           </div>
         </li>
         <li class="nav-dropdown">
-          <a href="#" class="nav-dropdown-toggle">My Account &#9662;</a>
+          <a href="{% if user.is_authenticated %}{% url 'portal:dashboard' %}{% else %}/portal/{% endif %}" class="nav-dropdown-toggle">
+            {% if user.is_authenticated %}👤 {{ user.first_name|default:"My Account" }}{% else %}My Account{% endif %} &#9662;
+          </a>
           <div class="nav-dropdown-menu">
+            {% if user.is_authenticated %}
+            <a href="{% url 'portal:dashboard' %}" style="font-weight:700;">Dashboard</a>
+            {% endif %}
             <a href="{% url 'website:track' %}">Track My Service</a>
             <a href="{% url 'website:loyalty' %}">Loyalty Points</a>
             <a href="{% url 'website:referral' %}">Refer a Friend — Earn $50</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'portal:profile' %}">My Profile</a>
+            <a href="{% url 'portal:logout' %}" style="color:#ef4444;">Log Out</a>
+            {% else %}
+            <a href="/portal/" style="font-weight:700;color:var(--yellow-dark);">Sign In / Register</a>
+            {% endif %}
           </div>
         </li>
         <li><a href="{% url 'website:contact' %}">Contact Us</a></li>
@@ -309,9 +321,18 @@
           <li><a href="{% url 'website:contact' %}">Contact Us</a></li>
           <li><a href="{{ review_url }}" target="_blank" rel="noopener">Reviews</a></li>
           <li style="padding:6px 0 2px;font-size:11px;font-weight:800;color:var(--yellow);text-transform:uppercase;letter-spacing:1px;">My Account</li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'portal:dashboard' %}" style="font-weight:700;">Dashboard</a></li>
+          {% endif %}
           <li><a href="{% url 'website:track' %}">Track My Service</a></li>
           <li><a href="{% url 'website:loyalty' %}">Loyalty Points</a></li>
           <li><a href="{% url 'website:referral' %}">Refer a Friend</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'portal:profile' %}">My Profile</a></li>
+          <li><a href="{% url 'portal:logout' %}" style="color:#ef4444;">Log Out</a></li>
+          {% else %}
+          <li><a href="/portal/" style="font-weight:700;">Sign In / Register</a></li>
+          {% endif %}
         </ul>
       </div>
       <div>
@@ -366,141 +387,396 @@ document.querySelectorAll('.why-item-btn').forEach(function(btn) {
 
 {% block extra_scripts %}{% endblock %}
 
-<!-- ── FieldCommand live chat widget ─────────────────────────────────── -->
+<!-- ── JunkBusters live chat widget ──────────────────────────────────── -->
+<style>
+#jb-chat-box{position:fixed;right:28px;bottom:98px;z-index:99999;width:340px;max-width:calc(100vw - 40px);background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.20);font-family:inherit;overflow:hidden;display:none;flex-direction:column;}
+#jb-chat-header{background:#1a2e4a;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+#jb-chat-messages{flex:1;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px;min-height:200px;max-height:320px;}
+.jb-bubble-row{display:flex;}
+.jb-bubble-row.out{justify-content:flex-end;}
+.jb-bubble-row.in{justify-content:flex-start;}
+.jb-bubble{max-width:78%;padding:9px 13px;border-radius:18px;font-size:13px;line-height:1.45;word-break:break-word;}
+.jb-bubble.out{background:#F5A500;color:#1a2e4a;border-bottom-right-radius:4px;}
+.jb-bubble.in{background:#f1f5f9;color:#1a2e4a;border-bottom-left-radius:4px;}
+.jb-bubble img{max-width:100%;border-radius:10px;margin-top:6px;display:block;}
+#jb-form-body{padding:16px;}
+#jb-input-bar{border-top:1px solid #e5e7eb;padding:10px 12px;display:flex;gap:8px;align-items:flex-end;flex-shrink:0;background:#fff;}
+#jb-text-input{flex:1;padding:9px 12px;border:1px solid #d1d5db;border-radius:22px;font-size:14px;font-family:inherit;resize:none;max-height:100px;overflow-y:auto;line-height:1.4;outline:none;}
+#jb-text-input:focus{border-color:#F5A500;}
+.jb-icon-btn{background:none;border:none;cursor:pointer;padding:6px;color:#94a3b8;display:flex;align-items:center;flex-shrink:0;}
+.jb-icon-btn:hover{color:#1a2e4a;}
+#jb-send-btn{background:#F5A500;border:none;cursor:pointer;padding:8px 10px;border-radius:50%;display:flex;align-items:center;flex-shrink:0;}
+#jb-file-preview{padding:6px 12px 0;display:none;flex-shrink:0;}
+#jb-file-preview img{max-height:80px;border-radius:8px;border:1px solid #e5e7eb;}
+#jb-typing{display:none;padding:4px 12px 8px;font-size:12px;color:#94a3b8;}
+</style>
+
+<div id="jb-chat-box">
+  <!-- Header -->
+  <div id="jb-chat-header">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div style="width:36px;height:36px;border-radius:50%;background:#F5A500;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div>
+        <div style="font-weight:800;font-size:14px;color:#fff;">Junk Busters</div>
+        <div id="jb-header-sub" style="font-size:11px;color:#94a3b8;">Typically replies in minutes</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;">
+      <button id="jb-chat-reset" title="Start new conversation" style="background:none;border:none;cursor:pointer;padding:4px;color:#64748b;display:none;line-height:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg>
+      </button>
+      <button id="jb-chat-close" style="background:none;border:none;cursor:pointer;padding:4px;color:#94a3b8;line-height:1;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Form view (initial) -->
+  <div id="jb-form-body">
+    <p style="font-size:13px;color:#64748b;margin:0 0 12px;">Send us a message and we'll get back to you shortly.</p>
+    <input id="jb-f-name"  type="text"  placeholder="Your name"        style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;">
+    <input id="jb-f-phone" type="tel"   placeholder="Phone (optional)"  style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;">
+    <input id="jb-f-email" type="email" placeholder="Email (optional)"  style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;">
+    <textarea id="jb-f-msg" placeholder="How can we help?" style="width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:6px;font-size:14px;font-family:inherit;min-height:80px;resize:vertical;box-sizing:border-box;margin-bottom:10px;"></textarea>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+      <label style="cursor:pointer;font-size:12px;color:#64748b;display:flex;align-items:center;gap:4px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        Attach image
+        <input type="file" id="jb-f-file" accept="image/*,.gif" style="display:none;">
+      </label>
+      <span id="jb-f-fname" style="font-size:11px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;"></span>
+    </div>
+    <div id="jb-f-preview" style="display:none;margin-bottom:10px;"><img id="jb-f-preview-img" style="max-height:80px;border-radius:8px;border:1px solid #e5e7eb;"></div>
+    <button id="jb-f-send" style="width:100%;padding:12px;background:#F5A500;color:#1a2e4a;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;">Send Message</button>
+    <div id="jb-f-status" style="margin-top:8px;font-size:13px;text-align:center;color:#64748b;min-height:18px;"></div>
+  </div>
+
+  <!-- Chat view (after first message) -->
+  <div id="jb-chat-view" style="display:none;flex-direction:column;flex:1;">
+    <div id="jb-chat-messages"></div>
+    <div id="jb-typing">Junk Busters is typing…</div>
+    <div id="jb-file-preview">
+      <img id="jb-fp-img" alt="preview">
+      <button onclick="jbClearFile()" style="font-size:11px;color:#dc2626;background:none;border:none;cursor:pointer;display:block;margin-top:2px;">Remove</button>
+    </div>
+    <div id="jb-input-bar">
+      <label class="jb-icon-btn" title="Attach image">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+        <input type="file" id="jb-c-file" accept="image/*,.gif" style="display:none;">
+      </label>
+      <div id="jb-text-input" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Message" data-placeholder="Type a message…"></div>
+      <button id="jb-send-btn" title="Send">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.5" width="18" height="18"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toggle button -->
+<button id="jb-chat-btn" aria-label="Chat with us" style="position:fixed;right:28px;bottom:28px;z-index:99999;width:58px;height:58px;border-radius:50%;background:#F5A500;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.22);transition:transform .2s,box-shadow .2s;">
+  <svg id="jb-ico-chat" viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.2" width="26" height="26"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+  <svg id="jb-ico-x"    viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.5" width="24" height="24" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+</button>
+
+<style>
+#jb-text-input:empty:before{content:attr(data-placeholder);color:#9ca3af;pointer-events:none;}
+</style>
+
 <script>
 (function(){
-  var KEY = "davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI";
-  var API = "http://127.0.0.1:8000/marketing/api/embed/chat/";
+  var API_CHAT = '/api/chat/';
+  var API_POLL = '/api/chat/poll/';
+  var LS_KEY   = 'jb_chat_v1';
+  var CSRF     = (document.cookie.match(/csrftoken=([^;]+)/) || [])[1] || '';
 
-  /* ── Button ── */
-  var btn = document.createElement('button');
-  btn.setAttribute('aria-label', 'Chat with us');
-  btn.style.cssText = [
-    'position:fixed;right:28px;bottom:28px;z-index:99999',
-    'width:58px;height:58px;border-radius:50%',
-    'background:#F5A500;border:none;cursor:pointer',
-    'display:flex;align-items:center;justify-content:center',
-    'box-shadow:0 4px 16px rgba(0,0,0,0.22)',
-    'transition:transform .2s,box-shadow .2s'
-  ].join(';');
-  btn.innerHTML = '<svg id="jb-ico-chat" viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.2" width="26" height="26"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
-                + '<svg id="jb-ico-x" viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2.5" width="24" height="24" style="display:none"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-  btn.onmouseenter = function(){ btn.style.transform='scale(1.08)'; btn.style.boxShadow='0 6px 24px rgba(0,0,0,0.28)'; };
-  btn.onmouseleave = function(){ btn.style.transform=''; btn.style.boxShadow='0 4px 16px rgba(0,0,0,0.22)'; };
+  var btn      = document.getElementById('jb-chat-btn');
+  var box      = document.getElementById('jb-chat-box');
+  var formBody = document.getElementById('jb-form-body');
+  var chatView = document.getElementById('jb-chat-view');
+  var msgList  = document.getElementById('jb-chat-messages');
+  var textInp  = document.getElementById('jb-text-input');
+  var isOpen   = false;
+  var pollTimer= null;
+  var lastSince= '';
+  var pendingFile = null;
+  var ws = null;
+  var wsTypingTimer = null;
+  var typingSendTimer = null;
 
-  /* ── Panel ── */
-  var box = document.createElement('div');
-  box.style.cssText = [
-    'position:fixed;right:28px;bottom:98px;z-index:99999',
-    'width:320px;max-width:calc(100vw - 40px)',
-    'background:#fff;border-radius:14px',
-    'box-shadow:0 8px 32px rgba(0,0,0,0.18)',
-    'font-family:inherit;overflow:hidden;display:none'
-  ].join(';');
+  /* ── State (localStorage) ─────────────────────────────────────────── */
+  var state = null;
+  try { state = JSON.parse(localStorage.getItem(LS_KEY)); } catch(e){}
 
-  var inp = function(id, ph, type){
-    return '<input id="'+id+'" type="'+(type||'text')+'" placeholder="'+ph+'" style="'
-      +'width:100%;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;'
-      +'font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:8px;">';
-  };
+  function saveState(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+  function clearState(){ state = null; localStorage.removeItem(LS_KEY); }
 
-  box.innerHTML =
-    /* header */
-    '<div style="background:#1a2e4a;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">'
-      +'<div style="display:flex;align-items:center;gap:10px;">'
-        +'<div style="width:36px;height:36px;border-radius:50%;background:#F5A500;display:flex;align-items:center;justify-content:center;">'
-          +'<svg viewBox="0 0 24 24" fill="none" stroke="#1a2e4a" stroke-width="2" width="18" height="18"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'
-        +'</div>'
-        +'<div>'
-          +'<div style="font-weight:800;font-size:14px;color:#fff;">Junk Busters</div>'
-          +'<div style="font-size:11px;color:#94a3b8;">Typically replies in minutes</div>'
-        +'</div>'
-      +'</div>'
-      +'<button id="jb-chat-close" style="background:none;border:none;cursor:pointer;padding:4px;color:#94a3b8;line-height:1;">'
-        +'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-      +'</button>'
-    +'</div>'
-    /* body */
-    +'<div style="padding:16px;">'
-      +'<p style="font-size:13px;color:#64748b;margin:0 0 14px;">Send us a message and we\'ll get back to you right away.</p>'
-      +inp('jb-name',  'Your name')
-      +inp('jb-phone', 'Phone (optional)', 'tel')
-      +inp('jb-email', 'Email (optional)',  'email')
-      +'<textarea id="jb-msg" placeholder="How can we help?" style="'
-        +'width:100%;padding:10px 12px;border-radius:6px;border:1px solid #d1d5db;'
-        +'font-size:14px;font-family:inherit;min-height:90px;resize:vertical;'
-        +'box-sizing:border-box;margin-bottom:10px;"></textarea>'
-      +'<button id="jb-send" style="'
-        +'width:100%;padding:12px;background:#F5A500;color:#1a2e4a;border:none;'
-        +'border-radius:6px;font-weight:800;font-size:14px;cursor:pointer;'
-        +'font-family:inherit;">Send Message</button>'
-      +'<div id="jb-status" style="margin-top:8px;font-size:13px;text-align:center;color:#64748b;min-height:18px;"></div>'
-    +'</div>';
-
-  /* ── Toggle ── */
-  var isOpen = false;
-  function open(){
+  /* ── Toggle open/close ────────────────────────────────────────────── */
+  function openChat(){
     isOpen = true;
-    box.style.display = 'block';
+    box.style.display = 'flex';
     document.getElementById('jb-ico-chat').style.display = 'none';
     document.getElementById('jb-ico-x').style.display   = '';
+    if (state && state.thread_id) showChatView(); else showFormView();
   }
-  function close(){
+  function closeChat(){
     isOpen = false;
     box.style.display = 'none';
     document.getElementById('jb-ico-chat').style.display = '';
     document.getElementById('jb-ico-x').style.display   = 'none';
+    stopPolling();
   }
-  btn.addEventListener('click', function(){ isOpen ? close() : open(); });
+  btn.addEventListener('click', function(){ isOpen ? closeChat() : openChat(); });
+  document.getElementById('jb-chat-close').addEventListener('click', closeChat);
+  document.addEventListener('click', function(e){
+    if (isOpen && !btn.contains(e.target) && !box.contains(e.target)) closeChat();
+  });
 
-  /* ── Send ── */
-  box.querySelector('#jb-chat-close').addEventListener('click', close);
-  box.querySelector('#jb-send').addEventListener('click', function(){
-    var payload = {
-      name:    box.querySelector('#jb-name').value.trim()  || 'Website visitor',
-      phone:   box.querySelector('#jb-phone').value.trim(),
-      email:   box.querySelector('#jb-email').value.trim(),
-      message: box.querySelector('#jb-msg').value.trim()
-    };
-    if (!payload.message) {
-      document.getElementById('jb-status').textContent = 'Please enter a message.';
-      document.getElementById('jb-status').style.color = '#dc2626';
-      return;
+  /* ── View switching ───────────────────────────────────────────────── */
+  function showFormView(){
+    formBody.style.display = 'block';
+    chatView.style.display = 'none';
+    document.getElementById('jb-chat-reset').style.display = 'none';
+    stopPolling();
+  }
+  function showChatView(){
+    formBody.style.display = 'none';
+    chatView.style.display = 'flex';
+    document.getElementById('jb-chat-reset').style.display = '';
+    if (typingEl) typingEl.style.display = 'none';
+    renderAllBubbles();
+    scrollBottom();
+    startPolling();
+  }
+
+  /* ── Bubble rendering ─────────────────────────────────────────────── */
+  function renderAllBubbles(){
+    msgList.innerHTML = '';
+    if (!state || !state.messages) return;
+    state.messages.forEach(function(m){ appendBubble(m, false); });
+  }
+  function appendBubble(m, doScroll){
+    var row = document.createElement('div');
+    row.className = 'jb-bubble-row ' + (m.dir === 'OUT' ? 'in' : 'out');
+    var bub = document.createElement('div');
+    bub.className = 'jb-bubble ' + (m.dir === 'OUT' ? 'in' : 'out');
+    if (m.body) bub.textContent = m.body;
+    if (m.attach_url) {
+      var img = document.createElement('img');
+      img.src = m.attach_url;
+      bub.appendChild(img);
+    } else if (m.attach_preview) {
+      var img2 = document.createElement('img');
+      img2.src = m.attach_preview;
+      bub.appendChild(img2);
     }
-    document.getElementById('jb-status').textContent = 'Sending…';
-    document.getElementById('jb-status').style.color = '#64748b';
-    fetch(API, {
+    row.appendChild(bub);
+    msgList.appendChild(row);
+    if (doScroll) scrollBottom();
+  }
+  function scrollBottom(){
+    msgList.scrollTop = msgList.scrollHeight;
+  }
+
+  /* ── WebSocket ────────────────────────────────────────────────────── */
+  var typingEl = document.getElementById('jb-typing');
+  function connectWS(threadId){
+    if (ws) { try { ws.close(); } catch(e){} ws = null; }
+    try {
+      ws = new WebSocket('ws://127.0.0.1:8000/ws/chat/website/' + threadId + '/');
+    } catch(e) { ws = null; return; }
+    ws.onmessage = function(e){
+      var d;
+      try { d = JSON.parse(e.data); } catch(ex){ return; }
+      if (d.type === 'typing') {
+        if (typingEl) typingEl.style.display = '';
+        clearTimeout(wsTypingTimer);
+        wsTypingTimer = setTimeout(function(){ if (typingEl) typingEl.style.display = 'none'; }, 3000);
+      } else if (d.type === 'new_message' && d.from === 'me') {
+        var m = { dir: 'OUT', body: d.text, attach_url: null };
+        if (!state) return;
+        state.messages.push(m);
+        saveState();
+        appendBubble(m, true);
+      }
+    };
+    ws.onclose = function(){
+      ws = null;
+      setTimeout(function(){ if (state && state.thread_id) connectWS(state.thread_id); }, 3000);
+    };
+  }
+
+  /* ── Polling (fallback) ───────────────────────────────────────────── */
+  function startPolling(){
+    if (pollTimer || !state || !state.thread_id) return;
+    pollTimer = setInterval(doPoll, 10000);
+    if (!ws) connectWS(state.thread_id);
+  }
+  function stopPolling(){
+    clearInterval(pollTimer); pollTimer = null;
+    if (ws) { try { ws.close(); } catch(e){} ws = null; }
+  }
+
+  function doPoll(){
+    if (!state || !state.thread_id) return;
+    var url = API_POLL + '?thread_id=' + state.thread_id + '&since=' + encodeURIComponent(lastSince);
+    fetch(url)
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (!j.messages || !j.messages.length) return;
+        j.messages.forEach(function(msg){
+          var m = { dir: 'OUT', body: msg.body, attach_url: msg.attachment_url || null };
+          state.messages.push(m);
+          appendBubble(m, true);
+          lastSince = msg.created_at;
+        });
+        saveState();
+      })
+      .catch(function(){});
+  }
+
+  /* ── File helpers ─────────────────────────────────────────────────── */
+  window.jbClearFile = function(){
+    pendingFile = null;
+    document.getElementById('jb-file-preview').style.display = 'none';
+    document.getElementById('jb-c-file').value = '';
+  };
+
+  function handleFileSelect(file, previewEl, previewImgEl){
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      pendingFile = { file: file, dataUrl: e.target.result };
+      previewImgEl.src = e.target.result;
+      previewEl.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Form view file input
+  document.getElementById('jb-f-file').addEventListener('change', function(){
+    var f = this.files[0];
+    if (!f) return;
+    document.getElementById('jb-f-fname').textContent = f.name;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      pendingFile = { file: f, dataUrl: e.target.result };
+      document.getElementById('jb-f-preview-img').src = e.target.result;
+      document.getElementById('jb-f-preview').style.display = 'block';
+    };
+    reader.readAsDataURL(f);
+  });
+
+  // Chat view file input
+  document.getElementById('jb-c-file').addEventListener('change', function(){
+    handleFileSelect(
+      this.files[0],
+      document.getElementById('jb-file-preview'),
+      document.getElementById('jb-fp-img')
+    );
+  });
+
+  /* ── Send helpers ─────────────────────────────────────────────────── */
+  function buildFormData(name, phone, email, message, threadId){
+    var fd = new FormData();
+    fd.append('name', name);
+    fd.append('phone', phone);
+    fd.append('email', email);
+    fd.append('message', message);
+    if (threadId) fd.append('thread_id', threadId);
+    if (pendingFile) fd.append('attachment', pendingFile.file, pendingFile.file.name);
+    return fd;
+  }
+
+  function doSend(name, phone, email, message, threadId, onSuccess, onError){
+    var fd = buildFormData(name, phone, email, message, threadId);
+    fetch(API_CHAT, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-FC-EMBED-KEY': KEY },
-      body: JSON.stringify(payload)
+      headers: { 'X-CSRFToken': CSRF },
+      body: fd
     })
     .then(function(r){ return r.json(); })
     .then(function(j){
-      if (j.success) {
-        document.getElementById('jb-status').textContent = "✓ Message sent! We'll be in touch shortly.";
-        document.getElementById('jb-status').style.color = '#16a34a';
-        box.querySelector('#jb-msg').value   = '';
-        box.querySelector('#jb-name').value  = '';
-        box.querySelector('#jb-phone').value = '';
-        box.querySelector('#jb-email').value = '';
-      } else {
-        document.getElementById('jb-status').textContent = j.message || 'Something went wrong.';
-        document.getElementById('jb-status').style.color = '#dc2626';
-      }
+      if (j.success) onSuccess(j);
+      else onError(j.message || 'Something went wrong.');
     })
-    .catch(function(){
-      document.getElementById('jb-status').textContent = 'Could not connect. Please call us at 615-881-2505.';
-      document.getElementById('jb-status').style.color = '#dc2626';
+    .catch(function(){ onError('Could not connect. Call us at 615-881-2505.'); });
+  }
+
+  /* ── Form view send ───────────────────────────────────────────────── */
+  document.getElementById('jb-f-send').addEventListener('click', function(){
+    var name    = document.getElementById('jb-f-name').value.trim() || 'Website visitor';
+    var phone   = document.getElementById('jb-f-phone').value.trim();
+    var email   = document.getElementById('jb-f-email').value.trim();
+    var message = document.getElementById('jb-f-msg').value.trim();
+    var st      = document.getElementById('jb-f-status');
+    if (!message) { st.textContent = 'Please enter a message.'; st.style.color = '#dc2626'; return; }
+    st.textContent = 'Sending…'; st.style.color = '#64748b';
+    doSend(name, phone, email, message, '', function(j){
+      state = { thread_id: j.thread_id, name: name, messages: [] };
+      var m = { dir: 'IN', body: message, attach_preview: pendingFile ? pendingFile.dataUrl : null };
+      state.messages.push(m);
+      lastSince = '';
+      if (j.thread_id) saveState();
+      pendingFile = null;
+      showChatView();
+    }, function(err){
+      st.textContent = err; st.style.color = '#dc2626';
     });
   });
 
-  /* ── Close on outside click ── */
-  document.addEventListener('click', function(e){
-    if (isOpen && !btn.contains(e.target) && !box.contains(e.target)) close();
+  /* ── Chat view send ───────────────────────────────────────────────── */
+  function chatSend(){
+    if (!state || !state.thread_id) return;
+    var message = textInp.innerText.trim();
+    if (!message && !pendingFile) return;
+    var name = state.name || 'Customer';
+    doSend(name, '', '', message || '.', state.thread_id, function(j){
+      var m = { dir: 'IN', body: message || null, attach_preview: pendingFile ? pendingFile.dataUrl : null };
+      state.messages.push(m);
+      saveState();
+      appendBubble(m, true);
+      textInp.innerText = '';
+      pendingFile = null;
+      document.getElementById('jb-file-preview').style.display = 'none';
+      document.getElementById('jb-c-file').value = '';
+    }, function(err){ /* silently fail */ });
+  }
+
+  document.getElementById('jb-send-btn').addEventListener('click', chatSend);
+  textInp.addEventListener('keydown', function(e){
+    if (e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); chatSend(); return; }
+    // Send typing event (debounced 1s)
+    clearTimeout(typingSendTimer);
+    typingSendTimer = setTimeout(function(){
+      if (ws && ws.readyState === 1) {
+        ws.send(JSON.stringify({ type: 'typing' }));
+      }
+    }, 1000);
   });
 
-  document.body.appendChild(box);
-  document.body.appendChild(btn);
+  /* ── Reset conversation ───────────────────────────────────────────── */
+  document.getElementById('jb-chat-reset').addEventListener('click', function(){
+    if (!confirm('Start a new conversation?')) return;
+    clearState();
+    pendingFile = null;
+    lastSince = '';
+    stopPolling();
+    document.getElementById('jb-f-name').value  = '';
+    document.getElementById('jb-f-phone').value = '';
+    document.getElementById('jb-f-email').value = '';
+    document.getElementById('jb-f-msg').value   = '';
+    document.getElementById('jb-f-status').textContent = '';
+    showFormView();
+  });
+
+  /* ── Hover effects ────────────────────────────────────────────────── */
+  btn.onmouseenter = function(){ btn.style.transform='scale(1.08)'; btn.style.boxShadow='0 6px 24px rgba(0,0,0,0.28)'; };
+  btn.onmouseleave = function(){ btn.style.transform=''; btn.style.boxShadow='0 4px 16px rgba(0,0,0,0.22)'; };
+
+  /* ── Auto-open if returning user has active thread ────────────────── */
+  // (Don't auto-open — just show the button. User clicks to resume.)
 })();
 </script>
 </body>

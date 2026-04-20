@@ -1,0 +1,100 @@
+{% extends "portal/base.html" %}
+
+{% block title %}My Profile{% endblock %}
+{% block tab_profile %}active{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:24px;">
+  <h1 style="font-size:22px;font-weight:800;color:var(--navy-dark);margin-bottom:2px;">My Profile</h1>
+  <p style="font-size:13px;color:var(--text-muted);">Keep your contact info up to date so we can reach you about your services.</p>
+</div>
+
+<!-- Success banner -->
+{% if saved %}
+<div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:14px;color:#15803d;font-weight:700;display:flex;align-items:center;gap:8px;">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+  Profile updated successfully.
+</div>
+{% endif %}
+
+<!-- Contact info card -->
+<div class="p-card">
+  <div class="p-card-title"><span>👤</span> Contact Information</div>
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="p-form-grid">
+      <div class="p-form-group">
+        <label for="first_name">First Name</label>
+        <input type="text" name="first_name" id="first_name" value="{{ user.first_name }}" placeholder="Christian">
+      </div>
+      <div class="p-form-group">
+        <label for="last_name">Last Name</label>
+        <input type="text" name="last_name" id="last_name" value="{{ user.last_name }}" placeholder="Thompson">
+      </div>
+      <div class="p-form-group">
+        <label for="email">Email (account login)</label>
+        <input type="email" value="{{ user.email }}" disabled
+               style="background:#f8fafc;color:var(--text-muted);cursor:not-allowed;">
+      </div>
+      <div class="p-form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" name="phone" id="phone" value="{{ profile.phone }}" placeholder="615-000-0000">
+      </div>
+      <div class="p-form-group p-full">
+        <label for="address">Street Address</label>
+        <input type="text" name="address" id="address" value="{{ profile.address }}" placeholder="123 Main St">
+      </div>
+      <div class="p-form-group">
+        <label for="city">City</label>
+        <input type="text" name="city" id="city" value="{{ profile.city }}" placeholder="White House">
+      </div>
+      <div class="p-form-group">
+        <label for="state">State</label>
+        <input type="text" name="state" id="state" value="{{ profile.state|default:'TN' }}" maxlength="10">
+      </div>
+      <div class="p-form-group">
+        <label for="zip_code">Zip Code</label>
+        <input type="text" name="zip_code" id="zip_code" value="{{ profile.zip_code }}" placeholder="37188" maxlength="20">
+      </div>
+    </div>
+    <div class="p-save-bar">
+      <button type="submit" class="btn btn-yellow" style="padding:11px 28px;">Save Changes</button>
+    </div>
+  </form>
+</div>
+
+<!-- Password change card -->
+<div class="p-card">
+  <div class="p-card-title"><span>🔒</span> Change Password</div>
+
+  <form method="post" action="{% url 'portal:password_change' %}">
+    {% csrf_token %}
+    <div class="p-form-grid">
+      <div class="p-form-group p-full">
+        <label for="current_password">Current Password</label>
+        <input type="password" name="current_password" id="current_password" placeholder="••••••••">
+      </div>
+      <div class="p-form-group">
+        <label for="new_password">New Password</label>
+        <input type="password" name="new_password" id="new_password" placeholder="••••••••">
+      </div>
+      <div class="p-form-group">
+        <label for="new_password2">Confirm New Password</label>
+        <input type="password" name="new_password2" id="new_password2" placeholder="••••••••">
+      </div>
+    </div>
+    <div class="p-save-bar">
+      <button type="submit" class="btn btn-navy" style="padding:11px 28px;font-size:14px;">Update Password</button>
+    </div>
+  </form>
+</div>
+
+<!-- Account info -->
+<div style="background:#f8fafc;border-radius:10px;padding:16px 20px;font-size:13px;color:var(--text-muted);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+  <span>Need to close your account? Call us at <a href="tel:615-881-2505" style="color:var(--yellow-dark);font-weight:700;">615-881-2505</a></span>
+  <a href="{% url 'portal:logout' %}" style="color:#ef4444;font-weight:700;font-size:13px;">Log Out</a>
+</div>
+
+{% endblock %}

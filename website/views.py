@@ -6,6 +6,20 @@ from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest
 
+def _utm_info(session):
+    """Return (lead_source, referrer) strings from session UTM data."""
+    parts = []
+    for k in ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']:
+        v = session.get(k, '')
+        if v:
+            parts.append(f"{k}={v}")
+    lead_source = session.get('utm_source', '') or 'Website'
+    referrer = session.get('utm_referrer', '')
+    if len(parts) > 1:
+        lead_source = ' / '.join(parts)
+    return lead_source, referrer
+
+
 def _call_fc(endpoint, payload):
     """Call FC embed API and return parsed JSON dict. Returns None on failure."""
     try:
@@ -41,6 +55,139 @@ def _post_to_fc(endpoint, payload):
         _ur.urlopen(req, timeout=3)
     except Exception:
         pass
+
+
+import json as _json
+import uuid as _uuid
+import http.client as _http
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+
+_FC_HOST = '127.0.0.1'
+_FC_PORT = 8000
+_FC_KEY  = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI'
+
+
+def _call_fc_multipart(endpoint, fields, files=None):
+    """POST multipart/form-data to FC embed API. Returns parsed JSON or None."""
+    boundary = _uuid.uuid4().hex
+    parts = []
+    for name, value in fields.items():
+        parts.append(
+            f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n{value}\r\n'.encode()
+        )
+    if files:
+        for field_name, (filename, filedata, ctype) in files.items():
+            parts.append(
+                f'--{boundary}\r\nContent-Disposition: form-data; name="{field_name}"; filename="{filename}"\r\nContent-Type: {ctype}\r\n\r\n'.encode()
+                + filedata + b'\r\n'
+            )
+    parts.append(f'--{boundary}--\r\n'.encode())
+    body = b''.join(parts)
+    try:
+        conn = _http.HTTPConnection(_FC_HOST, _FC_PORT, timeout=5)
+        conn.request(
+            'POST',
+            f'/marketing/api/embed/{endpoint}/',
+            body=body,
+            headers={
+                'Content-Type': f'multipart/form-data; boundary={boundary}',
+                'Content-Length': str(len(body)),
+                'X-FC-EMBED-KEY': _FC_KEY,
+            }
+        )
+        resp = conn.getresponse()
+        return _json.loads(resp.read())
+    except Exception:
+        return None
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def chat_proxy(request):
+    """Relay chat widget messages to FieldCommand and send email notification."""
+    from django.core.cache import cache as _cache
+    ip = request.META.get('REMOTE_ADDR', 'unknown')
+    count = _cache.get(f'chat:{ip}', 0)
+    if count >= 10:
+        return JsonResponse({'error': 'rate limited'}, status=429)
+    _cache.set(f'chat:{ip}', count + 1, 60)
+
+    content_type = request.content_type or ''
+    attachment_file = None
+
+    if 'multipart' in content_type:
+        name      = request.POST.get('name', '').strip() or 'Website visitor'
+        phone     = request.POST.get('phone', '').strip()
+        email_val = request.POST.get('email', '').strip()
+        message   = request.POST.get('message', '').strip()
+        thread_id = request.POST.get('thread_id', '').strip()
+        attachment_file = request.FILES.get('attachment')
+    else:
+        try:
+            payload = _json.loads(request.body)
+        except Exception:
+            return JsonResponse({'success': False, 'message': 'Invalid request.'}, status=400)
+        name      = payload.get('name', '').strip() or 'Website visitor'
+        phone     = payload.get('phone', '').strip()
+        email_val = payload.get('email', '').strip()
+        message   = payload.get('message', '').strip()
+        thread_id = payload.get('thread_id', '').strip()
+
+    if not message:
+        return JsonResponse({'success': False, 'message': 'Message is required.'}, status=400)
+
+    fields = {'name': name, 'phone': phone, 'email': email_val, 'message': message}
+    if thread_id:
+        fields['thread_id'] = thread_id
+
+    if attachment_file:
+        fc_result = _call_fc_multipart('chat', fields, {
+            'attachment': (attachment_file.name, attachment_file.read(), attachment_file.content_type or 'application/octet-stream')
+        })
+    else:
+        fc_result = _call_fc('chat', fields)
+
+    returned_thread_id = (fc_result or {}).get('thread_id') or thread_id or ''
+
+    # Send email only on first message (no existing thread_id)
+    if not thread_id:
+        try:
+            body_text = (
+                f"New chat message from {name}\n\n"
+                f"Phone: {phone or 'Not provided'}\n"
+                f"Email: {email_val or 'Not provided'}\n\n"
+                f"Message:\n{message}"
+            )
+            EmailMessage(
+                subject=f"[JunkBusters Chat] Message from {name}",
+                body=body_text,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=[settings.CONTACT_EMAIL],
+                reply_to=[email_val] if email_val else [],
+            ).send(fail_silently=True)
+        except Exception:
+            pass
+
+    return JsonResponse({'success': True, 'thread_id': str(returned_thread_id)})
+
+
+@require_http_methods(["GET"])
+def chat_poll(request):
+    """Proxy poll requests to FieldCommand for new outbound messages."""
+    import urllib.request as _ur, urllib.parse as _up
+    thread_id = request.GET.get('thread_id', '')
+    since     = request.GET.get('since', '')
+    if not thread_id:
+        return JsonResponse({'messages': []})
+    try:
+        params = _up.urlencode({'thread_id': thread_id, 'since': since, 'key': _FC_KEY})
+        url = f'http://{_FC_HOST}:{_FC_PORT}/marketing/api/embed/chat/poll/?{params}'
+        req = _ur.Request(url)
+        with _ur.urlopen(req, timeout=4) as resp:
+            return JsonResponse(_json.loads(resp.read()))
+    except Exception:
+        return JsonResponse({'messages': []})
 
 
 # ── Shared data ───────────────────────────────────────────────────────────────
@@ -699,6 +846,37 @@ SERVICES = {
         'trust_body': 'Junk Busters LLC combines light demolition expertise with our full-service hauling operation — meaning the same crew that tears it down loads it up and drives it away. No subcontractors, no coordination headaches. Call 615-881-2505 for a free on-site estimate anywhere in Nashville, Clarksville, Bowling Green, or the surrounding Middle TN & Southern KY area.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN'],
     },
+
+    'dump-trailer-rental': {
+        'slug': 'dump-trailer-rental',
+        'title': 'Dump Trailer Rental',
+        'hero_h1': 'Dump Trailer Rental in Middle TN & Southern KY',
+        'hero_sub': '20-yard dump trailer delivered to your door — $450 flat rate, up to 2 tons included. You load it, we haul it away. Limited availability, so book early.',
+        'meta_desc': '20-yard dump trailer rental in Middle TN & Southern KY. $450 flat rate covers up to 2 tons. We deliver and pick up. Call Junk Busters at 615-881-2505.',
+        'meta_keywords': 'dump trailer rental Nashville TN, dump trailer rental Clarksville TN, dump trailer rental Bowling Green KY, 20 yard trailer rental Middle Tennessee, dump trailer rental Robertson County, junk trailer rental Nashville, dump trailer delivery Nashville, DIY dumpster rental TN',
+        'section1_title': 'Skip the Labor Cost — Rent Our Dump Trailer & Load It Yourself',
+        'section1_body': [
+            'Junk Busters LLC is first and foremost a full-service junk removal company — our crews do the heavy lifting so you don\'t have to. But we know that\'s not the right fit for every job. Some customers have the manpower and just need somewhere to put it all. That\'s exactly why we offer dump trailer rental: a straightforward DIY option that gets you the hauling capacity without paying for labor.',
+            'We currently operate one 20-yard heavy-duty dump trailer. It holds the equivalent of roughly 6–8 pickup truck loads and can handle up to 2 tons of weight — enough for most residential cleanouts, landscaping projects, roofing jobs, and renovation debris. Because we only have one trailer in the fleet right now, availability is limited. We recommend calling ahead to check the schedule and reserve your spot.',
+            'We deliver the trailer to your property, drop it where you need it, and pick it up when you\'re done. Load it at your own pace — no rushing to beat a window. When you\'re ready, give us a call and we\'ll come haul everything away. Simple, transparent pricing with nothing hidden.',
+        ],
+        'cards_title': 'How It Works',
+        'yellow_cards': [
+            {'title': '1. Call to Reserve', 'body': 'We only have one trailer, so availability moves fast. Call 615-881-2505 to check the schedule and lock in your date. We\'ll confirm delivery details and review pricing based on your location.'},
+            {'title': '2. We Deliver — You Load', 'body': 'We drop the 20-yard trailer exactly where you need it. Fill it with furniture, appliances, yard debris, renovation materials, concrete, dirt, lumber — whatever you\'re clearing out. You\'ve got the time, use it.'},
+            {'title': '3. We Pick Up & Haul Away', 'body': 'When you\'re done loading, give us a call. We\'ll hook up the trailer and haul everything away for proper disposal or recycling. No dump runs, no second trips — one call and it\'s gone.'},
+        ],
+        'section2_title': 'Pricing & What\'s Included',
+        'section2_body': [
+            '<strong>$450 flat rate</strong> — includes delivery, pickup, and up to <strong>2 tons</strong> of material. That covers the vast majority of residential cleanouts and weekend projects.',
+            '<strong>Overweight fee:</strong> Any weight beyond 2 tons is charged at <strong>$100 per additional ton</strong>. We weigh at the disposal facility and will let you know if you\'re close to the limit before we pick up.',
+            '<strong>Distance fee:</strong> Deliveries beyond <strong>20 miles</strong> from our base in Orlinda, TN carry a <strong>$50 surcharge</strong>. Not sure if you\'re in range? Call us at 615-881-2505 and we\'ll check for you — no hassle.',
+            '<strong>What\'s not accepted:</strong> Hazardous materials including paint, chemicals, asbestos, propane tanks, and tires cannot go in the trailer. Everything else — furniture, appliances, mattresses, yard waste, drywall, roofing shingles, concrete, dirt — is fair game. When in doubt, ask when you book.',
+        ],
+        'step_cards': [],
+        'trust_body': 'Junk Busters LLC is growing its trailer fleet to give more customers the flexibility to handle jobs on their own terms. Right now we run one trailer and we take care of it like it\'s the only one we\'ve got — because it is. You\'ll get the same on-time, professional service we bring to every full-service job. Call 615-881-2505 to reserve your trailer today.',
+        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Goodlettsville, TN', 'Portland, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Franklin, KY', 'Simpson County, KY'],
+    },
 }
 
 CITY_PAGES = {
@@ -1034,6 +1212,7 @@ ALL_SERVICES = [
     {'name': 'Short-Term Rental Turnover', 'desc': 'Hotel-ready Airbnb and vacation rental turnovers with photo reports and calendar-synced scheduling.', 'slug': 'short-term-rental-turnover', 'image': 'img/Move In Move Out Cleaning.jpg'},
     {'name': 'Move-Out Deep Cleaning', 'desc': 'Thorough move-in/move-out cleaning — appliances, cabinets, baseboards, and every inch. Security-deposit ready.', 'slug': 'move-out-deep-cleaning', 'image': 'img/image_2.jpg'},
     {'name': 'Light Demolition', 'desc': 'Shed demolition, deck teardown, fence removal, and hot tub removal — we tear it down and haul it away in one visit.', 'slug': 'light-demolition', 'image': 'img/demolition.png'},
+    {'name': 'Dump Trailer Rental', 'desc': 'We deliver a heavy-duty dump trailer to your property, you load it on your schedule, and we haul it away. Simple flat-rate pricing.', 'slug': 'dump-trailer-rental', 'image': 'img/1000003360.jpg'},
 ]
 
 SERVICE_AREAS = [
@@ -1061,6 +1240,7 @@ def service_page(request, slug):
     svc = SERVICES.get(slug)
     if not svc:
         raise Http404
+    _post_to_fc('page-view', {'slug': slug, 'title': svc.get('title', slug)})
     template = svc.get('custom_template', 'website/service_detail.html')
     return render(request, template, {
         'svc': svc,
@@ -1151,7 +1331,8 @@ def quote(request):
             except Exception:
                 pass
 
-            # Forward to FieldCommand as a BookingRequest lead
+            # Forward to FieldCommand as a BookingRequest lead (with UTM attribution)
+            lead_source, referrer = _utm_info(request.session)
             _post_to_fc('quote', {
                 'first_name': d['first_name'],
                 'last_name': d.get('last_name', ''),
@@ -1163,6 +1344,8 @@ def quote(request):
                 'state': d.get('state', ''),
                 'zip_code': d.get('zip_code', ''),
                 'notes': d.get('description', ''),
+                'lead_source': lead_source,
+                'referrer': referrer,
             })
 
             # Send email notification
@@ -1258,6 +1441,22 @@ def booking_success(request):
         'cta_text': 'Back to Home',
         'cta_url': '/',
     })
+
+
+@require_http_methods(["POST"])
+def date_interest(request):
+    """Forward booking date selections to FC so demand patterns are visible."""
+    import json as _json2
+    try:
+        data = _json2.loads(request.body)
+    except Exception:
+        data = {}
+    date_str = (data.get('date') or '').strip()
+    service = (data.get('service') or '').strip()
+    if date_str:
+        _call_fc('date-interest', {'date': date_str, 'service': service})
+    from django.http import JsonResponse as _JR
+    return _JR({'ok': True})
 
 
 def areas(request):
@@ -1368,6 +1567,15 @@ def contact(request):
                 except Exception:
                     pass
 
+                # Forward to FC Inbox as a lead thread
+                _call_fc('chat', {
+                    'name': name,
+                    'phone': phone,
+                    'email': email,
+                    'message': f"JOB APPLICATION — {position}\n\nAvailability: {availability}\n\n{experience}",
+                    'lead_source': 'Job Application',
+                })
+
                 success = 'apply'
 
         else:
@@ -1411,6 +1619,15 @@ def contact(request):
                     msg.send(fail_silently=True)
                 except Exception:
                     pass
+
+                # Forward to FC Inbox as a lead thread
+                _call_fc('chat', {
+                    'name': name,
+                    'phone': phone or '',
+                    'email': email or '',
+                    'message': message,
+                    'lead_source': 'Contact Form',
+                })
 
                 success = 'contact'
 

@@ -112,12 +112,14 @@ img { max-width: 100%; height: auto; }
   border-top: 3px solid var(--yellow);
   z-index: 200;
   box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 .nav-dropdown-menu a {
   display: block;
-  padding: 10px 16px;
+  padding: 11px 18px;
   color: var(--navy-dark);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   border-bottom: 1px solid #e5e7eb;
   transition: color 0.15s, background 0.15s;
@@ -257,7 +259,7 @@ img { max-width: 100%; height: auto; }
   margin: 0 auto;
   padding: 0 20px;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 160px minmax(0, 1fr) 175px;
   grid-template-rows: auto auto;
 }
 
@@ -283,17 +285,18 @@ img { max-width: 100%; height: auto; }
   min-height: 68px;
 }
 
-/* Right graphic: column 3, spans both rows, mirrored */
+/* Right graphic: column 3, spans both rows */
 .header-right-graphic {
   grid-column: 3;
   grid-row: 1 / 3;
+  width: 100%;
   height: 118px;
-  width: auto;
   object-fit: contain;
-  transform: none;
+  object-position: center;
   display: block;
-  align-self: stretch;
-  padding: 0 0 0 16px;
+  align-self: center;
+  padding: 0 0 0 24px;
+  box-sizing: border-box;
 }
 .header-logo-text {
   display: flex;
@@ -399,7 +402,7 @@ img { max-width: 100%; height: auto; }
 .nav-links li a {
   display: flex;
   align-items: center;
-  padding: 0 18px;
+  padding: 0 13px;
   color: var(--navy-dark);
   font-size: 14px;
   font-weight: 700;
@@ -1001,4 +1004,6 @@ img { max-width: 100%; height: auto; }
   .hero-content { flex-direction: column; }
   .hero-badge { display: none; }
   .header-info-bottom { display: none; }
+  .header-inner { grid-template-columns: auto 1fr; }
+  .header-right-graphic { display: none; }
 }

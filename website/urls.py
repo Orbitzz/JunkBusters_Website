@@ -16,6 +16,8 @@ urlpatterns = [
     path('loyalty/', views.loyalty, name='loyalty'),
     path('track/', views.track, name='track'),
     path('referral/', views.referral, name='referral'),
+    path('api/chat/', views.chat_proxy, name='chat_proxy'),
+    path('api/chat/poll/', views.chat_poll, name='chat_poll'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
     path('robots.txt', views.robots, name='robots'),
     # City landing pages — before catch-all

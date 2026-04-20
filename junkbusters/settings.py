@@ -15,6 +15,10 @@ GOOGLE_OAUTH_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')
 GOOGLE_OAUTH_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')
 GOOGLE_OAUTH_REDIRECT_URI = config('GOOGLE_OAUTH_REDIRECT_URI', default='http://localhost:8001/google-auth/callback/')
 
+# FieldCommand integration — reviews API (replaces direct GBP OAuth on this site)
+FIELDCOMMAND_REVIEWS_URL = config('FIELDCOMMAND_REVIEWS_URL', default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
+FIELDCOMMAND_EMBED_API_KEY = config('FIELDCOMMAND_EMBED_API_KEY', default='')
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -35,6 +39,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'website.middleware.UTMCaptureMiddleware',
 ]
 
 ROOT_URLCONF = 'junkbusters.urls'

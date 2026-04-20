@@ -14,155 +14,199 @@
 </div>
 
 <!-- How it works -->
-<section style="padding:40px 0;background:#f8fafc;border-bottom:1px solid #e5e7eb;">
-  <div class="container">
-    <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:center;text-align:center;">
-      <div style="flex:1;min-width:160px;max-width:200px;">
-        <div style="font-size:28px;margin-bottom:8px;">💰</div>
-        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">Earn Points</div>
-        <div style="font-size:13px;color:var(--text-muted);">1 point per $1 spent on any service</div>
+<section style="padding:56px 0;background:#fff;border-bottom:1px solid #e5e7eb;">
+  <div class="container" style="max-width:800px;">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+
+      <div style="padding:32px 24px;text-align:center;background:#fff;">
+        <div style="width:44px;height:44px;margin:0 auto 16px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        </div>
+        <div style="font-weight:800;font-size:15px;color:var(--navy-dark);margin-bottom:6px;">Earn Points</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">1 point per $1 spent on any service</div>
       </div>
-      <div style="flex:1;min-width:160px;max-width:200px;">
-        <div style="font-size:28px;margin-bottom:8px;">🏆</div>
-        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">Climb Tiers</div>
-        <div style="font-size:13px;color:var(--text-muted);">Bronze → Silver → Gold → Platinum</div>
+
+      <div style="padding:32px 24px;text-align:center;background:#f8fafc;border-left:1px solid #e5e7eb;border-right:1px solid #e5e7eb;">
+        <div style="width:44px;height:44px;margin:0 auto 16px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div style="font-weight:800;font-size:15px;color:var(--navy-dark);margin-bottom:6px;">Climb Tiers</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Bronze &rarr; Silver &rarr; Gold &rarr; Platinum</div>
       </div>
-      <div style="flex:1;min-width:160px;max-width:200px;">
-        <div style="font-size:28px;margin-bottom:8px;">🎁</div>
-        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">Redeem Rewards</div>
-        <div style="font-size:13px;color:var(--text-muted);">100 points = $10 off your next job</div>
+
+      <div style="padding:32px 24px;text-align:center;background:#fff;">
+        <div style="width:44px;height:44px;margin:0 auto 16px;background:var(--navy);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--yellow)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+        </div>
+        <div style="font-weight:800;font-size:15px;color:var(--navy-dark);margin-bottom:6px;">Redeem Rewards</div>
+        <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">100 points = $10 off your next job</div>
       </div>
+
     </div>
   </div>
 </section>
 
 <!-- Lookup form + results -->
-<section class="section">
+<section class="section" style="background:#f8fafc;">
   <div class="container" style="max-width:560px;">
 
     {% if result and result.found %}
     <!-- Results panel -->
-    <div style="text-align:center;margin-bottom:32px;">
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.07);padding:36px;margin-bottom:24px;">
 
-      <!-- Tier badge -->
-      <div style="display:inline-block;padding:6px 20px;border-radius:20px;font-weight:800;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;
-        {% if result.tier == 'Platinum' %}background:#e0f7fa;color:#00b4d8;
-        {% elif result.tier == 'Gold' %}background:#fef3c7;color:#d97706;
-        {% elif result.tier == 'Silver' %}background:#f1f5f9;color:#64748b;
-        {% else %}background:#fff3cd;color:#92400e;
-        {% endif %}">
-        {{ result.tier }} Member
+      <!-- Tier badge + name -->
+      <div style="text-align:center;margin-bottom:28px;">
+        <div style="display:inline-block;padding:5px 18px;border-radius:20px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:14px;
+          {% if result.tier == 'Platinum' %}background:#e0f7fa;color:#0284c7;
+          {% elif result.tier == 'Gold' %}background:#fef3c7;color:#b45309;
+          {% elif result.tier == 'Silver' %}background:#f1f5f9;color:#475569;
+          {% else %}background:#fdf4ed;color:#92400e;
+          {% endif %}">
+          {{ result.tier }} Member
+        </div>
+        {% if result.name %}<div style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px;">{{ result.name }}</div>{% endif %}
+        <div style="font-size:56px;font-weight:900;color:var(--navy-dark);line-height:1;letter-spacing:-2px;">{{ result.points }}</div>
+        <div style="font-size:14px;color:var(--text-muted);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">points available</div>
       </div>
 
-      <div style="font-size:42px;font-weight:900;color:var(--navy-dark);line-height:1;">{{ result.points }}</div>
-      <div style="font-size:15px;color:var(--text-muted);margin-top:4px;">points available</div>
-      {% if result.name %}<div style="font-size:16px;font-weight:700;color:var(--navy);margin-top:8px;">{{ result.name }}</div>{% endif %}
-    </div>
-
-    <!-- Progress bar -->
-    <div style="margin-bottom:24px;">
-      <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy-dark);margin-bottom:6px;">
-        <span>Progress to next reward</span>
-        <span>{{ result.points }} / {{ result.reward_threshold }} pts</span>
+      <!-- Progress bar -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--navy-dark);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.4px;">
+          <span>Progress to next reward</span>
+          <span>{{ result.points }} / {{ result.reward_threshold }}</span>
+        </div>
+        <div style="background:#e5e7eb;border-radius:99px;height:8px;overflow:hidden;">
+          <div style="height:100%;background:var(--yellow);border-radius:99px;width:{% widthratio result.points result.reward_threshold 100 %}%;max-width:100%;transition:width .4s;"></div>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:6px;">
+          {{ result.reward_threshold }} points = ${{ result.reward_amount|floatformat:0 }} off your next job
+        </div>
       </div>
-      <div style="background:#e5e7eb;border-radius:6px;height:10px;overflow:hidden;">
-        <div style="height:100%;background:var(--yellow);border-radius:6px;width:{% widthratio result.points result.reward_threshold 100 %}%;max-width:100%;"></div>
-      </div>
-      <div style="font-size:12px;color:var(--text-muted);margin-top:4px;">
-        {{ result.reward_threshold }} points = ${{ result.reward_amount|floatformat:0 }} off your next job
-      </div>
-    </div>
 
-    {% if result.rewards_available %}
-    <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:8px;padding:16px;text-align:center;margin-bottom:24px;">
-      <div style="font-weight:800;color:#15803d;font-size:15px;">
-        You have {{ result.rewards_available }} reward{{ result.rewards_available|pluralize }} ready to redeem!
+      {% if result.rewards_available %}
+      <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:14px;">
+        <div style="width:36px;height:36px;background:#15803d;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:800;color:#15803d;font-size:14px;">{{ result.rewards_available }} reward{{ result.rewards_available|pluralize }} ready to redeem</div>
+          <div style="font-size:12px;color:#166534;margin-top:2px;">Mention this when booking and we'll apply your discount.</div>
+        </div>
       </div>
-      <div style="font-size:13px;color:#166534;margin-top:4px;">Mention this when booking and we'll apply your discount.</div>
-    </div>
-    {% endif %}
+      {% endif %}
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;color:var(--text-muted);margin-bottom:28px;background:#f8fafc;border-radius:8px;padding:16px;">
-      <div><span style="font-weight:700;color:var(--navy-dark);">Lifetime Points:</span> {{ result.lifetime_points }}</div>
-      <div><span style="font-weight:700;color:var(--navy-dark);">Current Tier:</span> {{ result.tier }}</div>
-    </div>
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;">
+        <div style="background:#f8fafc;border-radius:8px;padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Lifetime Points</div>
+          <div style="font-size:20px;font-weight:900;color:var(--navy-dark);">{{ result.lifetime_points }}</div>
+        </div>
+        <div style="background:#f8fafc;border-radius:8px;padding:14px 16px;">
+          <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Current Tier</div>
+          <div style="font-size:20px;font-weight:900;color:var(--navy-dark);">{{ result.tier }}</div>
+        </div>
+      </div>
 
-    <div style="text-align:center;">
-      <a href="/book/" class="btn btn-yellow">Book a Service to Earn More</a>
-      &nbsp;
-      <a href="/loyalty/" class="btn btn-navy" style="font-size:13px;">Look Up Different Email</a>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="/book/" class="btn btn-yellow" style="flex:1;text-align:center;">Book a Service</a>
+        <a href="/loyalty/" class="btn btn-navy" style="flex:1;text-align:center;font-size:13px;">Check Another Email</a>
+      </div>
     </div>
 
     {% elif result and not result.found %}
     <!-- Not found -->
-    <div style="text-align:center;padding:32px;background:#f8fafc;border-radius:12px;margin-bottom:24px;">
-      <div style="font-size:32px;margin-bottom:12px;">🔍</div>
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.07);padding:40px;text-align:center;margin-bottom:24px;">
+      <div style="width:52px;height:52px;background:#f1f5f9;border-radius:12px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
       <h3 style="font-weight:800;color:var(--navy-dark);margin-bottom:8px;">No Account Found</h3>
-      <p style="font-size:14px;color:var(--text-muted);">We didn't find a loyalty account for that email. Book a service with us and you'll be enrolled automatically.</p>
-    </div>
-    <div style="text-align:center;">
+      <p style="font-size:14px;color:var(--text-muted);max-width:360px;margin:0 auto 24px;">We didn't find a loyalty account for that email. Book a service and you'll be enrolled automatically.</p>
       <a href="/book/" class="btn btn-yellow">Book a Service</a>
     </div>
 
     {% elif result is not None %}
     <!-- FC offline -->
-    <div style="text-align:center;padding:24px;background:#fff3cd;border-radius:8px;margin-bottom:24px;">
-      <p style="color:#856404;font-size:14px;">Unable to load loyalty data right now. Please call <a href="tel:615-881-2505" style="color:#856404;font-weight:700;">615-881-2505</a> for your balance.</p>
+    <div style="background:#fff;border-radius:14px;border:1px solid #fed7aa;padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:14px;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <p style="color:#9a3412;font-size:14px;margin:0;">Unable to load loyalty data right now. Please call <a href="tel:615-881-2505" style="color:#9a3412;font-weight:700;">615-881-2505</a> for your balance.</p>
     </div>
 
     {% else %}
     <!-- Initial form -->
-    <h2 class="section-title text-center">Check Your Balance</h2>
-    <p class="section-subtitle text-center" style="margin-bottom:28px;">Enter the email address you used when booking with us.</p>
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 16px rgba(0,0,0,0.07);padding:40px;margin-bottom:0;">
+      <h2 style="font-size:22px;font-weight:800;color:var(--navy-dark);margin-bottom:6px;">Check Your Balance</h2>
+      <p style="font-size:14px;color:var(--text-muted);margin-bottom:24px;">Enter the email address you used when booking with us.</p>
 
-    <form method="post" action="/loyalty/">
-      {% csrf_token %}
-      <div style="display:flex;gap:10px;">
-        <input type="email" name="email" value="{{ email }}" required placeholder="your@email.com"
-               style="flex:1;padding:12px 16px;border:1px solid #d1d5db;border-radius:6px;font-size:15px;font-family:inherit;">
-        <button type="submit" class="btn btn-yellow" style="white-space:nowrap;">Check Points</button>
-      </div>
-    </form>
+      <form method="post" action="/loyalty/">
+        {% csrf_token %}
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:7px;">Email Address</label>
+        <div style="display:flex;gap:10px;">
+          <input type="email" name="email" value="{{ email }}" required placeholder="your@email.com"
+                 style="flex:1;padding:12px 16px;border:1.5px solid #d1d5db;border-radius:7px;font-size:15px;font-family:inherit;transition:border-color .15s;">
+          <button type="submit" class="btn btn-yellow" style="white-space:nowrap;padding:12px 22px;">Check Points</button>
+        </div>
+      </form>
+
+      <p style="margin-top:18px;font-size:13px;color:var(--text-muted);">
+        Have an account?
+        <a href="/portal/" style="color:var(--yellow-dark);font-weight:700;">Sign in to your portal</a>
+        to see your full history.
+      </p>
+    </div>
     {% endif %}
 
   </div>
 </section>
 
 <!-- Tier table -->
-<section style="padding:40px 0;background:#f8fafc;">
+<section style="padding:56px 0;background:#fff;">
   <div class="container" style="max-width:640px;">
-    <h2 class="section-title text-center" style="margin-bottom:24px;">Tier Benefits</h2>
-    <table style="width:100%;border-collapse:collapse;font-size:14px;">
-      <thead>
-        <tr style="background:var(--navy-dark);color:#fff;">
-          <th style="padding:12px 16px;text-align:left;border-radius:6px 0 0 0;">Tier</th>
-          <th style="padding:12px 16px;text-align:left;">Lifetime Points</th>
-          <th style="padding:12px 16px;text-align:left;border-radius:0 6px 0 0;">Perk</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr style="background:#fff;border-bottom:1px solid #e5e7eb;">
-          <td style="padding:12px 16px;font-weight:700;color:#92400e;">Bronze</td>
-          <td style="padding:12px 16px;color:var(--text-muted);">0 – 199</td>
-          <td style="padding:12px 16px;">Standard rewards (100 pts = $10)</td>
-        </tr>
-        <tr style="background:#f8fafc;border-bottom:1px solid #e5e7eb;">
-          <td style="padding:12px 16px;font-weight:700;color:#64748b;">Silver</td>
-          <td style="padding:12px 16px;color:var(--text-muted);">200 – 499</td>
-          <td style="padding:12px 16px;">Priority scheduling + rewards</td>
-        </tr>
-        <tr style="background:#fff;border-bottom:1px solid #e5e7eb;">
-          <td style="padding:12px 16px;font-weight:700;color:#d97706;">Gold</td>
-          <td style="padding:12px 16px;color:var(--text-muted);">500 – 999</td>
-          <td style="padding:12px 16px;">Priority scheduling + bonus rewards</td>
-        </tr>
-        <tr style="background:#f8fafc;">
-          <td style="padding:12px 16px;font-weight:700;color:#00b4d8;">Platinum</td>
-          <td style="padding:12px 16px;color:var(--text-muted);">1,000+</td>
-          <td style="padding:12px 16px;">VIP treatment + maximum rewards</td>
-        </tr>
-      </tbody>
-    </table>
+    <h2 class="section-title text-center" style="margin-bottom:28px;">Tier Benefits</h2>
+    <div style="border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;">
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        <thead>
+          <tr style="background:var(--navy-dark);color:#fff;">
+            <th style="padding:14px 20px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Tier</th>
+            <th style="padding:14px 20px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Lifetime Points</th>
+            <th style="padding:14px 20px;text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:0.5px;">Perk</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="background:#fff;border-bottom:1px solid #f1f5f9;">
+            <td style="padding:16px 20px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#cd7f32;margin-right:8px;vertical-align:middle;"></span>
+              <strong style="color:#92400e;">Bronze</strong>
+            </td>
+            <td style="padding:16px 20px;color:var(--text-muted);">0 – 199</td>
+            <td style="padding:16px 20px;color:var(--navy-dark);">Standard rewards (100 pts = $10)</td>
+          </tr>
+          <tr style="background:#f8fafc;border-bottom:1px solid #f1f5f9;">
+            <td style="padding:16px 20px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#94a3b8;margin-right:8px;vertical-align:middle;"></span>
+              <strong style="color:#475569;">Silver</strong>
+            </td>
+            <td style="padding:16px 20px;color:var(--text-muted);">200 – 499</td>
+            <td style="padding:16px 20px;color:var(--navy-dark);">Priority scheduling + rewards</td>
+          </tr>
+          <tr style="background:#fff;border-bottom:1px solid #f1f5f9;">
+            <td style="padding:16px 20px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#d97706;margin-right:8px;vertical-align:middle;"></span>
+              <strong style="color:#b45309;">Gold</strong>
+            </td>
+            <td style="padding:16px 20px;color:var(--text-muted);">500 – 999</td>
+            <td style="padding:16px 20px;color:var(--navy-dark);">Priority scheduling + bonus rewards</td>
+          </tr>
+          <tr style="background:#f8fafc;">
+            <td style="padding:16px 20px;">
+              <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#0284c7;margin-right:8px;vertical-align:middle;"></span>
+              <strong style="color:#0284c7;">Platinum</strong>
+            </td>
+            <td style="padding:16px 20px;color:var(--text-muted);">1,000+</td>
+            <td style="padding:16px 20px;color:var(--navy-dark);">VIP treatment + maximum rewards</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </section>
 
