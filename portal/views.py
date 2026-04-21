@@ -1,8 +1,11 @@
+import json
 from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.tokens import default_token_generator
+from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.core.cache import cache
 from django.core.mail import send_mail
@@ -63,6 +66,76 @@ def _send_verification_email(request, user):
         recipient_list=[user.email],
         fail_silently=True,
     )
+
+
+# ── Job status webhook ────────────────────────────────────────────────────────
+
+_STATUS_MESSAGES = {
+    'Scheduled':   ('Your service is confirmed', 'Your Junk Busters appointment is confirmed. We\'ll be there on time — call 615-881-2505 with any questions.'),
+    'En Route':    ('Your crew is on the way!',  'Your Junk Busters crew is heading to you now. Please make sure the area is accessible.'),
+    'In Progress': ('Your crew has arrived',     'Your Junk Busters crew is on site and getting to work. We\'ll update you when we\'re done.'),
+    'Completed':   ('Service complete — thank you!', 'Your Junk Busters service is complete. Thank you for choosing us! Leave us a review: ' + getattr(settings, 'GOOGLE_REVIEW_URL', '')),
+}
+
+
+def _send_sms(to_number, body):
+    """Send SMS via Twilio. Fails silently if Twilio is not configured."""
+    if not (settings.TWILIO_ACCOUNT_SID and to_number):
+        return
+    try:
+        from twilio.rest import Client
+        Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN).messages.create(
+            body=body,
+            from_=settings.TWILIO_FROM_NUMBER,
+            to=to_number,
+        )
+    except Exception:
+        pass
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def job_status_webhook(request):
+    """Receive job status updates from FieldCommand and notify customer via email + SMS."""
+    if request.headers.get('X-FC-EMBED-KEY') != settings.FIELDCOMMAND_EMBED_API_KEY:
+        return HttpResponse(status=403)
+    try:
+        payload = json.loads(request.body)
+    except Exception:
+        return HttpResponse(status=400)
+
+    email   = payload.get('customer_email', '').strip()
+    phone   = payload.get('customer_phone', '').strip()
+    status  = payload.get('new_status', '').strip()
+    service = payload.get('job_service', 'Junk Removal')
+    dt      = payload.get('scheduled_datetime', '')
+
+    subject_tpl, body_tpl = _STATUS_MESSAGES.get(status, (None, None))
+    if not subject_tpl:
+        return JsonResponse({'ok': True, 'skipped': True})
+
+    date_str = dt[:10] if dt else ''
+    full_body = (
+        f"{body_tpl}\n\n"
+        f"Service: {service}\n"
+        + (f"Date: {date_str}\n" if date_str else '')
+        + "\nJunk Busters LLC\n615-881-2505\njunkbustershauling.com"
+    )
+    sms_body = f"Junk Busters: {body_tpl[:140]}"
+
+    if email:
+        send_mail(
+            subject=f"Junk Busters — {subject_tpl}",
+            message=full_body,
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=True,
+        )
+
+    if phone:
+        _send_sms(phone, sms_body)
+
+    return JsonResponse({'ok': True})
 
 
 # ── Auth views ─────────────────────────────────────────────────────────────────
@@ -188,9 +261,17 @@ def dashboard(request):
     user = request.user
     profile, _ = CustomerProfile.objects.get_or_create(user=user)
 
-    # Fetch live data from FieldCommand — falls back gracefully if FC is down
-    jobs_data    = _call_fc('jobs',    {'email': user.email})
-    loyalty_data = _call_fc('loyalty', {'email': user.email})
+    # Fetch live data from FieldCommand — 60-second per-user cache, graceful fallback
+    cache_jobs    = f'fc_jobs:{user.email}'
+    cache_loyalty = f'fc_loyalty:{user.email}'
+    jobs_data    = cache.get(cache_jobs)
+    if jobs_data is None:
+        jobs_data = _call_fc('jobs', {'email': user.email})
+        cache.set(cache_jobs, jobs_data, 60)
+    loyalty_data = cache.get(cache_loyalty)
+    if loyalty_data is None:
+        loyalty_data = _call_fc('loyalty', {'email': user.email})
+        cache.set(cache_loyalty, loyalty_data, 60)
 
     fc_online = jobs_data is not None
 
@@ -251,6 +332,18 @@ def profile_view(request):
     return render(request, 'portal/profile.html', {
         'profile': profile,
         'saved':   saved,
+    })
+
+
+@login_required(login_url='/portal/')
+def portal_payment(request):
+    payment_url = request.GET.get('url', '')
+    service     = request.GET.get('service', 'Junk Removal')
+    amount      = request.GET.get('amount', '')
+    return render(request, 'portal/payment.html', {
+        'payment_url': payment_url,
+        'service':     service,
+        'amount':      amount,
     })
 
 

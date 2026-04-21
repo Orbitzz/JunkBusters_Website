@@ -69,6 +69,16 @@ TEMPLATES = [
 WSGI_APPLICATION = 'junkbusters.wsgi.application'
 
 import dj_database_url
+import sentry_sdk
+
+SENTRY_DSN = config('SENTRY_DSN', default='')
+if SENTRY_DSN:
+    sentry_sdk.init(dsn=SENTRY_DSN, traces_sample_rate=0.2)
+
+# Twilio (SMS for job status notifications)
+TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
+TWILIO_AUTH_TOKEN  = config('TWILIO_AUTH_TOKEN',  default='')
+TWILIO_FROM_NUMBER = config('TWILIO_FROM_NUMBER', default='')
 DATABASES = {
     'default': dj_database_url.config(
         default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",

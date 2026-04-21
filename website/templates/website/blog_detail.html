@@ -1,0 +1,66 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} | Junk Busters LLC{% endblock %}
+{% block meta_desc %}{{ post.excerpt }}{% endblock %}
+{% block canonical %}https://www.junkbustershauling.com/blog/{{ post.slug }}/{% endblock %}
+{% block og_title %}{{ post.title }} | Junk Busters LLC{% endblock %}
+{% block og_desc %}{{ post.excerpt }}{% endblock %}
+{% block og_url %}https://www.junkbustershauling.com/blog/{{ post.slug }}/{% endblock %}
+{% if post.image_url %}{% block og_image %}{{ post.image_url }}{% endblock %}{% endif %}
+
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ post.title|escapejs }}",
+  "description": "{{ post.excerpt|escapejs }}",
+  "datePublished": "{{ post.published|date:'c' }}",
+  "author": {"@type": "Organization", "name": "Junk Busters LLC"},
+  "publisher": {
+    "@type": "Organization",
+    "name": "Junk Busters LLC",
+    "logo": {"@type": "ImageObject", "url": "https://www.junkbustershauling.com{% static 'img/logo.png' %}"}
+  }{% if post.image_url %},
+  "image": "{{ post.image_url|escapejs }}"{% endif %}
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<section style="padding:60px 0 80px;">
+  <div class="container" style="max-width:760px;">
+
+    <a href="{% url 'website:blog_list' %}"
+       style="font-size:13px;font-weight:700;color:var(--text-muted);text-decoration:none;display:inline-block;margin-bottom:24px;">
+      ← All Articles
+    </a>
+
+    {% if post.image_url %}
+    <img src="{{ post.image_url }}" alt="{{ post.title }}"
+         style="width:100%;border-radius:14px;max-height:400px;object-fit:cover;margin-bottom:32px;">
+    {% endif %}
+
+    <div style="font-size:12px;color:var(--text-muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;">
+      {{ post.published|date:"F j, Y" }}
+    </div>
+
+    <h1 style="font-size:clamp(24px,4vw,36px);font-weight:900;color:var(--navy-dark);margin-bottom:20px;line-height:1.25;">
+      {{ post.title }}
+    </h1>
+
+    <div style="font-size:16px;line-height:1.75;color:#374151;">
+      {{ post.body|safe }}
+    </div>
+
+    <!-- CTA -->
+    <div style="margin-top:48px;background:#f8fafc;border-radius:14px;padding:32px;text-align:center;border:1.5px solid #e5e7eb;">
+      <div style="font-size:20px;font-weight:800;color:var(--navy-dark);margin-bottom:8px;">Ready to clear out the clutter?</div>
+      <p style="color:var(--text-muted);font-size:14px;margin-bottom:20px;">Junk Busters serves Middle TN &amp; Southern KY — same-day and next-day appointments available.</p>
+      <a href="/quote/" class="btn btn-yellow" style="font-size:15px;padding:13px 32px;">Get a Free Quote</a>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

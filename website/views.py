@@ -1407,7 +1407,21 @@ def booking(request):
             })
             return redirect('website:booking_success')
     else:
-        form = BookingForm()
+        initial = {}
+        if request.user.is_authenticated:
+            from portal.models import CustomerProfile
+            profile = CustomerProfile.objects.filter(user=request.user).first()
+            initial = {
+                'first_name': request.user.first_name,
+                'last_name':  request.user.last_name,
+                'email':      request.user.email,
+                'phone':      profile.phone    if profile else '',
+                'address':    profile.address  if profile else '',
+                'city':       profile.city     if profile else '',
+                'state':      profile.state    if profile else 'TN',
+                'zip_code':   profile.zip_code if profile else '',
+            }
+        form = BookingForm(initial=initial)
     return render(request, 'website/booking.html', {'form': form})
 
 
@@ -1671,3 +1685,27 @@ def sitemap(request):
 def robots(request):
     content = "User-agent: *\nAllow: /\nSitemap: https://www.junkbustershauling.com/sitemap.xml\n"
     return HttpResponse(content, content_type='text/plain')
+
+
+# ── Blog ───────────────────────────────────────────────────────────────────────
+
+def blog_list(request):
+    from .models import BlogPost
+    posts = BlogPost.objects.filter(is_live=True)
+    return render(request, 'website/blog_list.html', {'posts': posts})
+
+
+def blog_detail(request, slug):
+    from .models import BlogPost
+    try:
+        post = BlogPost.objects.get(slug=slug, is_live=True)
+    except BlogPost.DoesNotExist:
+        from django.http import Http404
+        raise Http404
+    return render(request, 'website/blog_detail.html', {'post': post})
+
+
+# ── Utility ────────────────────────────────────────────────────────────────────
+
+def health(request):
+    return JsonResponse({'status': 'ok'})

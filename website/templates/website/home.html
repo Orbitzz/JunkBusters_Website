@@ -372,4 +372,40 @@
 </script>
 {% endblock %}
 
+{% block extra_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does junk removal cost in Nashville?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Junk Busters pricing starts at $75 and is based on the volume of junk removed. We offer free, no-obligation quotes — call 615-881-2505 or request a quote online."}
+    },
+    {
+      "@type": "Question",
+      "name": "What areas do you serve?",
+      "acceptedAnswer": {"@type": "Answer", "text": "We serve Middle Tennessee and Southern Kentucky, including Nashville, Clarksville, White House, Hendersonville, Gallatin, Springfield, Franklin, Goodlettsville, Portland, Bowling Green KY, and surrounding areas within a 50-mile radius of Orlinda, TN."}
+    },
+    {
+      "@type": "Question",
+      "name": "What types of junk do you remove?",
+      "acceptedAnswer": {"@type": "Answer", "text": "We remove furniture, appliances, electronics, yard waste, construction debris, estate cleanouts, garage cleanouts, hot tubs, sheds, and scrap metal. We do not remove hazardous materials such as paint, chemicals, or asbestos."}
+    },
+    {
+      "@type": "Question",
+      "name": "How quickly can you pick up my junk?",
+      "acceptedAnswer": {"@type": "Answer", "text": "We offer same-day and next-day appointments in most cases. Book online or call 615-881-2505 to schedule."}
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer estate cleanouts?",
+      "acceptedAnswer": {"@type": "Answer", "text": "Yes. Junk Busters specializes in full estate cleanouts, foreclosure cleanouts, and eviction cleanouts throughout Middle TN and Southern KY. Contact us for a free quote."}
+    }
+  ]
+}
+</script>
+{% endblock %}
+
 {% endblock %}
