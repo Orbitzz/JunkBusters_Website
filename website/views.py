@@ -1709,3 +1709,7 @@ def blog_detail(request, slug):
 
 def health(request):
     return JsonResponse({'status': 'ok'})
+
+
+def pricing(request):
+    return render(request, 'website/pricing.html')

@@ -96,6 +96,7 @@
     gtag('js', new Date());
     gtag('config', 'GT-WBZM8Z5H');
     gtag('config', 'AW-11534606297');
+    gtag('config', 'G-HS19NGTMH1');
   </script>
 
   <!-- ── Meta Pixel ───────────────────────────────────────────────────── -->
@@ -223,6 +224,7 @@
 
         <li><a href="https://book.housecallpro.com/book/junk-busters/6a1f82ced1cd4ee7865259a916fd98fd?v2=true" target="_blank" rel="noopener">Book Now</a></li>
         <li><a href="{% url 'website:gallery' %}">Gallery</a></li>
+        <li><a href="{% url 'website:pricing' %}" {% if request.resolver_match.url_name == 'pricing' %}class="active"{% endif %}>Pricing</a></li>
         <li class="nav-dropdown">
           <a href="{% url 'website:areas' %}" class="nav-dropdown-toggle">Areas We Serve &#9662;</a>
           <div class="nav-dropdown-menu">

@@ -23,6 +23,7 @@ urlpatterns = [
     path('health/', views.health, name='health'),
     path('blog/', views.blog_list, name='blog_list'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
+    path('pricing/', views.pricing, name='pricing'),
     # City landing pages — before catch-all
     path('junk-removal-clarksville/', views.city_clarksville, name='city_clarksville'),
     path('junk-removal-bowling-green/', views.city_bowling_green, name='city_bowling_green'),
