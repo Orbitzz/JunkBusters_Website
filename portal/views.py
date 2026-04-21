@@ -60,7 +60,7 @@ def _send_verification_email(request, user):
             f'to verify your email address and access your portal.\n\n'
             f'{link}\n\n'
             f'This link expires in 3 days. If you didn\'t sign up, you can ignore this email.\n\n'
-            f'— Junk Busters\n615-881-2505\njunkbusters.info'
+            f'— Junk Busters\n615-881-2505\njunkbustershauling.com'
         ),
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=[user.email],
