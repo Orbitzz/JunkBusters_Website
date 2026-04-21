@@ -1098,12 +1098,13 @@ img { max-width: 100%; height: auto; }
   .header-logo-img { height: 62px; }
   .header-top { grid-column: 2; grid-row: 1; min-height: 62px; overflow: hidden; }
   .header-right-graphic { display: none; }
-  .header-info { position: static; transform: none; white-space: nowrap; flex-wrap: nowrap; gap: 4px; min-height: auto; padding: 0; overflow: hidden; }
+  .header-info { position: static; transform: none; white-space: nowrap; flex-wrap: nowrap; gap: 4px; min-height: auto; padding: 0; overflow: hidden; max-width: 100%; }
+  .header-info-text { gap: 4px; overflow: hidden; flex-wrap: nowrap; }
   .header-socials { display: none; }
   .header-location { display: none; }
   .header-divider { display: none; }
-  .header-review { display: none; }
-  .header-phone { font-size: 14px; font-weight: 700; }
+  .header-review { display: none !important; }
+  .header-phone { font-size: 14px; font-weight: 700; white-space: nowrap; }
   .mobile-nav-toggle-wrap { display: flex; align-items: center; padding: 0 8px; grid-column: 3; grid-row: 1; flex-shrink: 0; }
   /* Chat widget: keep on-screen on mobile */
   #jb-chat-btn { right: 16px; bottom: 60px; }
