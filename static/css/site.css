@@ -1092,16 +1092,21 @@ img { max-width: 100%; height: auto; }
   .hero-content { flex-direction: column; }
   .hero-badge { display: none; }
   .header-info-bottom { display: none; }
+  html, body { overflow-x: hidden; }
   .header-inner { grid-template-columns: auto 1fr auto; grid-template-rows: auto; }
   .header-logo-link { grid-row: 1; padding: 6px 10px 6px 0; }
   .header-logo-img { height: 62px; }
-  .header-top { min-height: 62px; }
+  .header-top { grid-column: 2; grid-row: 1; min-height: 62px; overflow: hidden; }
   .header-right-graphic { display: none; }
-  .header-info { position: static; transform: none; white-space: normal; flex-wrap: nowrap; gap: 6px; min-height: auto; padding: 0; }
+  .header-info { position: static; transform: none; white-space: nowrap; flex-wrap: nowrap; gap: 4px; min-height: auto; padding: 0; overflow: hidden; }
   .header-socials { display: none; }
   .header-location { display: none; }
   .header-divider { display: none; }
-  .header-review { font-size: 12px; }
-  .header-phone { font-size: 13px; }
-  .mobile-nav-toggle-wrap { display: flex; align-items: center; padding: 0 8px; }
+  .header-review { display: none; }
+  .header-phone { font-size: 14px; font-weight: 700; }
+  .mobile-nav-toggle-wrap { display: flex; align-items: center; padding: 0 8px; grid-column: 3; grid-row: 1; flex-shrink: 0; }
+  /* Chat widget: keep on-screen on mobile */
+  #jb-chat-btn { right: 16px; bottom: 60px; }
+  #jb-chat-box { right: 16px; bottom: 130px; width: calc(100vw - 32px); max-width: 340px; }
+  .inquire-float { font-size: 13px; padding: 8px 16px; }
 }
