@@ -984,6 +984,17 @@ img { max-width: 100%; height: auto; }
 
 /* ── Mobile Nav ──────────────────────────────────────────────────────────── */
 .mobile-nav-toggle-wrap { display: none; }
+.mobile-social-strip {
+  display: none;
+  background: var(--navy);
+  padding: 7px 20px;
+  justify-content: center;
+  align-items: center;
+  gap: 18px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.mobile-social-strip a { color: #8a9bb0; line-height: 0; transition: color 0.2s; }
+.mobile-social-strip a:hover { color: var(--yellow); }
 .mobile-nav-toggle {
   background: none;
   border: none;
@@ -1070,6 +1081,32 @@ img { max-width: 100%; height: auto; }
 .mobile-nav-cta .btn { display: block; text-align: center; }
 
 /* ── Responsive ──────────────────────────────────────────────────────────── */
+
+/* Hamburger nav — phones portrait + landscape, small tablets (≤960px) */
+@media (max-width: 960px) {
+  html, body { overflow-x: hidden; }
+  .nav-links { display: none; }
+  .header-nav-wrap { display: none; }
+  .header-inner { grid-template-columns: auto 1fr auto; grid-template-rows: auto; }
+  .header-logo-link { grid-row: 1; padding: 6px 10px 6px 0; }
+  .header-logo-img { height: 62px; }
+  .header-top { grid-column: 2; grid-row: 1; min-height: 62px; overflow: hidden; }
+  .header-right-graphic { display: none; }
+  .header-info { position: static; transform: none; white-space: nowrap; flex-wrap: nowrap; gap: 6px; min-height: auto; padding: 0; overflow: hidden; max-width: 100%; }
+  .header-info-text { gap: 6px; overflow: hidden; flex-wrap: nowrap; }
+  .header-socials { display: none; }
+  .header-location { display: none; }
+  .header-divider { display: none; }
+  .header-review-text { display: none; }
+  .header-stars svg { width: 13px; height: 13px; }
+  .header-phone { font-size: 14px; font-weight: 700; white-space: nowrap; }
+  .mobile-nav-toggle-wrap { display: flex; align-items: center; padding: 0 8px; grid-column: 3; grid-row: 1; flex-shrink: 0; }
+  .mobile-social-strip { display: flex; }
+  #jb-chat-btn { right: 16px; bottom: 60px; }
+  #jb-chat-box { right: 16px; bottom: 130px; width: calc(100vw - 32px); max-width: 340px; }
+  .inquire-float { font-size: 13px; padding: 8px 16px; }
+}
+
 @media (max-width: 900px) {
   .home-services-3 { grid-template-columns: 1fr 1fr; }
   .home-services-wrap { margin-top: 0; }
@@ -1078,36 +1115,17 @@ img { max-width: 100%; height: auto; }
   .about-dark-grid { grid-template-columns: 1fr; }
   .depend-grid { grid-template-columns: 1fr; }
 }
+
 @media (max-width: 768px) {
   .add-services-grid { grid-template-columns: 1fr; }
   .why-grid { grid-template-columns: 1fr; }
   .why-photo-slot { height: 280px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .form-grid { grid-template-columns: 1fr; }
-  .nav-links { display: none; }
-  .header-nav-wrap { display: none; }
   .cta-bar-inner { flex-direction: column; text-align: center; }
   .cta-banner .container { flex-direction: column; text-align: center; }
   .job-row { grid-template-columns: 1fr 1fr; }
   .hero-content { flex-direction: column; }
   .hero-badge { display: none; }
   .header-info-bottom { display: none; }
-  html, body { overflow-x: hidden; }
-  .header-inner { grid-template-columns: auto 1fr auto; grid-template-rows: auto; }
-  .header-logo-link { grid-row: 1; padding: 6px 10px 6px 0; }
-  .header-logo-img { height: 62px; }
-  .header-top { grid-column: 2; grid-row: 1; min-height: 62px; overflow: hidden; }
-  .header-right-graphic { display: none; }
-  .header-info { position: static; transform: none; white-space: nowrap; flex-wrap: nowrap; gap: 4px; min-height: auto; padding: 0; overflow: hidden; max-width: 100%; }
-  .header-info-text { gap: 4px; overflow: hidden; flex-wrap: nowrap; }
-  .header-socials { display: none; }
-  .header-location { display: none; }
-  .header-divider { display: none; }
-  .header-review { display: none !important; }
-  .header-phone { font-size: 14px; font-weight: 700; white-space: nowrap; }
-  .mobile-nav-toggle-wrap { display: flex; align-items: center; padding: 0 8px; grid-column: 3; grid-row: 1; flex-shrink: 0; }
-  /* Chat widget: keep on-screen on mobile */
-  #jb-chat-btn { right: 16px; bottom: 60px; }
-  #jb-chat-box { right: 16px; bottom: 130px; width: calc(100vw - 32px); max-width: 340px; }
-  .inquire-float { font-size: 13px; padding: 8px 16px; }
 }
