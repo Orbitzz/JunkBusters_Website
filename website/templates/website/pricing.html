@@ -24,7 +24,7 @@
       "name": "What does a full trailer haul cost?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A full Junk Busters trailer holds 20 cubic yards (5'×7'×16') and costs $875. Overages on construction debris are billed at +$150 per additional yard."
+        "text": "A full Junk Busters trailer holds 20 cubic yards (5'x7'x16') and costs $875. Overages on construction debris are billed at +$150 per additional yard."
       }
     },
     {
@@ -88,12 +88,20 @@
   <div class="container">
     <h2 style="font-size:26px;font-weight:800;color:var(--navy-dark);text-align:center;margin-bottom:8px;">Load-Based Pricing</h2>
     <p style="text-align:center;color:var(--text-muted);font-size:14px;margin-bottom:36px;">
-      We use a 5'×7'×16' enclosed trailer as our measuring unit. A <strong>full trailer = 20 cubic yards</strong> — roughly equivalent to 6–8 pickup truck loads.
+      We use a 5'&times;7'&times;16' enclosed trailer as our measuring unit. A <strong>full trailer = 20 cubic yards</strong> — roughly equivalent to 6–8 pickup truck loads.
     </p>
 
     <!-- Pickup truck callout -->
     <div style="background:linear-gradient(135deg,#fff8e1,#fef3c7);border:2px solid #fde68a;border-radius:14px;padding:20px 24px;margin-bottom:32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-      <div style="font-size:36px;">🚛</div>
+      <div style="flex-shrink:0;width:40px;height:40px;background:var(--navy-dark);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+        <!-- truck icon -->
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f5c800" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="3" width="15" height="13" rx="1"/>
+          <path d="M16 8h4l3 5v3h-7V8z"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+      </div>
       <div>
         <div style="font-weight:800;color:var(--navy-dark);font-size:15px;margin-bottom:4px;">What's a "1/8 trailer"?</div>
         <div style="font-size:14px;color:var(--text-muted);line-height:1.6;">
@@ -114,12 +122,12 @@
         <tbody>
           <tr style="border-bottom:1px solid #f3f4f6;">
             <td style="padding:14px 18px;font-weight:700;color:var(--navy-dark);">Single Item / Mini Load</td>
-            <td style="padding:14px 18px;color:var(--text-muted);">Up to ½ pickup truck</td>
+            <td style="padding:14px 18px;color:var(--text-muted);">Up to &frac12; pickup truck</td>
             <td style="padding:14px 18px;text-align:right;font-weight:800;color:var(--yellow-dark);font-size:17px;">$150</td>
           </tr>
           <tr style="background:#f9fafb;border-bottom:1px solid #f3f4f6;">
             <td style="padding:14px 18px;font-weight:700;color:var(--navy-dark);">1/8 Trailer</td>
-            <td style="padding:14px 18px;color:var(--text-muted);">≈ 1 pickup truck load</td>
+            <td style="padding:14px 18px;color:var(--text-muted);">&asymp; 1 pickup truck load</td>
             <td style="padding:14px 18px;text-align:right;font-weight:800;color:var(--yellow-dark);font-size:17px;">$210</td>
           </tr>
           <tr style="border-bottom:1px solid #f3f4f6;">
@@ -134,7 +142,7 @@
           </tr>
           <tr style="border-bottom:1px solid #f3f4f6;">
             <td style="padding:14px 18px;font-weight:700;color:var(--navy-dark);">1/2 Trailer <span style="background:#dbeafe;color:#1e40af;font-size:11px;font-weight:700;padding:2px 7px;border-radius:20px;margin-left:6px;vertical-align:middle;">Most Popular</span></td>
-            <td style="padding:14px 18px;color:var(--text-muted);">5–7 cu yd · 1.5–2 truck loads</td>
+            <td style="padding:14px 18px;color:var(--text-muted);">5–7 cu yd &middot; 1.5–2 truck loads</td>
             <td style="padding:14px 18px;text-align:right;font-weight:800;color:var(--yellow-dark);font-size:17px;">$525</td>
           </tr>
           <tr style="background:#f9fafb;border-bottom:1px solid #f3f4f6;">
@@ -144,7 +152,7 @@
           </tr>
           <tr style="border-bottom:1px solid #f3f4f6;">
             <td style="padding:14px 18px;font-weight:700;color:var(--navy-dark);">3/4 Trailer</td>
-            <td style="padding:14px 18px;color:var(--text-muted);">7–10 cu yd · 2–3 truck loads</td>
+            <td style="padding:14px 18px;color:var(--text-muted);">7–10 cu yd &middot; 2–3 truck loads</td>
             <td style="padding:14px 18px;text-align:right;font-weight:800;color:var(--yellow-dark);font-size:17px;">$710</td>
           </tr>
           <tr style="background:#f9fafb;border-bottom:1px solid #f3f4f6;">
@@ -154,7 +162,7 @@
           </tr>
           <tr>
             <td style="padding:14px 18px;font-weight:700;color:var(--navy-dark);">Full Trailer</td>
-            <td style="padding:14px 18px;color:var(--text-muted);">20 cu yd · 6–8 truck loads</td>
+            <td style="padding:14px 18px;color:var(--text-muted);">20 cu yd &middot; 6–8 truck loads</td>
             <td style="padding:14px 18px;text-align:right;font-weight:800;color:var(--yellow-dark);font-size:17px;">$875</td>
           </tr>
         </tbody>
@@ -176,7 +184,15 @@
 
       <!-- Mattresses -->
       <div style="background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid var(--yellow);">
-        <div style="font-size:28px;margin-bottom:10px;">🛏️</div>
+        <div style="margin-bottom:12px;">
+          <!-- bed icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 9V4a1 1 0 011-1h18a1 1 0 011 1v5"/>
+            <path d="M2 9h20v9H2z"/>
+            <path d="M2 18v2M22 18v2"/>
+            <path d="M6 9V7a2 2 0 014 0v2"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);margin-bottom:12px;font-size:16px;">Mattress Removal</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;justify-content:space-between;font-size:14px;padding-bottom:8px;border-bottom:1px solid #f3f4f6;">
@@ -196,7 +212,17 @@
 
       <!-- Tires -->
       <div style="background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid var(--yellow);">
-        <div style="font-size:28px;margin-bottom:10px;">🔧</div>
+        <div style="margin-bottom:12px;">
+          <!-- tire / circle icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="8"/>
+            <line x1="12" y1="16" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="8" y2="12"/>
+            <line x1="16" y1="12" x2="22" y2="12"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);margin-bottom:12px;font-size:16px;">Tire Disposal</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;justify-content:space-between;font-size:14px;padding-bottom:8px;border-bottom:1px solid #f3f4f6;">
@@ -220,7 +246,16 @@
 
       <!-- Construction Debris -->
       <div style="background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid var(--yellow);">
-        <div style="font-size:28px;margin-bottom:10px;">🏗️</div>
+        <div style="margin-bottom:12px;">
+          <!-- hard hat / construction icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--navy-dark)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 18h20"/>
+            <path d="M12 2a9 9 0 019 9H3a9 9 0 019-9z"/>
+            <path d="M12 2v7"/>
+            <path d="M7 11V8"/>
+            <path d="M17 11V8"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);margin-bottom:12px;font-size:16px;">Construction Debris</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;justify-content:space-between;font-size:14px;padding-bottom:8px;border-bottom:1px solid #f3f4f6;">
@@ -237,12 +272,24 @@
 
       <!-- Hazardous / Special -->
       <div style="background:#fff;border-radius:14px;padding:24px;box-shadow:0 2px 12px rgba(0,0,0,0.06);border-top:4px solid #e5e7eb;">
-        <div style="font-size:28px;margin-bottom:10px;">⚠️</div>
+        <div style="margin-bottom:12px;">
+          <!-- alert triangle icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);margin-bottom:12px;font-size:16px;">Paint &amp; Oil / Other</div>
         <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:10px;">
           Paint, motor oil, and other regulated materials require special disposal — pricing varies by quantity. Call us for an exact quote.
         </p>
-        <a href="tel:6158812505" style="font-size:13px;font-weight:700;color:var(--navy-dark);">📞 615-881-2505</a>
+        <a href="tel:6158812505" style="font-size:13px;font-weight:700;color:var(--navy-dark);display:flex;align-items:center;gap:6px;text-decoration:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+          </svg>
+          615-881-2505
+        </a>
       </div>
 
     </div>
@@ -258,28 +305,54 @@
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;max-width:800px;margin:0 auto;">
 
       <div style="background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:14px;padding:22px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">📍</div>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;">
+          <!-- map pin icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);font-size:18px;margin-bottom:4px;">10% Off</div>
         <div style="font-size:13px;color:#1e40af;font-weight:600;">Local Neighbors</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5;">Robertson, Sumner &amp; Montgomery County, TN residents</div>
       </div>
 
       <div style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:14px;padding:22px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">🔨</div>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;">
+          <!-- briefcase / contractor icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#166534" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="7" width="20" height="14" rx="2"/>
+            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/>
+            <line x1="12" y1="12" x2="12" y2="16"/>
+            <line x1="10" y1="14" x2="14" y2="14"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);font-size:18px;margin-bottom:4px;">15% Off</div>
         <div style="font-size:13px;color:#166534;font-weight:600;">Contractors</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5;">Businesses with $10k+ annual volume with us</div>
       </div>
 
       <div style="background:linear-gradient(135deg,#fef3c7,#fde68a);border-radius:14px;padding:22px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">🎖️</div>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;">
+          <!-- shield / star icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#92400e" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);font-size:18px;margin-bottom:4px;">5% Off</div>
         <div style="font-size:13px;color:#92400e;font-weight:600;">Veterans &amp; Seniors</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5;">Active/retired military &amp; customers 65+</div>
       </div>
 
       <div style="background:linear-gradient(135deg,#fdf4ff,#f3e8ff);border-radius:14px;padding:22px;text-align:center;">
-        <div style="font-size:30px;margin-bottom:8px;">💵</div>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;">
+          <!-- dollar sign icon -->
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#6b21a8" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/>
+          </svg>
+        </div>
         <div style="font-weight:800;color:var(--navy-dark);font-size:18px;margin-bottom:4px;">5% Off</div>
         <div style="font-size:13px;color:#6b21a8;font-weight:600;">Cash Payment</div>
         <div style="font-size:12px;color:var(--text-muted);margin-top:6px;line-height:1.5;">Pay with cash on completion</div>
@@ -317,7 +390,7 @@
           Are there any hidden fees?
           <span style="font-size:18px;color:var(--text-muted);">+</span>
         </summary>
-        <p style="font-size:14px;color:var(--text-muted);margin-top:12px;line-height:1.6;">None. Our price includes labor, loading, hauling, and disposal. Special-item surcharges (mattresses, tires, construction debris) are disclosed before we begin. You'll always know your total before a single item is touched.</p>
+        <p style="font-size:14px;color:var(--text-muted);margin-top:12px;line-height:1.6;">None. Our price includes labor, landfill fees, taxes, and transport. Special-item surcharges (mattresses, tires, construction debris) are disclosed before we begin. You'll always know your total before a single item is touched.</p>
       </details>
 
       <details style="background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 1px 6px rgba(0,0,0,0.06);">
