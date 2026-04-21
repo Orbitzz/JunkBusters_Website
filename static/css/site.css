@@ -402,7 +402,7 @@ img { max-width: 100%; height: auto; }
 .nav-links li a {
   display: flex;
   align-items: center;
-  padding: 0 13px;
+  padding: 0 9px;
   color: var(--navy-dark);
   font-size: 14px;
   font-weight: 700;
