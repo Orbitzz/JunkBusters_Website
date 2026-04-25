@@ -281,24 +281,33 @@ def dashboard(request):
     profile, _ = CustomerProfile.objects.get_or_create(user=user)
 
     # Fetch live data from FieldCommand — 60-second per-user cache, graceful fallback
-    cache_jobs    = f'fc_jobs:{user.email}'
-    cache_loyalty = f'fc_loyalty:{user.email}'
-    jobs_data    = cache.get(cache_jobs)
+    cache_jobs      = f'fc_jobs:{user.email}'
+    cache_loyalty   = f'fc_loyalty:{user.email}'
+    cache_referrals = f'fc_referrals:{user.email}'
+
+    jobs_data = cache.get(cache_jobs)
     if jobs_data is None:
         jobs_data = _call_fc('jobs', {'email': user.email})
         cache.set(cache_jobs, jobs_data, 60)
+
     loyalty_data = cache.get(cache_loyalty)
     if loyalty_data is None:
         loyalty_data = _call_fc('loyalty', {'email': user.email})
         cache.set(cache_loyalty, loyalty_data, 60)
+
+    referrals_data = cache.get(cache_referrals)
+    if referrals_data is None:
+        referrals_data = _call_fc('referrals', {'email': user.email})
+        cache.set(cache_referrals, referrals_data, 60)
 
     fc_online = jobs_data is not None
 
     if fc_online:
         _call_fc('engagement', {'email': user.email, 'event': 'portal_dashboard_view', 'source': 'portal'})
 
-    jobs    = jobs_data.get('jobs', [])    if (jobs_data    and jobs_data.get('success'))    else []
-    loyalty = loyalty_data                 if (loyalty_data  and loyalty_data.get('success') and loyalty_data.get('found')) else None
+    jobs      = jobs_data.get('jobs', [])       if (jobs_data      and jobs_data.get('success'))      else []
+    loyalty   = loyalty_data                    if (loyalty_data   and loyalty_data.get('success') and loyalty_data.get('found')) else None
+    referrals = referrals_data.get('referrals', []) if (referrals_data and referrals_data.get('success')) else []
 
     # Split jobs into upcoming vs history
     active_statuses = {'Scheduled', 'En Route', 'In Progress', 'Pending'}
@@ -306,13 +315,34 @@ def dashboard(request):
     history  = [j for j in jobs if j.get('status') not in active_statuses]
 
     return render(request, 'portal/dashboard.html', {
-        'profile':  profile,
-        'upcoming': upcoming,
-        'history':  history,
-        'loyalty':  loyalty,
-        'fc_online': fc_online,
-        'total_jobs': len(jobs),
+        'profile':        profile,
+        'upcoming':       upcoming,
+        'history':        history,
+        'loyalty':        loyalty,
+        'referrals':      referrals,
+        'referral_sent':  bool(request.GET.get('referral_sent')),
+        'fc_online':      fc_online,
+        'total_jobs':     len(jobs),
     })
+
+
+@login_required(login_url='/portal/')
+@require_http_methods(['POST'])
+def portal_referral_submit(request):
+    user = request.user
+    profile, _ = CustomerProfile.objects.get_or_create(user=user)
+    _call_fc('referral', {
+        'referrer_first_name': user.first_name,
+        'referrer_last_name':  user.last_name,
+        'referrer_email':      user.email,
+        'referrer_phone':      profile.phone or '',
+        'referred_name':       request.POST.get('referred_name', '').strip(),
+        'referred_phone':      request.POST.get('referred_phone', '').strip(),
+        'referred_email':      request.POST.get('referred_email', '').strip(),
+        'lead_source':         'portal_referral',
+        'referrer':            'portal',
+    })
+    return redirect('/portal/dashboard/?referral_sent=1')
 
 
 @login_required(login_url='/portal/')

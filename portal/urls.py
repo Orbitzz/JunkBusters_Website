@@ -11,8 +11,9 @@ urlpatterns = [
     path('dashboard/',  views.dashboard,        name='dashboard'),
     path('profile/',    views.profile_view,     name='profile'),
     path('password/',   views.password_change,  name='password_change'),
-    path('invoice/',    views.portal_invoice,       name='invoice'),
-    path('pay/',        views.portal_payment,       name='payment'),
+    path('invoice/',    views.portal_invoice,            name='invoice'),
+    path('pay/',        views.portal_payment,            name='payment'),
+    path('referral/',   views.portal_referral_submit,    name='referral_submit'),
     path('webhook/job-status/', views.job_status_webhook, name='job_status_webhook'),
 
     # Email verification

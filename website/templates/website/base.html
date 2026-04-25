@@ -245,7 +245,7 @@
           <a href="{% if user.is_authenticated %}{% url 'portal:dashboard' %}{% else %}/portal/{% endif %}" class="nav-dropdown-toggle nav-avatar-btn">
             {% if user.is_authenticated %}
             <span class="nav-avatar-circle">
-              {% if profile.avatar %}<img src="{{ profile.avatar.url }}" alt="">
+              {% if profile.avatar %}<img src="{{ profile.avatar.url }}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" onerror="this.style.display='none';this.parentElement.innerHTML='{{ user.first_name|slice:&quot;:1&quot;|upper }}{{ user.last_name|slice:&quot;:1&quot;|upper }}'">
               {% else %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% endif %}
             </span>
             {% else %}
