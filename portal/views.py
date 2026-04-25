@@ -332,6 +332,8 @@ def profile_view(request):
         profile.city     = request.POST.get('city', '').strip()
         profile.state    = request.POST.get('state', 'TN').strip()
         profile.zip_code = request.POST.get('zip_code', '').strip()
+        if 'avatar' in request.FILES:
+            profile.avatar = request.FILES['avatar']
         profile.save()
 
         # Sync updated contact info to FieldCommand CRM

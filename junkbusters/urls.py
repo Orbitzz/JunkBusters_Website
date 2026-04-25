@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from website import oauth_views
 
 urlpatterns = [
@@ -10,4 +12,4 @@ urlpatterns = [
     path('google-auth/status/', oauth_views.google_auth_status, name='google_auth_status'),
     path('google-auth/clear-cache/', oauth_views.google_auth_clear_cache, name='google_auth_clear_cache'),
     path('', include('website.urls', namespace='website')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

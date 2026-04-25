@@ -62,6 +62,15 @@ def google_reviews(request):
     }
 
 
+def customer_profile(request):
+    """Inject the logged-in user's CustomerProfile into every template."""
+    if request.user.is_authenticated:
+        from portal.models import CustomerProfile
+        profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+        return {'profile': profile}
+    return {'profile': None}
+
+
 def business_info(request):
     return {
         'BUSINESS_NAME': getattr(settings, 'BUSINESS_NAME', 'Junk Busters Hauling & Junk Removal'),
