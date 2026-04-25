@@ -130,11 +130,11 @@ img { max-width: 100%; height: auto; }
 .nav-avatar-btn { display: inline-flex !important; align-items: center; gap: 5px; }
 .nav-avatar-circle {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 30px; height: 30px; border-radius: 50%;
+  position: relative; width: 30px; height: 30px; border-radius: 50%;
   background: var(--yellow); color: var(--navy-dark);
   font-size: 11px; font-weight: 800; flex-shrink: 0; overflow: hidden;
 }
-.nav-avatar-circle img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.nav-avatar-circle img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
 .nav-avatar-menu { right: 0; left: auto !important; }
 
 /* ── Service Hero ─────────────────────────────────────────────────────────── */
