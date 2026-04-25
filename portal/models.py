@@ -10,6 +10,7 @@ class CustomerProfile(models.Model):
     state = models.CharField(max_length=10, blank=True, default='TN')
     zip_code = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    avatar_data = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.email

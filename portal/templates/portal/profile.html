@@ -27,7 +27,7 @@
     <!-- Avatar upload -->
     <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid #f1f5f9;">
       <div class="avatar-preview" style="width:72px;height:72px;border-radius:50%;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;color:var(--navy-dark);overflow:hidden;flex-shrink:0;">
-        {% if profile.avatar %}<img src="{{ profile.avatar.url }}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">
+        {% if profile.avatar_data %}<img src="{{ profile.avatar_data }}" alt="Profile photo" style="width:100%;height:100%;object-fit:cover;">
         {% else %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% endif %}
       </div>
       <div>

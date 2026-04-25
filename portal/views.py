@@ -363,7 +363,17 @@ def profile_view(request):
         profile.state    = request.POST.get('state', 'TN').strip()
         profile.zip_code = request.POST.get('zip_code', '').strip()
         if 'avatar' in request.FILES:
-            profile.avatar = request.FILES['avatar']
+            try:
+                from PIL import Image
+                import io, base64
+                img = Image.open(request.FILES['avatar']).convert('RGB')
+                img.thumbnail((300, 300))
+                buf = io.BytesIO()
+                img.save(buf, format='JPEG', quality=85)
+                b64 = base64.b64encode(buf.getvalue()).decode('utf-8')
+                profile.avatar_data = f'data:image/jpeg;base64,{b64}'
+            except Exception:
+                pass
         profile.save()
 
         # Sync updated contact info to FieldCommand CRM
