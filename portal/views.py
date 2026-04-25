@@ -48,7 +48,9 @@ def _call_fc(endpoint, payload):
 
 
 def _send_verification_email(request, user):
-    """Send account verification email to a newly registered (inactive) user."""
+    """Send account verification email. Returns True if sent, False if email not configured."""
+    if not settings.EMAIL_HOST_USER:
+        return False
     uid   = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     link  = request.build_absolute_uri(f'/portal/verify/{uid}/{token}/')
@@ -66,6 +68,7 @@ def _send_verification_email(request, user):
         recipient_list=[user.email],
         fail_silently=True,
     )
+    return True
 
 
 # ── Job status webhook ────────────────────────────────────────────────────────
@@ -211,16 +214,15 @@ def portal_register(request):
                     is_active=False,
                 )
                 CustomerProfile.objects.get_or_create(user=user, defaults={'phone': phone})
-                try:
-                    _send_verification_email(request, user)
-                except Exception:
-                    import logging
-                    logging.getLogger('portal').exception('Verification email failed for %s', email)
+                email_sent = _send_verification_email(request, user)
+                if not email_sent:
+                    # Email not configured — activate immediately so the user can log in
+                    user.is_active = True
+                    user.save(update_fields=['is_active'])
                 return redirect('portal:verify_sent')
             except Exception:
                 import logging
                 logging.getLogger('portal').exception('Registration failed for %s', email)
-                # Roll back partial user creation if it happened
                 User.objects.filter(username=email, is_active=False).delete()
                 error = 'Something went wrong creating your account. Please try again or call us at 615-881-2505.'
 
