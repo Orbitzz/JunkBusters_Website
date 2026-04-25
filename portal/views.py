@@ -327,6 +327,36 @@ def dashboard(request):
 
 
 @login_required(login_url='/portal/')
+@require_http_methods(['GET', 'POST'])
+def portal_gift_cards(request):
+    from website.models import GiftCard
+    user = request.user
+    claimed_error = None
+    claimed_ok    = None
+
+    if request.method == 'POST':
+        code = request.POST.get('code', '').strip().upper()
+        try:
+            card = GiftCard.objects.get(code=code, is_active=True)
+            if card.balance <= 0:
+                claimed_error = 'This gift card has already been fully redeemed.'
+            else:
+                claimed_ok = card
+        except GiftCard.DoesNotExist:
+            claimed_error = 'Gift card code not found or not yet active. Check the code and try again.'
+
+    my_cards = GiftCard.objects.filter(
+        recipient_email__iexact=user.email, is_active=True
+    ).order_by('-created_at')
+
+    return render(request, 'portal/gift_cards.html', {
+        'my_cards':      my_cards,
+        'claimed_ok':    claimed_ok,
+        'claimed_error': claimed_error,
+    })
+
+
+@login_required(login_url='/portal/')
 @require_http_methods(['POST'])
 def portal_referral_submit(request):
     user = request.user

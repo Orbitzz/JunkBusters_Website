@@ -1,0 +1,180 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Buy a Gift Card | Junk Busters Nashville{% endblock %}
+{% block meta_desc %}Give the gift of a clean home or garage. Junk Busters gift cards are perfect for any occasion — redeemable for junk removal, estate clean-outs, and cleaning services across Middle TN.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>GIFT CARDS</h1>
+    <p>Give the gift of a clutter-free space. Perfect for holidays, birthdays, or anyone who needs a hand.</p>
+  </div>
+</div>
+
+<section class="section" style="padding:56px 0 80px;">
+  <div class="container" style="max-width:800px;">
+
+    <!-- Gift card visual -->
+    <div style="text-align:center;margin-bottom:40px;">
+      <img src="{% static 'img/gift-card.png' %}" alt="Junk Busters Gift Card"
+           style="max-width:400px;width:100%;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.18);">
+    </div>
+
+    {% if error %}
+    <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:14px 18px;margin-bottom:24px;font-size:14px;color:#dc2626;font-weight:600;">
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" style="background:#fff;border-radius:16px;box-shadow:0 2px 24px rgba(0,0,0,0.08);padding:36px 40px;">
+      {% csrf_token %}
+      <input type="text" name="website_url" style="display:none;" tabindex="-1" autocomplete="off">
+
+      <!-- Amount selection -->
+      <div style="margin-bottom:32px;">
+        <div style="font-size:13px;font-weight:800;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Select Amount *</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;" id="amount-presets">
+          {% for amt in "25,50,100,200"|split:"," %}
+          <button type="button" class="amount-btn" data-amount="{{ amt }}"
+            style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;"
+            onclick="selectAmount('{{ amt }}', this)">
+            ${{ amt }}
+          </button>
+          {% endfor %}
+          <button type="button" class="amount-btn" data-amount="custom"
+            style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;"
+            onclick="selectAmount('custom', this)">
+            Custom
+          </button>
+        </div>
+        <div id="custom-amount-wrap" style="display:none;margin-top:10px;">
+          <div style="position:relative;display:inline-block;">
+            <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:16px;font-weight:700;color:var(--navy-dark);">$</span>
+            <input type="number" id="custom-amount-input" min="10" max="2000" placeholder="Enter amount"
+              style="padding:12px 14px 12px 28px;border:2px solid var(--yellow-dark);border-radius:8px;font-size:16px;font-weight:700;width:180px;"
+              oninput="document.getElementById('amount-hidden').value=this.value">
+          </div>
+          <span style="font-size:12px;color:var(--text-muted);margin-left:10px;">Min $10 &mdash; Max $2,000</span>
+        </div>
+        <input type="hidden" name="amount" id="amount-hidden" required>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+        <!-- Buyer -->
+        <div style="grid-column:1/-1;">
+          <div style="font-size:13px;font-weight:800;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f1f5f9;">
+            Your Information
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Your Name *</label>
+          <input type="text" name="buyer_name" required placeholder="Christian Thompson"
+            style="width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Your Email *</label>
+          <input type="email" name="buyer_email" required placeholder="you@example.com"
+            style="width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+
+        <!-- Recipient -->
+        <div style="grid-column:1/-1;margin-top:8px;">
+          <div style="font-size:13px;font-weight:800;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f1f5f9;">
+            Recipient Information
+          </div>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Recipient's Name *</label>
+          <input type="text" name="recipient_name" required placeholder="Jane Smith"
+            style="width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Recipient's Email *</label>
+          <input type="email" name="recipient_email" required placeholder="friend@example.com"
+            style="width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:14px;box-sizing:border-box;">
+        </div>
+        <div style="grid-column:1/-1;">
+          <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Personal Message <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+          <textarea name="recipient_message" rows="3" placeholder="Happy birthday! Hope this helps clear out that garage..."
+            style="width:100%;padding:11px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box;"></textarea>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-top:8px;">
+        <div style="font-size:13px;color:var(--text-muted);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          Secure checkout powered by Stripe
+        </div>
+        <button type="submit" id="purchase-btn"
+          style="background:var(--yellow);color:var(--navy-dark);font-weight:800;font-size:15px;padding:14px 32px;border:none;border-radius:9px;cursor:pointer;transition:background .15s;opacity:0.5;pointer-events:none;"
+          disabled>
+          Purchase Gift Card →
+        </button>
+      </div>
+    </form>
+
+    <!-- How it works -->
+    <div style="margin-top:48px;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;text-align:center;">
+      <div>
+        <div style="width:48px;height:48px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:20px;font-weight:900;color:var(--navy-dark);">1</div>
+        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">Choose an Amount</div>
+        <div style="font-size:13px;color:var(--text-muted);">Pick a preset or enter any amount from $10 to $2,000.</div>
+      </div>
+      <div>
+        <div style="width:48px;height:48px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:20px;font-weight:900;color:var(--navy-dark);">2</div>
+        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">Pay Securely</div>
+        <div style="font-size:13px;color:var(--text-muted);">Checkout via Stripe — no account needed.</div>
+      </div>
+      <div>
+        <div style="width:48px;height:48px;background:var(--yellow);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:20px;font-weight:900;color:var(--navy-dark);">3</div>
+        <div style="font-weight:800;font-size:14px;color:var(--navy-dark);margin-bottom:4px;">They Get the Code</div>
+        <div style="font-size:13px;color:var(--text-muted);">Recipient gets a branded email with their code instantly.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function selectAmount(val, btn) {
+  document.querySelectorAll('.amount-btn').forEach(b => {
+    b.style.borderColor = '#d1d5db';
+    b.style.background  = '#fff';
+    b.style.color       = 'var(--navy-dark)';
+  });
+  btn.style.borderColor = 'var(--yellow-dark)';
+  btn.style.background  = 'var(--yellow)';
+  btn.style.color       = 'var(--navy-dark)';
+
+  var wrap  = document.getElementById('custom-amount-wrap');
+  var input = document.getElementById('custom-amount-input');
+  var hidden = document.getElementById('amount-hidden');
+
+  if (val === 'custom') {
+    wrap.style.display = 'block';
+    hidden.value = input.value || '';
+    input.focus();
+  } else {
+    wrap.style.display = 'none';
+    hidden.value = val;
+  }
+  updateBtn();
+}
+
+function updateBtn() {
+  var amount = document.getElementById('amount-hidden').value;
+  var btn    = document.getElementById('purchase-btn');
+  var ok     = amount && parseFloat(amount) >= 10;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '0.5';
+  btn.style.pointerEvents = ok ? 'auto' : 'none';
+}
+
+document.getElementById('custom-amount-input').addEventListener('input', function() {
+  document.getElementById('amount-hidden').value = this.value;
+  updateBtn();
+});
+</script>
+
+{% endblock %}

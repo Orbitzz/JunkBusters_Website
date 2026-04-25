@@ -37,6 +37,11 @@ urlpatterns = [
     path('junk-removal-franklin-tn/', views.city_franklin, name='city_franklin'),
     path('junk-removal-goodlettsville-tn/', views.city_goodlettsville, name='city_goodlettsville'),
     path('junk-removal-portland-tn/', views.city_portland, name='city_portland'),
+    # Gift cards
+    path('gift-card/',          views.gift_card_purchase, name='gift_card'),
+    path('gift-card/success/',  views.gift_card_success,  name='gift_card_success'),
+    path('gift-card/webhook/',  views.gift_card_webhook,  name='gift_card_webhook'),
+    path('gift-card/check/',    views.gift_card_check,    name='gift_card_check'),
     # Individual service pages — must come last (catch-all slug)
     path('<slug:slug>/', views.service_page, name='service_page'),
 ]

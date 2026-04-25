@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from .forms import QuoteForm, BookingForm
-from .models import BookingRequest
+from .models import BookingRequest, GiftCard
 
 def _utm_info(session):
     """Return (lead_source, referrer) strings from session UTM data."""
@@ -1846,3 +1846,220 @@ def health(request):
 
 def pricing(request):
     return render(request, 'website/pricing.html')
+
+
+# ── Gift Cards ──────────────────────────────────────────────────────────────────
+
+def _gift_card_email_html(gift_card):
+    """Branded HTML email body for gift card delivery."""
+    msg_block = ''
+    if gift_card.recipient_message:
+        msg_block = f'<p style="font-style:italic;color:#475569;margin:0 0 20px;">&ldquo;{gift_card.recipient_message}&rdquo;</p>'
+    return f"""
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:sans-serif;">
+  <div style="max-width:560px;margin:40px auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,0.08);">
+    <div style="background:#0d1b2a;padding:32px 40px;text-align:center;">
+      <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-0.5px;">Junk<span style="color:#f5c842;">Busters</span></div>
+      <div style="color:#90a4ae;font-size:13px;margin-top:4px;letter-spacing:2px;text-transform:uppercase;">Gift Card</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#1e3a5f,#0d1b2a);padding:32px 40px;text-align:center;">
+      <div style="color:rgba(255,255,255,0.7);font-size:14px;margin-bottom:8px;">Gift Card Value</div>
+      <div style="font-size:64px;font-weight:900;color:#f5c842;line-height:1;">${gift_card.amount:.0f}</div>
+    </div>
+    <div style="padding:32px 40px;">
+      <p style="margin:0 0 12px;color:#0d1b2a;font-size:16px;">Hi <strong>{gift_card.recipient_name}</strong>,</p>
+      <p style="margin:0 0 20px;color:#475569;font-size:15px;line-height:1.6;"><strong>{gift_card.buyer_name}</strong> sent you a <strong>${gift_card.amount:.0f} Junk Busters gift card</strong> — good for junk removal, estate clean-outs, cleaning services, and more!</p>
+      {msg_block}
+      <div style="background:#f8fafc;border:2px dashed #e2e8f0;border-radius:10px;padding:20px;text-align:center;margin-bottom:24px;">
+        <div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Your Gift Card Code</div>
+        <div style="font-size:28px;font-weight:900;color:#0d1b2a;letter-spacing:3px;font-family:monospace;">{gift_card.code}</div>
+      </div>
+      <p style="margin:0 0 8px;color:#475569;font-size:14px;">To redeem, simply mention this code when you book a service:</p>
+      <ul style="margin:0 0 24px;padding-left:20px;color:#475569;font-size:14px;line-height:2;">
+        <li>Call us at <a href="tel:6158812505" style="color:#0d1b2a;font-weight:700;">615-881-2505</a></li>
+        <li>Book online at <a href="https://junkbustershauling.com" style="color:#0d1b2a;font-weight:700;">junkbustershauling.com</a></li>
+      </ul>
+      <a href="https://junkbustershauling.com/gift-card/check/" style="display:inline-block;background:#f5c842;color:#0d1b2a;font-weight:800;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">Check Balance</a>
+    </div>
+    <div style="background:#f8fafc;padding:20px 40px;text-align:center;font-size:12px;color:#94a3b8;">
+      Junk Busters LLC &nbsp;·&nbsp; 615-881-2505 &nbsp;·&nbsp; junkbustershauling.com<br>
+      Serving Middle TN &amp; Southern KY
+    </div>
+  </div>
+</body>
+</html>
+"""
+
+
+def _send_gift_card_email(gift_card):
+    """Send branded HTML gift card email to recipient via Resend."""
+    subject = f'{gift_card.buyer_name} sent you a ${gift_card.amount:.0f} Junk Busters gift card!'
+    text_body = (
+        f'Hi {gift_card.recipient_name},\n\n'
+        f'{gift_card.buyer_name} sent you a ${gift_card.amount:.0f} Junk Busters gift card!\n\n'
+        f'Your code: {gift_card.code}\n\n'
+        + (f'Their message: {gift_card.recipient_message}\n\n' if gift_card.recipient_message else '')
+        + 'To redeem: mention your code when booking at junkbustershauling.com or call 615-881-2505.\n\n'
+          'Check balance: https://junkbustershauling.com/gift-card/check/\n\n'
+          '— Junk Busters LLC\n615-881-2505\njunkbustershauling.com'
+    )
+    msg = EmailMultiAlternatives(
+        subject=subject,
+        body=text_body,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[gift_card.recipient_email],
+    )
+    msg.attach_alternative(_gift_card_email_html(gift_card), 'text/html')
+    msg.send(fail_silently=True)
+
+
+@require_http_methods(['GET', 'POST'])
+def gift_card_purchase(request):
+    error = None
+    if request.method == 'POST':
+        if request.POST.get('website_url', ''):
+            return redirect('website:gift_card_success')
+
+        buyer_name      = request.POST.get('buyer_name', '').strip()
+        buyer_email     = request.POST.get('buyer_email', '').strip().lower()
+        recipient_name  = request.POST.get('recipient_name', '').strip()
+        recipient_email = request.POST.get('recipient_email', '').strip().lower()
+        recipient_msg   = request.POST.get('recipient_message', '').strip()
+        amount_str      = request.POST.get('amount', '').strip().replace('$', '').replace(',', '')
+
+        if not all([buyer_name, buyer_email, recipient_name, recipient_email, amount_str]):
+            error = 'Please fill in all required fields.'
+        else:
+            try:
+                from decimal import Decimal
+                amount = Decimal(amount_str)
+                if amount < 10:
+                    error = 'Minimum gift card amount is $10.'
+                elif amount > 2000:
+                    error = 'Maximum gift card amount is $2,000.'
+            except Exception:
+                error = 'Please enter a valid dollar amount.'
+
+        if not error:
+            try:
+                import stripe
+                stripe.api_key = settings.STRIPE_SECRET_KEY
+
+                from .models import _generate_gift_card_code
+                code = _generate_gift_card_code()
+                gift_card = GiftCard.objects.create(
+                    code=code,
+                    amount=amount,
+                    balance=amount,
+                    buyer_name=buyer_name,
+                    buyer_email=buyer_email,
+                    recipient_name=recipient_name,
+                    recipient_email=recipient_email,
+                    recipient_message=recipient_msg,
+                )
+
+                session = stripe.checkout.Session.create(
+                    payment_method_types=['card'],
+                    line_items=[{
+                        'price_data': {
+                            'currency': 'usd',
+                            'product_data': {
+                                'name': f'Junk Busters Gift Card — ${amount:.0f}',
+                                'description': f'For {recipient_name} ({recipient_email})',
+                            },
+                            'unit_amount': int(amount * 100),
+                        },
+                        'quantity': 1,
+                    }],
+                    mode='payment',
+                    customer_email=buyer_email,
+                    success_url=request.build_absolute_uri(f'/gift-card/success/?session_id={{CHECKOUT_SESSION_ID}}'),
+                    cancel_url=request.build_absolute_uri('/gift-card/'),
+                    metadata={'gift_card_code': code},
+                )
+
+                gift_card.stripe_session_id = session.id
+                gift_card.save(update_fields=['stripe_session_id'])
+                return redirect(session.url)
+
+            except Exception:
+                import logging
+                logging.getLogger('website').exception('Gift card Stripe session creation failed')
+                error = 'Payment setup failed. Please try again or call 615-881-2505.'
+
+    return render(request, 'website/gift_card.html', {'error': error})
+
+
+def gift_card_success(request):
+    gift_card = None
+    session_id = request.GET.get('session_id', '')
+    if session_id:
+        try:
+            import stripe
+            stripe.api_key = settings.STRIPE_SECRET_KEY
+            session = stripe.checkout.Session.retrieve(session_id)
+            code = session.metadata.get('gift_card_code', '')
+            gift_card = GiftCard.objects.filter(code=code).first()
+        except Exception:
+            pass
+    return render(request, 'website/gift_card_success.html', {'gift_card': gift_card})
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def gift_card_webhook(request):
+    import stripe
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    payload   = request.body
+    sig       = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+    try:
+        event = stripe.Webhook.construct_event(payload, sig, settings.STRIPE_WEBHOOK_SECRET)
+    except (ValueError, stripe.error.SignatureVerificationError):
+        return HttpResponse(status=400)
+
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        code = session.get('metadata', {}).get('gift_card_code', '')
+        if code:
+            try:
+                gift_card = GiftCard.objects.get(code=code)
+                gift_card.is_active = True
+                gift_card.stripe_session_id = session['id']
+                gift_card.save(update_fields=['is_active', 'stripe_session_id'])
+                _send_gift_card_email(gift_card)
+                # Notify owner
+                send_owner = EmailMessage(
+                    subject=f'Gift Card Purchased — {code} (${gift_card.amount:.0f})',
+                    body=(
+                        f'New gift card purchase!\n\n'
+                        f'Code: {gift_card.code}\n'
+                        f'Amount: ${gift_card.amount:.0f}\n'
+                        f'Buyer: {gift_card.buyer_name} <{gift_card.buyer_email}>\n'
+                        f'Recipient: {gift_card.recipient_name} <{gift_card.recipient_email}>\n'
+                        + (f'Message: {gift_card.recipient_message}\n' if gift_card.recipient_message else '')
+                    ),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    to=[settings.CONTACT_EMAIL],
+                )
+                send_owner.send(fail_silently=True)
+            except GiftCard.DoesNotExist:
+                pass
+
+    return JsonResponse({'ok': True})
+
+
+@require_http_methods(['GET', 'POST'])
+def gift_card_check(request):
+    result = None
+    code   = ''
+    if request.method == 'POST':
+        code = request.POST.get('code', '').strip().upper()
+        if code:
+            try:
+                result = GiftCard.objects.get(code=code)
+            except GiftCard.DoesNotExist:
+                result = 'not_found'
+    return render(request, 'website/gift_card_check.html', {'result': result, 'code': code})

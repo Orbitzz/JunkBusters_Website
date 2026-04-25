@@ -1,3 +1,6 @@
+import secrets
+import string
+
 from django.db import models
 from django.utils import timezone
 
@@ -39,3 +42,33 @@ class BookingRequest(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} — {self.service_requested} ({self.created_at:%Y-%m-%d})"
+
+
+def _generate_gift_card_code():
+    chars = string.ascii_uppercase + string.digits
+    while True:
+        code = f"JUNK-{''.join(secrets.choice(chars) for _ in range(4))}-{''.join(secrets.choice(chars) for _ in range(4))}"
+        if not GiftCard.objects.filter(code=code).exists():
+            return code
+
+
+class GiftCard(models.Model):
+    code              = models.CharField(max_length=20, unique=True)
+    amount            = models.DecimalField(max_digits=8, decimal_places=2)
+    balance           = models.DecimalField(max_digits=8, decimal_places=2)
+    buyer_name        = models.CharField(max_length=200)
+    buyer_email       = models.EmailField()
+    recipient_name    = models.CharField(max_length=200)
+    recipient_email   = models.EmailField()
+    recipient_message = models.TextField(blank=True)
+    stripe_session_id = models.CharField(max_length=200, blank=True)
+    is_active         = models.BooleanField(default=False)
+    redeemed_by_email = models.EmailField(blank=True)
+    redeemed_at       = models.DateTimeField(null=True, blank=True)
+    created_at        = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'{self.code} — ${self.amount} ({self.recipient_email})'

@@ -114,6 +114,11 @@ CSRF_TRUSTED_ORIGINS    = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 SESSION_COOKIE_SECURE   = not DEBUG
 CSRF_COOKIE_SECURE      = not DEBUG
 
+# Stripe (gift card payments)
+STRIPE_SECRET_KEY      = config('STRIPE_SECRET_KEY', default='')
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY', default='')
+STRIPE_WEBHOOK_SECRET  = config('STRIPE_WEBHOOK_SECRET', default='')
+
 BUSINESS_NAME = 'Junk Busters LLC'
 BUSINESS_PHONE = '615-881-2505'
 BUSINESS_EMAIL = 'info@junkbustershauling.com'

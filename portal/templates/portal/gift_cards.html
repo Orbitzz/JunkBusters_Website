@@ -1,0 +1,112 @@
+{% extends "portal/base.html" %}
+
+{% block title %}Gift Cards{% endblock %}
+{% block tab_gift_cards %}active{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:24px;">
+  <h1 style="font-size:22px;font-weight:800;color:var(--navy-dark);margin-bottom:2px;">Gift Cards</h1>
+  <p style="font-size:13px;color:var(--text-muted);">Check your gift card balance or look up any code.</p>
+</div>
+
+<!-- Code lookup -->
+<div class="p-card">
+  <div class="p-card-title">
+    <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span>
+    Check a Gift Card
+  </div>
+
+  {% if claimed_error %}
+  <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:14px;color:#dc2626;font-weight:600;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+    {{ claimed_error }}
+  </div>
+  {% endif %}
+
+  {% if claimed_ok %}
+  <div style="background:#dcfce7;border:1px solid #bbf7d0;border-radius:8px;padding:16px;margin-bottom:20px;">
+    <div style="font-size:13px;font-weight:700;color:#15803d;margin-bottom:10px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:4px;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+      Gift card found!
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+      <div>
+        <div style="font-size:12px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;">Code</div>
+        <div style="font-size:18px;font-weight:900;color:var(--navy-dark);letter-spacing:2px;font-family:monospace;">{{ claimed_ok.code }}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:12px;color:#64748b;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;">Balance</div>
+        <div style="font-size:32px;font-weight:900;color:var(--navy-dark);">${{ claimed_ok.balance|floatformat:0 }}</div>
+        <div style="font-size:12px;color:#64748b;">of ${{ claimed_ok.amount|floatformat:0 }} original</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:13px;color:#15803d;">
+      Mention this code when booking your next service or call <a href="tel:615-881-2505" style="color:#15803d;font-weight:700;">615-881-2505</a>.
+    </div>
+  </div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:5px;">Gift Card Code</label>
+        <input type="text" name="code" placeholder="JUNK-XXXX-XXXX" maxlength="20"
+          style="width:100%;padding:10px 14px;border:1.5px solid #d1d5db;border-radius:7px;font-size:15px;font-weight:700;letter-spacing:2px;font-family:monospace;text-transform:uppercase;box-sizing:border-box;"
+          oninput="this.value=this.value.toUpperCase()">
+      </div>
+      <button type="submit" class="btn btn-yellow" style="padding:10px 24px;font-size:14px;white-space:nowrap;">Check Balance</button>
+    </div>
+  </form>
+</div>
+
+<!-- Cards tied to this account -->
+{% if my_cards %}
+<div class="p-card">
+  <div class="p-card-title">
+    <span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></span>
+    Your Gift Cards
+  </div>
+  <p style="font-size:13px;color:var(--text-muted);margin:-8px 0 16px;">Gift cards sent to {{ user.email }}</p>
+
+  {% for card in my_cards %}
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:16px 0;border-bottom:1px solid #f1f5f9;">
+    <div>
+      <div style="font-size:15px;font-weight:900;color:var(--navy-dark);letter-spacing:2px;font-family:monospace;">{{ card.code }}</div>
+      <div style="font-size:12px;color:var(--text-muted);margin-top:2px;">
+        From {{ card.buyer_name }}
+        &nbsp;·&nbsp;
+        {{ card.created_at|date:"M j, Y" }}
+      </div>
+      {% if card.recipient_message %}
+      <div style="font-size:12px;color:#64748b;font-style:italic;margin-top:4px;">&ldquo;{{ card.recipient_message|truncatechars:80 }}&rdquo;</div>
+      {% endif %}
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:28px;font-weight:900;color:var(--navy-dark);">${{ card.balance|floatformat:0 }}</div>
+      <div style="font-size:11px;color:var(--text-muted);">of ${{ card.amount|floatformat:0 }} remaining</div>
+      {% if card.balance <= 0 %}
+      <span class="p-pill p-pill-cancelled" style="margin-top:4px;">Fully Redeemed</span>
+      {% else %}
+      <span class="p-pill p-pill-completed" style="margin-top:4px;">Active</span>
+      {% endif %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Buy a gift card CTA -->
+<div class="p-card" style="background:linear-gradient(135deg,#fff8e1,#fffde7);border:1.5px solid #fde68a;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+  <div style="flex:1;min-width:180px;">
+    <div style="font-weight:800;color:var(--navy-dark);font-size:15px;margin-bottom:4px;">Give the Gift of a Clean Space</div>
+    <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Gift cards make the perfect present — for birthdays, holidays, or anyone who could use a hand.</div>
+  </div>
+  <a href="/gift-card/" class="btn btn-yellow" style="font-size:13px;padding:10px 20px;white-space:nowrap;flex-shrink:0;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+    Buy a Gift Card
+  </a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Gift Card Sent! | Junk Busters{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding:80px 0;min-height:60vh;display:flex;align-items:center;">
+  <div class="container" style="max-width:560px;text-align:center;">
+
+    <div style="width:72px;height:72px;background:#dcfce7;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#15803d" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+    </div>
+
+    <h1 style="font-size:28px;font-weight:900;color:var(--navy-dark);margin-bottom:12px;">Gift Card Sent!</h1>
+
+    {% if gift_card %}
+    <p style="font-size:16px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;">
+      Your <strong>${{ gift_card.amount|floatformat:0 }} gift card</strong> is on its way to
+      <strong>{{ gift_card.recipient_name }}</strong> at {{ gift_card.recipient_email }}.
+      They'll receive a branded email with their code shortly.
+    </p>
+    <div style="background:#f8fafc;border:2px dashed #e2e8f0;border-radius:10px;padding:20px;margin-bottom:28px;display:inline-block;">
+      <div style="font-size:11px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Gift Card Code</div>
+      <div style="font-size:24px;font-weight:900;color:var(--navy-dark);letter-spacing:3px;font-family:monospace;">{{ gift_card.code }}</div>
+    </div>
+    {% else %}
+    <p style="font-size:16px;color:var(--text-muted);line-height:1.6;margin-bottom:28px;">
+      Your payment was successful! The recipient will receive their gift card code by email shortly.
+    </p>
+    {% endif %}
+
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="{% url 'website:gift_card' %}" class="btn btn-yellow" style="font-size:14px;padding:12px 24px;">Buy Another Gift Card</a>
+      <a href="{% url 'website:home' %}" class="btn btn-navy" style="font-size:14px;padding:12px 24px;">Return Home</a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}

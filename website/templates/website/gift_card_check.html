@@ -1,0 +1,73 @@
+{% extends "website/base.html" %}
+{% load static %}
+
+{% block title %}Check Gift Card Balance | Junk Busters{% endblock %}
+{% block meta_desc %}Check the remaining balance on your Junk Busters gift card. Enter your code to see how much credit you have available.{% endblock %}
+
+{% block content %}
+
+<div class="service-hero">
+  <div class="container">
+    <h1>CHECK GIFT CARD BALANCE</h1>
+    <p>Enter your gift card code below to see your remaining balance.</p>
+  </div>
+</div>
+
+<section class="section" style="padding:60px 0 80px;">
+  <div class="container" style="max-width:480px;">
+
+    <div style="background:#fff;border-radius:14px;box-shadow:0 2px 20px rgba(0,0,0,0.08);padding:36px;">
+      <form method="post">
+        {% csrf_token %}
+        <label style="display:block;font-size:12px;font-weight:700;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Gift Card Code</label>
+        <input type="text" name="code" value="{{ code }}" placeholder="JUNK-XXXX-XXXX" maxlength="20"
+          style="width:100%;padding:13px 16px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:700;letter-spacing:2px;font-family:monospace;text-transform:uppercase;box-sizing:border-box;margin-bottom:16px;"
+          oninput="this.value=this.value.toUpperCase()">
+        <button type="submit" class="btn btn-yellow" style="width:100%;padding:13px;font-size:15px;">Check Balance</button>
+      </form>
+
+      {% if result == 'not_found' %}
+      <div style="margin-top:20px;background:#fee2e2;border-radius:8px;padding:14px 16px;font-size:14px;color:#dc2626;font-weight:600;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:6px;"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+        Gift card code not found. Double-check the code and try again, or call us at 615-881-2505.
+      </div>
+
+      {% elif result and result != 'not_found' %}
+      <div style="margin-top:24px;border-top:1px solid #f1f5f9;padding-top:24px;">
+        {% if result.balance > 0 and result.is_active %}
+        <div style="text-align:center;">
+          <div style="font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;">Remaining Balance</div>
+          <div style="font-size:52px;font-weight:900;color:var(--navy-dark);line-height:1;margin-bottom:4px;">${{ result.balance|floatformat:0 }}</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">of ${{ result.amount|floatformat:0 }} original value</div>
+          {% if result.balance != result.amount %}
+          <div style="background:#f1f5f9;border-radius:6px;height:8px;margin-bottom:20px;overflow:hidden;">
+            <div style="background:var(--yellow);height:100%;width:{% widthratio result.balance result.amount 100 %}%;"></div>
+          </div>
+          {% endif %}
+          <div style="background:#dcfce7;border-radius:8px;padding:12px 16px;font-size:13px;color:#15803d;font-weight:600;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:4px;"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Active — mention code <strong>{{ result.code }}</strong> when booking
+          </div>
+        </div>
+        {% elif result.balance <= 0 %}
+        <div style="text-align:center;">
+          <div style="font-size:48px;font-weight:900;color:#94a3b8;margin-bottom:8px;">$0</div>
+          <div style="font-size:14px;color:var(--text-muted);">This gift card has been fully redeemed.</div>
+        </div>
+        {% else %}
+        <div style="text-align:center;font-size:14px;color:var(--text-muted);">
+          This gift card is not yet active. If you just purchased it, payment may still be processing — check back in a few minutes or call 615-881-2505.
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div style="text-align:center;margin-top:24px;font-size:13px;color:var(--text-muted);">
+      Want to give a gift card? <a href="{% url 'website:gift_card' %}" style="color:var(--yellow-dark);font-weight:700;">Buy one here →</a>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
