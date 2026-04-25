@@ -204,8 +204,12 @@ def portal_register(request):
             error = 'Passwords do not match.'
         elif len(password) < 8:
             error = 'Password must be at least 8 characters.'
-        elif User.objects.filter(username=email).exists():
+        elif User.objects.filter(username=email, is_active=True).exists():
             error = 'An account with that email already exists. Try logging in.'
+        elif User.objects.filter(username=email, is_active=False).exists():
+            user = User.objects.get(username=email)
+            _send_verification_email(request, user)
+            return redirect('portal:verify_sent')
         else:
             try:
                 user = User.objects.create_user(
