@@ -48,27 +48,30 @@ def _call_fc(endpoint, payload):
 
 
 def _send_verification_email(request, user):
-    """Send account verification email. Returns True if sent, False if email not configured."""
-    if not settings.EMAIL_HOST_USER:
-        return False
+    """Send account verification email. Returns True on success, False on failure."""
     uid   = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     link  = request.build_absolute_uri(f'/portal/verify/{uid}/{token}/')
-    sent = send_mail(
-        subject='Verify your JunkBusters account',
-        message=(
-            f'Hi {user.first_name or user.email},\n\n'
-            f'Thanks for creating an account with JunkBusters! Click the link below '
-            f'to verify your email address and access your portal.\n\n'
-            f'{link}\n\n'
-            f'This link expires in 3 days. If you didn\'t sign up, you can ignore this email.\n\n'
-            f'— Junk Busters\n615-881-2505\njunkbustershauling.com'
-        ),
-        from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=[user.email],
-        fail_silently=True,
-    )
-    return bool(sent)
+    try:
+        sent = send_mail(
+            subject='Verify your JunkBusters account',
+            message=(
+                f'Hi {user.first_name or user.email},\n\n'
+                f'Thanks for creating an account with JunkBusters! Click the link below '
+                f'to verify your email address and access your portal.\n\n'
+                f'{link}\n\n'
+                f'This link expires in 3 days. If you didn\'t sign up, you can ignore this email.\n\n'
+                f'— Junk Busters\n615-881-2505\njunkbustershauling.com'
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email],
+            fail_silently=False,
+        )
+        return bool(sent)
+    except Exception:
+        import logging
+        logging.getLogger('portal').exception('Verification email failed for %s', user.email)
+        return False
 
 
 # ── Job status webhook ────────────────────────────────────────────────────────
@@ -214,17 +217,16 @@ def portal_register(request):
                     is_active=False,
                 )
                 CustomerProfile.objects.get_or_create(user=user, defaults={'phone': phone})
-                email_sent = _send_verification_email(request, user)
-                if not email_sent:
-                    # Email not configured — activate immediately so the user can log in
-                    user.is_active = True
-                    user.save(update_fields=['is_active'])
-                return redirect('portal:verify_sent')
             except Exception:
                 import logging
-                logging.getLogger('portal').exception('Registration failed for %s', email)
+                logging.getLogger('portal').exception('Registration DB error for %s', email)
                 User.objects.filter(username=email, is_active=False).delete()
                 error = 'Something went wrong creating your account. Please try again or call us at 615-881-2505.'
+            else:
+                if _send_verification_email(request, user):
+                    return redirect('portal:verify_sent')
+                # Email failed — account exists but is inactive; send user to resend page
+                return redirect('portal:resend_verification')
 
     return render(request, 'portal/register.html', {'error': error, 'form': form_data})
 
