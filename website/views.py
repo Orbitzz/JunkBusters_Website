@@ -1672,10 +1672,12 @@ def loyalty(request):
     email = ''
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
-        if email:
-            result = _call_fc('loyalty', {'email': email})
-            if result and result.get('success'):
-                _call_fc('engagement', {'email': email, 'event': 'loyalty_lookup', 'source': 'website'})
+    else:
+        email = request.GET.get('email', '').strip()
+    if email:
+        result = _call_fc('loyalty', {'email': email})
+        if result and result.get('success'):
+            _call_fc('engagement', {'email': email, 'event': 'loyalty_lookup', 'source': 'website'})
     return render(request, 'website/loyalty.html', {'result': result, 'email': email})
 
 
@@ -1685,11 +1687,14 @@ def track(request):
     if request.method == 'POST':
         email = request.POST.get('email', '').strip()
         phone = request.POST.get('phone', '').strip()
-        if email or phone:
-            result = _call_fc('jobs', {'email': email, 'phone': phone})
-            if result and result.get('success'):
-                _call_fc('engagement', {'email': email or '', 'phone': phone or '',
-                                        'event': 'job_track_lookup', 'source': 'website'})
+    else:
+        email = request.GET.get('email', '').strip()
+        phone = ''
+    if email or phone:
+        result = _call_fc('jobs', {'email': email, 'phone': phone})
+        if result and result.get('success'):
+            _call_fc('engagement', {'email': email or '', 'phone': phone or '',
+                                    'event': 'job_track_lookup', 'source': 'website'})
     return render(request, 'website/track.html', {'result': result})
 
 
