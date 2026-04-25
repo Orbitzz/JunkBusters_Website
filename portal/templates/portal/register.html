@@ -72,12 +72,12 @@
         <div class="reg-field">
           <label for="first_name">First Name *</label>
           <input type="text" name="first_name" id="first_name" required autofocus
-                 value="{{ form.first_name|default:'' }}" placeholder="Christian">
+                 value="{{ form.first_name|default:'' }}" placeholder="Jane">
         </div>
         <div class="reg-field">
           <label for="last_name">Last Name</label>
           <input type="text" name="last_name" id="last_name"
-                 value="{{ form.last_name|default:'' }}" placeholder="Thompson">
+                 value="{{ form.last_name|default:'' }}" placeholder="Smith">
         </div>
         <div class="reg-field full">
           <label for="email">Email Address *</label>
@@ -88,7 +88,7 @@
         <div class="reg-field full">
           <label for="phone">Phone Number</label>
           <input type="tel" name="phone" id="phone"
-                 value="{{ form.phone|default:'' }}" placeholder="615-000-0000">
+                 value="{{ form.phone|default:'' }}" placeholder="000-000-0000">
         </div>
         <div class="reg-field">
           <label for="password">Password *</label>

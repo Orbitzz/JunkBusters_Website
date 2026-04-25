@@ -201,17 +201,28 @@ def portal_register(request):
         elif User.objects.filter(username=email).exists():
             error = 'An account with that email already exists. Try logging in.'
         else:
-            user = User.objects.create_user(
-                username=email,
-                email=email,
-                password=password,
-                first_name=first_name,
-                last_name=last_name,
-                is_active=False,
-            )
-            CustomerProfile.objects.create(user=user, phone=phone)
-            _send_verification_email(request, user)
-            return redirect('portal:verify_sent')
+            try:
+                user = User.objects.create_user(
+                    username=email,
+                    email=email,
+                    password=password,
+                    first_name=first_name,
+                    last_name=last_name,
+                    is_active=False,
+                )
+                CustomerProfile.objects.get_or_create(user=user, defaults={'phone': phone})
+                try:
+                    _send_verification_email(request, user)
+                except Exception:
+                    import logging
+                    logging.getLogger('portal').exception('Verification email failed for %s', email)
+                return redirect('portal:verify_sent')
+            except Exception:
+                import logging
+                logging.getLogger('portal').exception('Registration failed for %s', email)
+                # Roll back partial user creation if it happened
+                User.objects.filter(username=email, is_active=False).delete()
+                error = 'Something went wrong creating your account. Please try again or call us at 615-881-2505.'
 
     return render(request, 'portal/register.html', {'error': error, 'form': form_data})
 

@@ -295,6 +295,39 @@ NASHVILLE_AREAS = [
     'Goodlettsville', 'Spring Hill', 'Portland', 'La Vergne',
 ]
 
+# ── Legacy 301 redirects (old slugs Google still has indexed) ─────────────────
+
+LEGACY_REDIRECTS = {
+    # Renamed service slugs
+    'bulk-cardboard-removal-and-pickup': '/bulk-cardboard-removal/',
+    'roof-replacements':                  '/junk-removal/',
+
+    # Old junk-removal-service-{city}-{state} city pages
+    'junk-removal-service-clarksville-tn':      '/junk-removal-clarksville/',
+    'junk-removal-service-nashville-tn':         '/junk-removal-nashville/',
+    'junk-removal-service-bowling-green-ky':     '/junk-removal-bowling-green/',
+    'junk-removal-service-gallatin-tn':          '/junk-removal-gallatin-tn/',
+    'junk-removal-service-hendersonville-tn':    '/junk-removal-hendersonville-tn/',
+    'junk-removal-service-white-house-tn':       '/junk-removal-white-house-tn/',
+    'junk-removal-service-springfield-tn':       '/junk-removal-springfield-tn/',
+    'junk-removal-service-franklin-tn':          '/junk-removal-franklin-tn/',
+    'junk-removal-service-goodlettsville-tn':    '/junk-removal-goodlettsville-tn/',
+    'junk-removal-service-portland-tn':          '/junk-removal-portland-tn/',
+    'junk-removal-service-scottsville-ky':       '/kentucky/',
+    'junk-removal-service-adairville-ky':        '/kentucky/',
+    'junk-removal-service-russellville-ky':      '/kentucky/',
+    'junk-removal-service-franklin-ky':          '/kentucky/',
+    'junk-removal-service-auburn-ky':            '/kentucky/',
+    'junk-removal-service-lewisburg-ky':         '/kentucky/',
+    'junk-removal-service-davidson-county-tn':   '/junk-removal-nashville/',
+    'junk-removal-service-sumner-county-tn':     '/junk-removal-hendersonville-tn/',
+    'junk-removal-service-robertson-county-tn':  '/junk-removal-springfield-tn/',
+    'junk-removal-service-montgomery-county-tn': '/junk-removal-clarksville/',
+    'junk-removal-service-warren-county-ky':     '/junk-removal-bowling-green/',
+    'junk-removal-service-middle-tn':            '/junk-removal-nashville/',
+    'junk-removal-service-southern-ky':          '/junk-removal-bowling-green/',
+}
+
 # ── Service page data ─────────────────────────────────────────────────────────
 
 SERVICES = {
@@ -1241,6 +1274,10 @@ def services(request):
 
 
 def service_page(request, slug):
+    redirect_url = LEGACY_REDIRECTS.get(slug)
+    if redirect_url:
+        from django.http import HttpResponsePermanentRedirect
+        return HttpResponsePermanentRedirect(redirect_url)
     svc = SERVICES.get(slug)
     if not svc:
         raise Http404
@@ -1674,6 +1711,97 @@ def referral(request):
         })
         sent = True
     return render(request, 'website/referral.html', {'sent': sent})
+
+
+@csrf_exempt
+@require_http_methods(['POST'])
+def member_signup_webhook(request):
+    """Receive new-member events from FieldCommand and create / update portal accounts."""
+    if request.headers.get('X-FC-EMBED-KEY') != settings.FIELDCOMMAND_EMBED_API_KEY:
+        return JsonResponse({'error': 'forbidden'}, status=403)
+
+    try:
+        payload = _json.loads(request.body)
+    except Exception:
+        return JsonResponse({'error': 'invalid JSON'}, status=400)
+
+    email = (payload.get('email') or payload.get('customer_email') or '').strip().lower()
+    if not email:
+        return JsonResponse({'error': 'email required'}, status=400)
+
+    first_name = (payload.get('first_name') or '').strip()
+    last_name  = (payload.get('last_name') or '').strip()
+    if not first_name and payload.get('name'):
+        parts = payload['name'].strip().split(' ', 1)
+        first_name = parts[0]
+        last_name  = parts[1] if len(parts) > 1 else ''
+
+    phone    = (payload.get('phone') or payload.get('customer_phone') or '').strip()
+    address  = (payload.get('address') or '').strip()
+    city     = (payload.get('city') or '').strip()
+    state    = (payload.get('state') or 'TN').strip()
+    zip_code = (payload.get('zip_code') or payload.get('zip') or '').strip()
+
+    from django.contrib.auth.models import User
+    from django.contrib.auth.tokens import default_token_generator as _tok
+    from django.utils.http import urlsafe_base64_encode as _b64enc
+    from django.utils.encoding import force_bytes as _fb
+    from django.core.mail import send_mail as _send
+    from portal.models import CustomerProfile
+
+    user = User.objects.filter(username=email).first()
+    created = False
+
+    if not user:
+        user = User.objects.create_user(
+            username=email,
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            is_active=True,
+        )
+        user.set_unusable_password()
+        user.save(update_fields=['password'])
+        CustomerProfile.objects.create(
+            user=user,
+            phone=phone,
+            address=address,
+            city=city,
+            state=state or 'TN',
+            zip_code=zip_code,
+        )
+        created = True
+    else:
+        profile, _ = CustomerProfile.objects.get_or_create(user=user)
+        updates = []
+        for attr, val in [('phone', phone), ('address', address), ('city', city), ('zip_code', zip_code)]:
+            if val and not getattr(profile, attr):
+                setattr(profile, attr, val)
+                updates.append(attr)
+        if updates:
+            profile.save(update_fields=updates)
+
+    if created:
+        uid   = _b64enc(_fb(user.pk))
+        token = _tok.make_token(user)
+        link  = request.build_absolute_uri(f'/portal/reset/{uid}/{token}/')
+        _send(
+            subject='Your JunkBusters portal account is ready',
+            message=(
+                f'Hi {first_name or email},\n\n'
+                f'An account has been created for you on the JunkBusters customer portal. '
+                f'Use the link below to set your password and access your dashboard, '
+                f'where you can track jobs, view invoices, and more.\n\n'
+                f'{link}\n\n'
+                f'This link expires in 3 days.\n\n'
+                f'— Junk Busters\n615-881-2505\njunkbustershauling.com'
+            ),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=True,
+        )
+
+    return JsonResponse({'ok': True, 'created': created})
 
 
 def sitemap(request):
