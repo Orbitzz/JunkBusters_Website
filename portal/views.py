@@ -54,7 +54,7 @@ def _send_verification_email(request, user):
     uid   = urlsafe_base64_encode(force_bytes(user.pk))
     token = default_token_generator.make_token(user)
     link  = request.build_absolute_uri(f'/portal/verify/{uid}/{token}/')
-    send_mail(
+    sent = send_mail(
         subject='Verify your JunkBusters account',
         message=(
             f'Hi {user.first_name or user.email},\n\n'
@@ -68,7 +68,7 @@ def _send_verification_email(request, user):
         recipient_list=[user.email],
         fail_silently=True,
     )
-    return True
+    return bool(sent)
 
 
 # ── Job status webhook ────────────────────────────────────────────────────────
