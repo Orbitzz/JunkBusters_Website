@@ -1882,20 +1882,33 @@ def date_interest(request):
 
 
 def areas(request):
-    all_areas = [
-        {'county': 'Davidson County', 'cities': ['Nashville', 'Antioch', 'Bellevue', 'Donelson', 'Hermitage', 'Madison', 'Goodlettsville']},
-        {'county': 'Robertson County', 'cities': ['Springfield', 'White House', 'Greenbrier', 'Orlinda', 'Millersville', 'Cottontown', 'Cedar Hill']},
-        {'county': 'Sumner County', 'cities': ['Gallatin', 'Hendersonville', 'Portland', 'Westmoreland', 'White House', 'Bethpage', 'Cottontown']},
+    tn_areas = [
+        {'county': 'Davidson County',   'cities': ['Nashville', 'Antioch', 'Bellevue', 'Donelson', 'Hermitage', 'Madison', 'Goodlettsville']},
+        {'county': 'Robertson County',  'cities': ['Springfield', 'White House', 'Greenbrier', 'Millersville', 'Cottontown', 'Cedar Hill', 'Orlinda']},
+        {'county': 'Sumner County',     'cities': ['Gallatin', 'Hendersonville', 'Portland', 'Westmoreland', 'Bethpage']},
         {'county': 'Williamson County', 'cities': ['Franklin', 'Brentwood', 'Spring Hill', 'Nolensville', 'Thompson\'s Station', 'Fairview', 'College Grove']},
-        {'county': 'Wilson County', 'cities': ['Lebanon', 'Mt. Juliet', 'Watertown', 'Gladeville', 'La Vergne (border)']},
-        {'county': 'Rutherford County', 'cities': ['Murfreesboro', 'Smyrna', 'La Vergne', 'Eagleville', 'Lavergne']},
-        {'county': 'Cheatham County', 'cities': ['Ashland City', 'Kingston Springs', 'Pegram', 'Pleasant View', 'Chapmansboro']},
-        {'county': 'Montgomery County', 'cities': ['Clarksville', 'Oak Grove KY', 'Cunningham', 'Pembroke', 'Southside']},
+        {'county': 'Wilson County',     'cities': ['Lebanon', 'Mt. Juliet', 'Watertown', 'Gladeville']},
+        {'county': 'Rutherford County', 'cities': ['Murfreesboro', 'Smyrna', 'La Vergne', 'Eagleville']},
+        {'county': 'Cheatham County',   'cities': ['Ashland City', 'Kingston Springs', 'Pegram', 'Pleasant View', 'Chapmansboro']},
+        {'county': 'Montgomery County', 'cities': ['Clarksville', 'Cunningham', 'Pembroke', 'Southside']},
     ]
+    ky_areas = [
+        {'county': 'Warren County',  'cities': ['Bowling Green', 'Alvaton', 'Smiths Grove', 'Oakland', 'Woodburn', 'Rockfield']},
+        {'county': 'Logan County',   'cities': ['Russellville', 'Adairville', 'Auburn', 'Lewisburg']},
+        {'county': 'Simpson County', 'cities': ['Franklin', 'Bowling Green (border)']},
+        {'county': 'Allen County',   'cities': ['Scottsville']},
+    ]
+    tn_cities = [a for a in SERVICE_AREAS_PRIMARY if a['name'].endswith(', TN')]
+    ky_cities = [a for a in SERVICE_AREAS_PRIMARY if a['name'].endswith(', KY')]
+    tn_counties = [a for a in SERVICE_AREAS_SECONDARY if a['name'].endswith(', TN')]
+    ky_counties = [a for a in SERVICE_AREAS_SECONDARY if a['name'].endswith(', KY')]
     return render(request, 'website/areas.html', {
-        'all_areas': all_areas,
-        'primary_areas': SERVICE_AREAS_PRIMARY,
-        'secondary_areas': SERVICE_AREAS_SECONDARY,
+        'tn_areas': tn_areas,
+        'ky_areas': ky_areas,
+        'tn_cities': tn_cities,
+        'ky_cities': ky_cities,
+        'tn_counties': tn_counties,
+        'ky_counties': ky_counties,
     })
 
 
