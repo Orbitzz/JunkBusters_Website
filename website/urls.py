@@ -44,6 +44,11 @@ urlpatterns = [
     path('junk-removal-russellville-ky/',   views.city_russellville,   name='city_russellville'),
     path('junk-removal-franklin-ky/',       views.city_franklin_ky,    name='city_franklin_ky'),
     path('junk-removal-scottsville-ky/',    views.city_scottsville,    name='city_scottsville'),
+    path('junk-removal-brentwood-tn/',      views.city_brentwood,      name='city_brentwood'),
+    path('junk-removal-spring-hill-tn/',    views.city_spring_hill,    name='city_spring_hill'),
+    path('junk-removal-mt-juliet-tn/',      views.city_mt_juliet,      name='city_mt_juliet'),
+    path('junk-removal-nolensville-tn/',    views.city_nolensville,    name='city_nolensville'),
+    path('junk-removal-ashland-city-tn/',   views.city_ashland_city,   name='city_ashland_city'),
     # Gift cards
     path('gift-card/',          views.gift_card_purchase, name='gift_card'),
     path('gift-card/success/',  views.gift_card_success,  name='gift_card_success'),
