@@ -2255,6 +2255,45 @@ def pricing(request):
     return render(request, 'website/pricing.html')
 
 
+# ── Service area GeoJSON proxy ──────────────────────────────────────────────────
+import os as _os
+import urllib.request as _urlreq
+
+_COUNTY_GEOJSON = None
+_COUNTY_FIPS = {'47037','47147','47165','47187','47189','47149','47021','47125',
+                '21227','21141','21213','21003'}
+_GEOJSON_CACHE_PATH = '/tmp/jb_service_area.geojson'
+
+def service_area_geojson(request):
+    global _COUNTY_GEOJSON
+    if _COUNTY_GEOJSON:
+        return JsonResponse(_COUNTY_GEOJSON)
+    if _os.path.exists(_GEOJSON_CACHE_PATH):
+        try:
+            with open(_GEOJSON_CACHE_PATH) as _f:
+                _COUNTY_GEOJSON = _json.load(_f)
+            return JsonResponse(_COUNTY_GEOJSON)
+        except Exception:
+            pass
+    try:
+        with _urlreq.urlopen(
+            'https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_050_00_500k.json',
+            timeout=20
+        ) as _resp:
+            _raw = _json.loads(_resp.read())
+        _features = [f for f in _raw['features']
+                     if f['properties']['STATE'] + f['properties']['COUNTY'] in _COUNTY_FIPS]
+        _COUNTY_GEOJSON = {'type': 'FeatureCollection', 'features': _features}
+        try:
+            with open(_GEOJSON_CACHE_PATH, 'w') as _f:
+                _json.dump(_COUNTY_GEOJSON, _f)
+        except Exception:
+            pass
+        return JsonResponse(_COUNTY_GEOJSON)
+    except Exception:
+        return JsonResponse({'type': 'FeatureCollection', 'features': []}, status=503)
+
+
 # ── Gift Cards ──────────────────────────────────────────────────────────────────
 
 def _gift_card_email_html(gift_card):

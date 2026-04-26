@@ -204,13 +204,10 @@
   }).addTo(map);
 
   var geojsonLayer;
-  fetch('https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_050_00_500k.json')
+  fetch('/api/service-area-map/')
     .then(function(r){return r.json();})
     .then(function(data){
-      var features=data.features.filter(function(f){
-        var id=f.properties.STATE+f.properties.COUNTY;
-        return TN[id]||KY[id];
-      });
+      var features=data.features;
       geojsonLayer=L.geoJSON({type:'FeatureCollection',features:features},{
         style:function(f){
           var id=f.properties.STATE+f.properties.COUNTY;

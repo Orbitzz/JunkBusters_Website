@@ -18,6 +18,7 @@ urlpatterns = [
     path('referral/', views.referral, name='referral'),
     path('api/chat/', views.chat_proxy, name='chat_proxy'),
     path('api/chat/poll/', views.chat_poll, name='chat_poll'),
+    path('api/service-area-map/', views.service_area_geojson, name='service_area_geojson'),
     path('api/embed/member-signup/', views.member_signup_webhook, name='member_signup_webhook'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
     path('robots.txt', views.robots, name='robots'),
