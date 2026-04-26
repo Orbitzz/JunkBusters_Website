@@ -204,10 +204,12 @@
   }).addTo(map);
 
   var geojsonLayer;
-  fetch('/api/service-area-map/')
+  fetch("{% static 'website/js/service-area.geojson' %}")
     .then(function(r){return r.json();})
     .then(function(data){
       var features=data.features;
+      if(!features||!features.length){throw new Error('empty');}
+
       geojsonLayer=L.geoJSON({type:'FeatureCollection',features:features},{
         style:function(f){
           var id=f.properties.STATE+f.properties.COUNTY;
@@ -225,7 +227,8 @@
           });
         }
       }).addTo(map);
-      map.fitBounds(geojsonLayer.getBounds(),{padding:[30,30]});
+      var b=geojsonLayer.getBounds();
+      if(b.isValid())map.fitBounds(b,{padding:[30,30]});
       document.getElementById('map-loading').style.display='none';
       document.getElementById('map-legend').style.display='block';
     })
