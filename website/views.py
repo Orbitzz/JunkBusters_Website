@@ -281,34 +281,47 @@ def enrich_areas(areas):
 
 
 SERVICE_AREAS_PRIMARY = [
+    # Tennessee
     {'name': 'Nashville, TN',      'url': '/junk-removal-nashville/'},
-    {'name': 'White House, TN',    'url': '/junk-removal-white-house-tn/'},
     {'name': 'Goodlettsville, TN', 'url': '/junk-removal-goodlettsville-tn/'},
+    {'name': 'Springfield, TN',    'url': '/junk-removal-springfield-tn/'},
+    {'name': 'White House, TN',    'url': '/junk-removal-white-house-tn/'},
     {'name': 'Gallatin, TN',       'url': '/junk-removal-gallatin-tn/'},
     {'name': 'Hendersonville, TN', 'url': '/junk-removal-hendersonville-tn/'},
-    {'name': 'Clarksville, TN',    'url': '/junk-removal-clarksville/'},
-    {'name': 'Bowling Green, KY',  'url': '/junk-removal-bowling-green/'},
-    {'name': 'Franklin, TN',       'url': '/junk-removal-franklin-tn/'},
     {'name': 'Portland, TN',       'url': '/junk-removal-portland-tn/'},
-    {'name': 'Springfield, TN',    'url': '/junk-removal-springfield-tn/'},
-    {'name': 'Orlinda, TN',        'url': '/areas-we-serve/'},
+    {'name': 'Clarksville, TN',    'url': '/junk-removal-clarksville/'},
+    {'name': 'Franklin, TN',       'url': '/junk-removal-franklin-tn/'},
+    {'name': 'Brentwood, TN',      'url': '/junk-removal-brentwood-tn/'},
+    {'name': 'Spring Hill, TN',    'url': '/junk-removal-spring-hill-tn/'},
+    {'name': 'Nolensville, TN',    'url': '/junk-removal-nolensville-tn/'},
+    {'name': 'Lebanon, TN',        'url': '/junk-removal-lebanon-tn/'},
+    {'name': 'Mt. Juliet, TN',     'url': '/junk-removal-mt-juliet-tn/'},
+    {'name': 'Murfreesboro, TN',   'url': '/junk-removal-murfreesboro-tn/'},
+    {'name': 'Smyrna, TN',         'url': '/junk-removal-smyrna-tn/'},
+    {'name': 'La Vergne, TN',      'url': '/junk-removal-lavergne-tn/'},
+    {'name': 'Ashland City, TN',   'url': '/junk-removal-ashland-city-tn/'},
+    # Kentucky
+    {'name': 'Bowling Green, KY',  'url': '/junk-removal-bowling-green/'},
+    {'name': 'Russellville, KY',   'url': '/junk-removal-russellville-ky/'},
+    {'name': 'Franklin, KY',       'url': '/junk-removal-franklin-ky/'},
+    {'name': 'Scottsville, KY',    'url': '/junk-removal-scottsville-ky/'},
+    {'name': 'Adairville, KY',     'url': '/junk-removal-russellville-ky/'},
 ]
 SERVICE_AREAS_SECONDARY = [
-    {'name': 'Adairville, KY',        'url': '/junk-removal-russellville-ky/'},
-    {'name': 'Scottsville, KY',       'url': '/junk-removal-scottsville-ky/'},
-    {'name': 'Russellville, KY',      'url': '/junk-removal-russellville-ky/'},
-    {'name': 'Murfreesboro, TN',      'url': '/junk-removal-murfreesboro-tn/'},
-    {'name': 'Lebanon, TN',           'url': '/junk-removal-lebanon-tn/'},
-    {'name': 'Robertson County, TN',  'url': '/areas-we-serve/'},
-    {'name': 'Sumner County, TN',     'url': '/areas-we-serve/'},
-    {'name': 'Davidson County, TN',   'url': '/areas-we-serve/'},
-    {'name': 'Williamson County, TN', 'url': '/areas-we-serve/'},
-    {'name': 'Logan County, KY',      'url': '/junk-removal-russellville-ky/'},
+    # Tennessee counties
+    {'name': 'Davidson County, TN',   'url': '/junk-removal-nashville/'},
+    {'name': 'Robertson County, TN',  'url': '/junk-removal-springfield-tn/'},
+    {'name': 'Sumner County, TN',     'url': '/junk-removal-gallatin-tn/'},
+    {'name': 'Williamson County, TN', 'url': '/junk-removal-franklin-tn/'},
     {'name': 'Wilson County, TN',     'url': '/junk-removal-lebanon-tn/'},
     {'name': 'Rutherford County, TN', 'url': '/junk-removal-murfreesboro-tn/'},
-    {'name': 'Cheatham County, TN',   'url': '/areas-we-serve/'},
+    {'name': 'Cheatham County, TN',   'url': '/junk-removal-ashland-city-tn/'},
     {'name': 'Montgomery County, TN', 'url': '/junk-removal-clarksville/'},
-    {'name': 'Middle, TN',            'url': '/areas-we-serve/'},
+    # Kentucky counties
+    {'name': 'Warren County, KY',     'url': '/junk-removal-bowling-green/'},
+    {'name': 'Logan County, KY',      'url': '/junk-removal-russellville-ky/'},
+    {'name': 'Simpson County, KY',    'url': '/junk-removal-franklin-ky/'},
+    {'name': 'Allen County, KY',      'url': '/junk-removal-scottsville-ky/'},
 ]
 
 NASHVILLE_AREAS = [
