@@ -6,7 +6,7 @@
 {% block meta_keywords %}junk removal Clarksville TN, junk removal Bowling Green KY, estate cleanout Nashville, foreclosure cleanout Clarksville, eviction cleanout Middle Tennessee, scrap metal pickup Southern KY, shed demolition Nashville, hot tub removal Clarksville, junk removal service areas Middle Tennessee, junk removal Southern Kentucky{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="{% static 'website/css/leaflet.min.css' %}">
 <style>
 #service-map{height:420px;}
 @media(max-width:640px){#service-map{height:260px;}}
@@ -184,7 +184,7 @@
 </section>
 
 {% block extra_scripts %}
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN/WLs=" crossorigin=""></script>
+<script src="{% static 'website/js/leaflet.min.js' %}"></script>
 <script>
 (function(){
   var TN={
