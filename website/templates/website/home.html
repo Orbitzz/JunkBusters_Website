@@ -178,7 +178,7 @@
 
       <a href="{% url 'website:service_page' 'move-in-move-out-cleaning' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/image_2.jpg' %}" alt="Move In Move Out Cleaning">
+          <img src="{% static 'img/image_2.jpg' %}" alt="Move In Move Out Cleaning" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Move In/Move Out Cleaning</h3>
@@ -189,7 +189,7 @@
 
       <a href="{% url 'website:service_page' 'recurring-maid-services' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Recurring Maid Services.jpg' %}" alt="Recurring Maid Services">
+          <img src="{% static 'img/Recurring Maid Services.jpg' %}" alt="Recurring Maid Services" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Recurring Maid Services</h3>
@@ -200,7 +200,7 @@
 
       <a href="{% url 'website:service_page' 'fence-removal' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Fence Removal.jpg' %}" alt="Fence Removal">
+          <img src="{% static 'img/Fence Removal.jpg' %}" alt="Fence Removal" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Fence Removal</h3>
@@ -211,7 +211,7 @@
 
       <a href="{% url 'website:service_page' 'estate-clean-out' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/1000003685.jpg' %}" alt="Estate Clean-Out">
+          <img src="{% static 'img/1000003685.jpg' %}" alt="Estate Clean-Out" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Estate Clean-Out</h3>
@@ -222,7 +222,7 @@
 
       <a href="{% url 'website:service_page' 'eviction-clean-out' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Eviction cleanout.jpg' %}" alt="Eviction Clean-Out">
+          <img src="{% static 'img/Eviction cleanout.jpg' %}" alt="Eviction Clean-Out" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Eviction Clean-Out</h3>
@@ -233,7 +233,7 @@
 
       <a href="{% url 'website:service_page' 'foreclosure-clean-out' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Foreclosure.jpg' %}" alt="Foreclosure Clean-Out">
+          <img src="{% static 'img/Foreclosure.jpg' %}" alt="Foreclosure Clean-Out" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Foreclosure Clean-Out</h3>
@@ -244,7 +244,7 @@
 
       <a href="{% url 'website:service_page' 'bulk-cardboard-removal' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/5124041345.jpg' %}" alt="Bulk Cardboard Removal">
+          <img src="{% static 'img/5124041345.jpg' %}" alt="Bulk Cardboard Removal" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Bulk Cardboard Removal &amp; Pickup</h3>
@@ -255,7 +255,7 @@
 
       <a href="{% url 'website:service_page' 'garage-clean-out' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/1000005705.jpg' %}" alt="Garage Clean-Out">
+          <img src="{% static 'img/1000005705.jpg' %}" alt="Garage Clean-Out" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Garage Clean-Out</h3>
@@ -266,7 +266,7 @@
 
       <a href="{% url 'website:service_page' 'storage-unit-clean-out' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Storage Unit.jpg' %}" alt="Storage Unit Clean-Out">
+          <img src="{% static 'img/Storage Unit.jpg' %}" alt="Storage Unit Clean-Out" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Storage Unit Clean-Out</h3>
@@ -277,7 +277,7 @@
 
       <a href="{% url 'website:service_page' 'hot-tub-removal' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Hottub Removal.jpg' %}" alt="Hot Tub Removal">
+          <img src="{% static 'img/Hottub Removal.jpg' %}" alt="Hot Tub Removal" loading="lazy">
         </div>
         <div class="add-svc-body">
           <h3>Hot Tub Removal</h3>
@@ -288,7 +288,7 @@
 
       <a href="{% url 'website:service_page' 'air-bnb-cleaning' %}" class="add-svc-card">
         <div class="add-svc-img">
-          <img src="{% static 'img/Move In Move Out Cleaning.jpg' %}" alt="Air BnB Cleaning" style="object-position: center top;">
+          <img src="{% static 'img/Move In Move Out Cleaning.jpg' %}" alt="Air BnB Cleaning" loading="lazy" style="object-position: center top;">
         </div>
         <div class="add-svc-body">
           <h3>Air BnB Cleaning</h3>
@@ -338,6 +338,57 @@
       <p style="color:#94a3b8;font-size:15px;max-width:460px;">Refer a friend who books a service and you both get $50 credit toward your next job. No limit on referrals.</p>
     </div>
     <a href="/referral/" class="btn btn-yellow" style="white-space:nowrap;padding:14px 32px;font-size:15px;">Refer a Friend &rarr;</a>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section style="padding:56px 0;background:#fff;">
+  <div class="container" style="max-width:780px;">
+    <h2 class="section-title text-center" style="margin-bottom:8px;">Frequently Asked Questions</h2>
+    <p class="section-subtitle text-center" style="margin-bottom:32px;">Common questions about our junk removal services</p>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+
+      <details style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <summary style="padding:16px 20px;font-weight:700;font-size:15px;color:var(--navy-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          How much does junk removal cost in Nashville?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p style="padding:0 20px 18px;color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">Junk Busters pricing starts at $75 and is based on the volume of junk removed. We offer free, no-obligation quotes — call <a href="tel:6158812505" style="color:var(--yellow-dark);font-weight:700;">615-881-2505</a> or <a href="/quote/" style="color:var(--yellow-dark);font-weight:700;">request a quote online</a>.</p>
+      </details>
+
+      <details style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <summary style="padding:16px 20px;font-weight:700;font-size:15px;color:var(--navy-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          What areas do you serve?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p style="padding:0 20px 18px;color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">We serve Middle Tennessee and Southern Kentucky, including Nashville, Clarksville, White House, Hendersonville, Gallatin, Springfield, Franklin, Goodlettsville, Portland, Bowling Green KY, and surrounding areas within a 50-mile radius of Orlinda, TN.</p>
+      </details>
+
+      <details style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <summary style="padding:16px 20px;font-weight:700;font-size:15px;color:var(--navy-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          What types of junk do you remove?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p style="padding:0 20px 18px;color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">We remove furniture, appliances, electronics, yard waste, construction debris, estate cleanouts, garage cleanouts, hot tubs, sheds, and scrap metal. We do not remove hazardous materials such as paint, chemicals, or asbestos.</p>
+      </details>
+
+      <details style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <summary style="padding:16px 20px;font-weight:700;font-size:15px;color:var(--navy-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          How quickly can you pick up my junk?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p style="padding:0 20px 18px;color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">We offer same-day and next-day appointments in most cases. <a href="/book/" style="color:var(--yellow-dark);font-weight:700;">Book online</a> or call <a href="tel:6158812505" style="color:var(--yellow-dark);font-weight:700;">615-881-2505</a> to schedule.</p>
+      </details>
+
+      <details style="border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;">
+        <summary style="padding:16px 20px;font-weight:700;font-size:15px;color:var(--navy-dark);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+          Do you offer estate cleanouts?
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="flex-shrink:0;" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+        </summary>
+        <p style="padding:0 20px 18px;color:var(--text-muted);font-size:14px;line-height:1.7;margin:0;">Yes. Junk Busters specializes in full estate cleanouts, foreclosure cleanouts, and eviction cleanouts throughout Middle TN and Southern KY. Contact us for a free quote.</p>
+      </details>
+
+    </div>
   </div>
 </section>
 
