@@ -36,18 +36,11 @@
       <div style="margin-bottom:32px;">
         <div style="font-size:13px;font-weight:800;color:var(--navy-dark);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px;">Select Amount *</div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:14px;" id="amount-presets">
-          {% for amt in "25,50,100,200"|split:"," %}
-          <button type="button" class="amount-btn" data-amount="{{ amt }}"
-            style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;"
-            onclick="selectAmount('{{ amt }}', this)">
-            ${{ amt }}
-          </button>
-          {% endfor %}
-          <button type="button" class="amount-btn" data-amount="custom"
-            style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;"
-            onclick="selectAmount('custom', this)">
-            Custom
-          </button>
+          <button type="button" class="amount-btn" data-amount="25"   style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;" onclick="selectAmount('25', this)">$25</button>
+          <button type="button" class="amount-btn" data-amount="50"   style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;" onclick="selectAmount('50', this)">$50</button>
+          <button type="button" class="amount-btn" data-amount="100"  style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;" onclick="selectAmount('100', this)">$100</button>
+          <button type="button" class="amount-btn" data-amount="200"  style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;" onclick="selectAmount('200', this)">$200</button>
+          <button type="button" class="amount-btn" data-amount="custom" style="padding:12px 24px;border:2px solid #d1d5db;border-radius:8px;font-size:16px;font-weight:800;color:var(--navy-dark);background:#fff;cursor:pointer;transition:all .15s;" onclick="selectAmount('custom', this)">Custom</button>
         </div>
         <div id="custom-amount-wrap" style="display:none;margin-top:10px;">
           <div style="position:relative;display:inline-block;">
