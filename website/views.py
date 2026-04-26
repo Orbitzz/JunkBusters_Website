@@ -1610,9 +1610,21 @@ ALL_SERVICES = [
 ]
 
 SERVICE_AREAS = [
-    'White House, TN', 'Nashville, TN', 'Gallatin, TN', 'Hendersonville, TN',
-    'Goodlettsville, TN', 'Springfield, TN', 'Greenbrier, TN', 'Millersville, TN',
-    'Cottontown, TN', 'Portland, TN', 'Orlinda, TN',
+    # Tennessee — cities
+    'Nashville, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN',
+    'Gallatin, TN', 'Hendersonville, TN', 'Portland, TN', 'Clarksville, TN',
+    'Franklin, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN',
+    'Lebanon, TN', 'Mt. Juliet, TN', 'Murfreesboro, TN', 'Smyrna, TN',
+    'La Vergne, TN', 'Ashland City, TN', 'Orlinda, TN',
+    # Tennessee — counties
+    'Davidson County, TN', 'Robertson County, TN', 'Sumner County, TN',
+    'Williamson County, TN', 'Wilson County, TN', 'Rutherford County, TN',
+    'Cheatham County, TN', 'Montgomery County, TN',
+    # Kentucky — cities
+    'Bowling Green, KY', 'Russellville, KY', 'Franklin, KY', 'Scottsville, KY',
+    'Adairville, KY',
+    # Kentucky — counties
+    'Warren County, KY', 'Logan County, KY', 'Simpson County, KY', 'Allen County, KY',
 ]
 
 
