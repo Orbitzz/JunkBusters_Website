@@ -300,7 +300,6 @@ NASHVILLE_AREAS = [
 LEGACY_REDIRECTS = {
     # Renamed service slugs
     'bulk-cardboard-removal-and-pickup': '/bulk-cardboard-removal/',
-    'roof-replacements':                  '/junk-removal/',
 
     # Old junk-removal-service-{city}-{state} city pages
     'junk-removal-service-clarksville-tn':      '/junk-removal-clarksville/',
