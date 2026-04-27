@@ -389,6 +389,13 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC to deliver fast and professional junk removal services across Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green. We have access to the knowledge, tools, and expertise to handle items of all sizes, including heavy and bulky ones. Our team follows a structured approach, making each job seamless and hassle-free. Every job is handled with professionalism, efficiency, and proper disposal methods. Our safe disposal practices help reduce environmental impact. Give us a call now to schedule a service.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN', 'Goodlettsville, TN', 'Russellville, KY', 'La Vergne, TN'],
+        'faqs': [
+            {'q': 'How is junk removal priced?', 'a': 'Volume-based — you only pay for the space your load takes in our truck. Most jobs run $75–$600. Factors include total volume, weight (heavy construction debris costs more due to rising landfill tipping fees across Middle TN), item type (mattresses, hot tubs, and tires carry disposal surcharges), and access difficulty. We quote upfront before we lift a finger.'},
+            {'q': 'Do you offer same-day pickup?', 'a': 'Yes, subject to availability. Call 615-881-2505 by mid-morning and we\'ll do our best to fit you in the same day. Next-day slots are almost always available.'},
+            {'q': 'What items do you NOT take?', 'a': 'We don\'t haul: wet or liquid paint, car batteries, propane tanks, asbestos-containing materials, biohazard or medical waste, or items requiring freon removal (AC units and refrigerators must be degassed by a certified tech first — we can advise). Call us if you\'re unsure about a specific item.'},
+            {'q': 'Do you donate or recycle what you haul?', 'a': 'Yes. We sort loads and divert usable items to local donation centers and recyclers when possible. We also buy scrap copper and aluminum at competitive rates — ask about this when you call.'},
+            {'q': 'What payment methods do you accept?', 'a': 'Cash, check, and all major credit/debit cards. Payment is collected on-site after the job is complete.'},
+        ],
     },
 
     'fence-removal': {
@@ -441,6 +448,13 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'At Junk Busters, we understand the sensitive nature of estate cleanouts. Our dedicated team is committed to providing compassionate support and dependable services every step of the way. Contact us today at 615-881-2505 to schedule a consultation and entrust us with the cleanout and restoration of your estate.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Brentwood, TN', 'Thompson\'s Station, TN', 'Spring Hill, TN', 'Franklin, KY'],
+        'faqs': [
+            {'q': 'How long does an estate cleanout take?', 'a': 'Most single-family homes: 1–2 days. Larger estates with multiple outbuildings or decades of accumulation can take 2–4 days. We\'ll walk the property and give you a realistic timeline on the spot.'},
+            {'q': 'How do you handle sentimental or high-value items?', 'a': 'We move only what you designate for removal. Items you want kept, donated, or appraised are flagged before we start — we never make those decisions for you. We can coordinate pickup with local estate sale companies or appraisers.'},
+            {'q': 'Can you work alongside a realtor or probate attorney?', 'a': 'Absolutely. We\'re experienced in time-sensitive estate situations and work around realtor showings, attorney walkthroughs, and court-ordered deadlines. We provide before/after documentation on request.'},
+            {'q': 'Do you donate usable furniture and household goods?', 'a': 'Yes, we coordinate with local charities and donation centers. We\'ll sort and load donated items separately and provide a general receipt on request.'},
+            {'q': 'What does an estate cleanout cost?', 'a': 'Most estate cleanouts run $400–$1,800 depending on volume, access, and the presence of heavy items. Landfill tipping fees — which have risen significantly across Middle TN — factor into larger loads. We quote upfront with no hidden fees.'},
+        ],
     },
 
     'eviction-clean-out': {
@@ -468,6 +482,12 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Trust Junk Busters for professional and compassionate eviction property cleanouts. Contact us at 615-881-2505 or schedule online.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'La Vergne, TN', 'Smyrna, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Thompson\'s Station, TN', 'Spring Hill, TN', 'Franklin, KY'],
+        'faqs': [
+            {'q': 'How fast can you turn around an eviction cleanout?', 'a': 'We offer next-day and often same-day scheduling for eviction cleanouts. We know landlords and property managers are often on tight legal timelines. Call 615-881-2505 and tell us your situation.'},
+            {'q': 'Do you handle biohazard situations?', 'a': 'We handle standard eviction debris. For units with confirmed biohazard contamination (blood, sewage, mold), we recommend a certified biohazard remediation company first — we can refer you. Once the hazard is cleared, we handle the remainder.'},
+            {'q': 'Do you work directly with property managers?', 'a': 'Yes. We\'ve worked with individual landlords, property management companies, and real estate investors across Tennessee and Southern Kentucky. We can invoice the management company directly and coordinate access with your on-site staff.'},
+            {'q': 'Do you provide documentation?', 'a': 'We can provide before/after photos and a written summary of what was removed. This is useful for security deposit disputes and property condition records.'},
+        ],
     },
 
     'foreclosure-clean-out': {
@@ -495,6 +515,12 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Our pricing approach is designed to provide competitive rates while delivering high-quality and reliable foreclosure cleanout services to our clients. We strive to exceed expectations and ensure a smooth and stress-free experience from start to finish. Call us at 615-881-2505 or book online today to find out why we are the preeminent service provider in the area.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'La Vergne, TN', 'Smyrna, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Brentwood, TN', 'Franklin, KY', 'Spring Hill, TN'],
+        'faqs': [
+            {'q': 'Can you coordinate with a bank or asset manager?', 'a': 'Yes. We\'re experienced working with REO asset managers, bank-assigned property managers, and listing agents. We can coordinate access, provide itemized removal reports, and turn properties over quickly.'},
+            {'q': 'What about abandoned vehicles on the property?', 'a': 'Abandoned vehicles require a title or legal authorization to remove — we\'ll advise you on the process, but we don\'t tow vehicles ourselves. We handle all other property contents.'},
+            {'q': 'Do you provide before/after photos?', 'a': 'Yes, always. Documentation is standard on foreclosure and REO cleanouts for liability and condition records.'},
+            {'q': 'How is a foreclosure cleanout priced?', 'a': 'Volume and access, same as any load. Foreclosures often have more heavy debris (appliances, construction materials) which increases disposal costs. We walk every property before quoting.'},
+        ],
     },
 
     'bulk-cardboard-removal': {
@@ -551,6 +577,11 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Ready to reclaim your garage space? Schedule your garage clean-out with Junk Busters today by visiting our website at calling us directly at 615-881-2505 to discuss your needs and set up a service time.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Smyrna, TN', 'Lebanon, TN', 'Goodlettsville, TN', 'Spring Hill, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'faqs': [
+            {'q': 'Can you sort donations from trash?', 'a': 'Yes. Tell us what you want to keep, donate, or trash before we start. We\'ll stage items accordingly and coordinate donation pickups with local charities.'},
+            {'q': 'What about old paint cans, chemicals, or motor oil?', 'a': 'We don\'t haul hazardous materials — wet paint, motor oil, pesticides, herbicides, and pool chemicals require household hazardous waste drop-off events (most counties hold them quarterly). We\'ll help you identify what qualifies so you can plan ahead.'},
+            {'q': 'How long does a garage cleanout take?', 'a': 'Most two-car garages: 2–4 hours. Heavily packed garages or those with large items (riding mowers, freezers) can take 4–6 hours. We always quote before starting.'},
+        ],
     },
 
     'storage-unit-clean-out': {
@@ -605,6 +636,12 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Junk Busters LLC provides competitive pricing and transparent quotes, with no hidden fees. Residents across Middle TN and Southern KY — Nashville, Clarksville, Bowling Green, and beyond — can trust us for efficient and reliable hot tub removal. Call 615-881-2505 today.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Smyrna, TN', 'Spring Hill, TN', 'Franklin, TN', 'Lebanon, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'faqs': [
+            {'q': 'Do I need to disconnect the electrical before you arrive?', 'a': 'Yes — the electrical connection must be disconnected by a licensed electrician (or at the breaker) before we arrive. We don\'t perform electrical work. Most electricians can cap off a hot tub circuit in under an hour.'},
+            {'q': 'How do you get a hot tub out?', 'a': 'We disassemble the hot tub on-site using reciprocating saws and hand tools, breaking it into sections that fit through standard gates and doorways. No cranes needed in most cases.'},
+            {'q': 'What does hot tub removal cost?', 'a': 'Most hot tub removals run $350–$600. Cost factors: size, access (can we drive close, or is it a long carry?), and whether any concrete pad or decking needs to be broken up. We quote on-site.'},
+            {'q': 'What access do you need?', 'a': 'A standard 36" gate opening is ideal. Narrower access means more disassembly time, which affects price. If it\'s on a second-story deck, call us — we\'ve done it, but we need to assess first.'},
+        ],
     },
 
     'residential-cleaning': {
@@ -916,6 +953,12 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Junk Busters LLC combines light demolition expertise with our full-service hauling operation — meaning the same crew that tears it down loads it up and drives it away. No subcontractors, no coordination headaches. Call 615-881-2505 for a free on-site estimate anywhere in Nashville, Clarksville, Bowling Green, or the surrounding Middle TN & Southern KY area.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN'],
+        'faqs': [
+            {'q': 'Do I need a permit to demolish a shed?', 'a': 'In most Tennessee and Kentucky municipalities, sheds under 200 sq ft don\'t require a demolition permit — but rules vary by county. We recommend confirming with your local codes office. We\'re not responsible for permit compliance.'},
+            {'q': 'How long does shed demolition take?', 'a': 'Most residential sheds: 2–4 hours including cleanup and haul-away. Larger structures or those with concrete slabs take longer.'},
+            {'q': 'Is there a size limit on what you demo?', 'a': 'No hard limit — we\'ve demo\'d large outbuildings and small barns. For anything over ~400 sq ft, call us to discuss access, haul volume, and pricing.'},
+            {'q': 'What happens to the debris?', 'a': 'All wood, metal, and roofing goes to appropriate disposal facilities. Tipping fees for shingle debris are high (e.g., $100/ton at Wilson County Landfill) — we factor this into quotes for shed roofs with shingles.'},
+        ],
     },
 
     'dump-trailer-rental': {
@@ -977,6 +1020,7 @@ CITY_PAGES = {
         ],
         'trust_body': "Junk Busters LLC is Middle TN & Southern KY's dependable cleanout crew. We've served hundreds of Clarksville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. Military families, real estate agents, and property management companies trust us to get the job done right the first time. Give us a call and we'll have a crew out to you in no time.",
         'local_areas': ['Clarksville, TN', 'Fort Campbell, KY', 'Oak Grove, KY', 'Hopkinsville, KY', 'Cunningham, TN', 'Pembroke, KY', 'Southside, TN', 'Woodlawn, TN', 'Adams, TN', 'Erin, TN', 'Sango, TN', 'Pleasant View, TN'],
+        'disposal_note': 'Bi-County Solid Waste (serving Montgomery County) charges $48/ton for Class I waste loads over 2,500 lbs, plus a $10 fee per mattress or box spring. Most standard residential jobs stay well within competitive pricing. We\'ll give you an exact quote before any work begins.',
     },
     'bowling-green': {
         'slug': 'junk-removal-bowling-green',
@@ -1004,6 +1048,7 @@ CITY_PAGES = {
         ],
         'trust_body': "Junk Busters LLC is proud to be one of the few regional hauling companies that genuinely serves Bowling Green and Southern Kentucky — not just lists it as a service area. Our crews make the drive. Our pricing is upfront. And our work speaks for itself. Call 615-881-2505 for a free estimate and we'll get a crew out to you fast.",
         'local_areas': ['Bowling Green, KY', 'Franklin, KY', 'Scottsville, KY', 'Russellville, KY', 'Alvaton, KY', 'Oakland, KY', 'Smiths Grove, KY', 'Lewisburg, KY', 'Auburn, KY', 'Rockfield, KY', 'Plano, KY', 'Woodburn, KY'],
+        'disposal_note': 'Benson Valley Landfill serves Warren County with tonnage-based commercial pricing (direct quote required for commercial loads). We maintain an active commercial account to keep rates competitive for Bowling Green and Warren County customers.',
     },
     'kentucky': {
         'slug': 'kentucky',
@@ -1031,6 +1076,7 @@ CITY_PAGES = {
         ],
         'trust_body': "Junk Busters LLC is based right at the Tennessee–Kentucky border in Orlinda, TN — which makes us genuinely local to Southern Kentucky in a way that Nashville-based companies simply aren't. We serve Warren, Simpson, Logan, and Allen Counties with the same professionalism, speed, and fair pricing we bring to every job across Middle TN. Call 615-881-2505 for a free estimate.",
         'local_areas': ['Bowling Green, KY', 'Franklin, KY', 'Russellville, KY', 'Scottsville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Smiths Grove, KY', 'Oakland, KY', 'Alvaton, KY', 'Morgantown, KY', 'Woodburn, KY'],
+        'disposal_note': 'Disposal rates vary across our Southern Kentucky service area. Benson Valley (Warren County) is tonnage-based with commercial quotes; Allen County Landfill charges $51.50/ton; Simpson County Convenience Center charges $45/yard C&D; Logan County Solid Waste charges $38/ton. We factor in the applicable county rate on every estimate — no hidden disposal fees.',
     },
     'nashville': {
         'slug': 'junk-removal-nashville',
@@ -1058,6 +1104,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC has served hundreds of Nashville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. We are locally owned, fully insured, and committed to leaving your space clutter-free. Call 615-881-2505 today for a free estimate.',
         'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Goodlettsville, TN', 'Berry Hill, TN', 'Oak Hill, TN', 'Forest Hills, TN', 'Brentwood, TN'],
+        'disposal_note': "Nashville's waste disposal landscape changed significantly in 2022 when WM's Southern Services C&D landfill — the only commercial C&D facility in Davidson County — stopped accepting third-party haulers to preserve remaining capacity. A TN Court of Appeals ruling in September 2023 denied their expansion permit. As a result, we route construction debris and large loads to surrounding county facilities, which adds transport time and tipping costs on larger jobs. We're upfront about this on every quote.",
     },
     'white-house': {
         'slug': 'junk-removal-white-house-tn',
@@ -1085,6 +1132,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'As a Robertson County-based company, Junk Busters LLC is your local junk removal expert in White House, TN. We offer same-day and next-day service, upfront pricing, and a crew that treats your property with respect. Call 615-881-2505 for a free estimate.',
         'local_areas': ['White House, TN', 'Greenbrier, TN', 'Millersville, TN', 'Orlinda, TN', 'Cottontown, TN', 'Cedar Hill, TN', 'Ridgetop, TN', 'Goodlettsville, TN', 'Springfield, TN', 'Bethpage, TN', 'Gallatin, TN', 'Hendersonville, TN'],
+        'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'hendersonville': {
         'slug': 'junk-removal-hendersonville-tn',
@@ -1112,6 +1160,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC brings dependable, upfront-priced junk removal and cleanout services to Hendersonville and all of Sumner County. Locally owned, fully insured, and always on time. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Cottontown, TN', 'Millersville, TN', 'Madison, TN', 'Old Hickory, TN', 'Ridgetop, TN'],
+        'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
     'gallatin': {
         'slug': 'junk-removal-gallatin-tn',
@@ -1139,6 +1188,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Gallatin, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Gallatin, TN', 'Hendersonville, TN', 'Portland, TN', 'Westmoreland, TN', 'White House, TN', 'Goodlettsville, TN', 'Millersville, TN', 'Bethpage, TN', 'Cottontown, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Old Hickory, TN'],
+        'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
     'springfield': {
         'slug': 'junk-removal-springfield-tn',
@@ -1166,6 +1216,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is Robertson County\'s local junk removal and cleanout company. Headquartered in Orlinda, we\'re just minutes from Springfield and ready to serve. Upfront pricing, no hidden fees, and crews that show up when they say they will. Call 615-881-2505 today.',
         'local_areas': ['Springfield, TN', 'White House, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Robertson County, TN', 'Pleasant View, TN'],
+        'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'franklin': {
         'slug': 'junk-removal-franklin-tn',
@@ -1193,6 +1244,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC brings dependable, professionally priced junk removal to Franklin and all of Williamson County. Our crews are background-checked, insured, and committed to exceptional service. Call 615-881-2505 for a free on-site estimate.',
         'local_areas': ['Franklin, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN', 'Thompson\'s Station, TN', 'Fairview, TN', 'College Grove, TN', 'Arrington, TN', 'Triune, TN', 'Williamson County, TN', 'Nashville, TN', 'Antioch, TN'],
+        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
     },
     'goodlettsville': {
         'slug': 'junk-removal-goodlettsville-tn',
@@ -1220,6 +1272,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is Goodlettsville\'s go-to junk removal and cleanout crew. We offer upfront pricing, same-day availability, and a team that takes pride in every job. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Goodlettsville, TN', 'Millersville, TN', 'Greenbrier, TN', 'White House, TN', 'Madison, TN', 'Hendersonville, TN', 'Ridgetop, TN', 'Old Hickory, TN', 'Gallatin, TN', 'Nashville, TN', 'Cottontown, TN', 'Antioch, TN'],
+        'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'portland': {
         'slug': 'junk-removal-portland-tn',
@@ -1247,6 +1300,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC makes the drive to Portland and northern Sumner County so you don\'t have to haul it yourself. We offer upfront pricing, same-day scheduling when available, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Gallatin, TN', 'White House, TN', 'Hendersonville, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Greenbrier, TN', 'Cottontown, TN', 'Orlinda, TN', 'Springfield, TN'],
+        'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
 
     'murfreesboro': {
@@ -1275,6 +1329,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Murfreesboro, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Murfreesboro, TN', 'Smyrna, TN', 'La Vergne, TN', 'Nashville, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN', 'Rutherford County, TN', 'Franklin, TN'],
+        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
     },
 
     'smyrna': {
@@ -1303,6 +1358,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your go-to junk removal crew in Smyrna, TN. Same-day and next-day scheduling, flat-rate upfront pricing, and a background-checked team that treats your property right. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Smyrna, TN', 'Murfreesboro, TN', 'La Vergne, TN', 'Nashville, TN', 'Rutherford County, TN', 'Brentwood, TN', 'Nolensville, TN'],
+        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
     },
 
     'lavergne': {
@@ -1331,6 +1387,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your trusted junk removal team in La Vergne, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['La Vergne, TN', 'Smyrna, TN', 'Murfreesboro, TN', 'Nashville, TN', 'Rutherford County, TN', 'Antioch, TN', 'Brentwood, TN'],
+        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
     },
 
     'lebanon': {
@@ -1359,6 +1416,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Lebanon, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Lebanon, TN', 'Mt. Juliet, TN', 'Watertown, TN', 'Carthage, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Wilson County, TN', 'Old Hickory, TN'],
+        'disposal_note': 'Wilson County Landfill charges $18/cu yd for C&D debris and $100/ton for shingles — shingle disposal is among the highest per-ton rates in our service area, so we flag this on roofing debris estimates. Standard junk removal rates here remain competitive.',
     },
 
     'russellville': {
@@ -1387,6 +1445,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your trusted junk removal team in Russellville, KY. We offer upfront pricing, flexible scheduling, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Russellville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Bowling Green, KY', 'Franklin, KY', 'Scottsville, KY', 'Logan County, KY'],
+        'disposal_note': 'Logan County Solid Waste charges $38/ton (effective September 2024) — one of the more competitive rates in our Kentucky service area. Standard jobs here price well.',
     },
 
     'franklin-ky': {
@@ -1415,6 +1474,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your reliable junk removal partner in Franklin, KY. We offer transparent flat-rate pricing, flexible scheduling, and a professional crew that works efficiently and respectfully. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Franklin, KY', 'Bowling Green, KY', 'Russellville, KY', 'Scottsville, KY', 'Simpson County, KY', 'Nashville, TN', 'Springfield, TN'],
+        'disposal_note': 'Simpson County Convenience Center charges $45/yard for C&D debris and $25 for large truck loads. We factor these fees into estimates for heavier hauls out of Franklin, KY.',
     },
 
     'scottsville': {
@@ -1443,6 +1503,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Scottsville, KY. We offer same-day and next-day scheduling when available, transparent flat-rate pricing, and a crew that works hard and leaves your property clean. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Scottsville, KY', 'Russellville, KY', 'Franklin, KY', 'Bowling Green, KY', 'Adairville, KY', 'Allen County, KY', 'Nashville, TN'],
+        'disposal_note': 'Allen County Landfill charges $51.50/ton gate fee. We factor this into estimates on larger loads from the Scottsville area.',
     },
 
     'brentwood': {
@@ -1471,6 +1532,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is Brentwood\'s trusted junk removal team. We understand the standards Brentwood homeowners expect — our crews are professional, punctual, and careful with your property. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Brentwood, TN', 'Franklin, TN', 'Nolensville, TN', 'Nashville, TN', 'Spring Hill, TN', 'Thompson\'s Station, TN', 'Williamson County, TN', 'Antioch, TN'],
+        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
     },
 
     'spring-hill': {
@@ -1499,6 +1561,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Spring Hill, TN. Same-day and next-day scheduling, transparent flat-rate pricing, and a crew that works hard and leaves your property clean. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Spring Hill, TN', 'Thompson\'s Station, TN', 'Franklin, TN', 'Brentwood, TN', 'Nolensville, TN', 'Fairview, TN', 'Columbia, TN', 'Williamson County, TN', 'Nashville, TN'],
+        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
     },
 
     'mt-juliet': {
@@ -1527,6 +1590,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Mt. Juliet, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
         'local_areas': ['Mt. Juliet, TN', 'Lebanon, TN', 'Watertown, TN', 'Gladeville, TN', 'Old Hickory, TN', 'Hermitage, TN', 'Nashville, TN', 'Hendersonville, TN', 'Wilson County, TN'],
+        'disposal_note': 'Wilson County Landfill charges $18/cu yd for C&D debris and $100/ton for shingles — shingle disposal is among the highest per-ton rates in our service area, so we flag this on roofing debris estimates. Standard junk removal rates here remain competitive.',
     },
 
     'nolensville': {
@@ -1555,6 +1619,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your trusted junk removal team in Nolensville, TN. We bring the same professional standards Williamson County homeowners expect — on-time crews, upfront pricing, and a property left cleaner than we found it. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Nolensville, TN', 'Brentwood, TN', 'Franklin, TN', 'Spring Hill, TN', 'Nashville, TN', 'Antioch, TN', 'Williamson County, TN', 'Smyrna, TN'],
+        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
     },
 
     'ashland-city': {
@@ -1583,6 +1648,7 @@ CITY_PAGES = {
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Ashland City and Cheatham County. We make the drive out so you don\'t have to haul it yourself. Upfront pricing, reliable scheduling, and a crew that treats your property right. Call 615-881-2505 for a free estimate.',
         'local_areas': ['Ashland City, TN', 'Kingston Springs, TN', 'Pegram, TN', 'Pleasant View, TN', 'Chapmansboro, TN', 'Clarksville, TN', 'Nashville, TN', 'Springfield, TN', 'Cheatham County, TN'],
+        'disposal_note': 'Cheatham County Solid Waste charges $77/ton (effective July 2025) — one of the higher rates in our service area. We factor this into estimates for larger loads and always quote upfront.',
     },
 }
 
@@ -2253,6 +2319,10 @@ def health(request):
 
 def pricing(request):
     return render(request, 'website/pricing.html')
+
+
+def faq(request):
+    return render(request, 'website/faq.html')
 
 
 # ── Service area GeoJSON proxy ──────────────────────────────────────────────────
