@@ -4,7 +4,7 @@ import urllib.error
 import re
 from html.parser import HTMLParser
 
-SITE_BASE = 'https://junkbusterstn.com'
+SITE_BASE = 'https://www.junkbustershauling.com'
 
 PRIORITY_PAGES = [
     '/estate-hoarder-cleanout/',
