@@ -104,6 +104,49 @@ def marketing_auth_callback(request):
     """)
 
 
+def marketing_run_report(request):
+    """One-time manual trigger: /marketing-auth/run-report/?token=jb2026"""
+    if request.GET.get('token') != 'jb2026':
+        return HttpResponse('Forbidden', status=403)
+    import io, sys
+    from website.marketing import oauth, gsc, ga4, auditor, report, telegram
+    buf = io.StringIO()
+
+    def log(msg):
+        buf.write(msg + '\n')
+
+    log('Getting Google access token...')
+    token = oauth.get_access_token()
+
+    if token:
+        log('Fetching GSC data...')
+        gsc_data = gsc.fetch_report(token)
+        log(f'GSC result: {"error: " + gsc_data["error"] if gsc_data and "error" in gsc_data else "ok"}')
+        log('Fetching GA4 data...')
+        ga4_data = ga4.fetch_report(token)
+        log(f'GA4 result: {"error: " + ga4_data["error"] if ga4_data and "error" in ga4_data else "ok"}')
+    else:
+        log('No Google token — audit only')
+        gsc_data = None
+        ga4_data = None
+
+    log('Auditing site pages...')
+    audit_data = auditor.audit_pages()
+    log(f'Audited {len(audit_data)} pages')
+
+    log('Building report...')
+    message = report.build(gsc_data, ga4_data, audit_data)
+
+    log('Sending to Telegram...')
+    ok = telegram.send(message)
+    log(f'Telegram send: {"SUCCESS" if ok else "FAILED"}')
+    log('')
+    log('--- Report preview ---')
+    log(message)
+
+    return HttpResponse(buf.getvalue().replace('\n', '<br>'), content_type='text/html')
+
+
 def marketing_telegram_id(request):
     """Display Telegram channel IDs seen by the bot. Forward a channel message to the bot first."""
     token = os.environ.get('TELEGRAM_BOT_TOKEN', getattr(settings, 'TELEGRAM_BOT_TOKEN', ''))

@@ -14,5 +14,6 @@ urlpatterns = [
     path('marketing-auth/start/', marketing_auth_views.marketing_auth_start, name='marketing_auth_start'),
     path('marketing-auth/callback/', marketing_auth_views.marketing_auth_callback, name='marketing_auth_callback'),
     path('marketing-auth/telegram-id/', marketing_auth_views.marketing_telegram_id, name='marketing_telegram_id'),
+    path('marketing-auth/run-report/', marketing_auth_views.marketing_run_report, name='marketing_run_report'),
     path('', include('website.urls', namespace='website')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
