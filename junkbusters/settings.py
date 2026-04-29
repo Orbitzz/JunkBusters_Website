@@ -14,6 +14,14 @@ GOOGLE_PLACE_ID = config('GOOGLE_PLACE_ID', default='')
 GOOGLE_OAUTH_CLIENT_ID = config('GOOGLE_OAUTH_CLIENT_ID', default='')
 GOOGLE_OAUTH_CLIENT_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET', default='')
 GOOGLE_OAUTH_REDIRECT_URI = config('GOOGLE_OAUTH_REDIRECT_URI', default='http://localhost:8001/google-auth/callback/')
+GOOGLE_MARKETING_REDIRECT_URI = config('GOOGLE_MARKETING_REDIRECT_URI', default='http://localhost:8001/marketing-auth/callback/')
+
+# Marketing agent
+TELEGRAM_BOT_TOKEN = config('TELEGRAM_BOT_TOKEN', default='')
+TELEGRAM_CHANNEL_ID = config('TELEGRAM_CHANNEL_ID', default='')
+GOOGLE_MARKETING_REFRESH_TOKEN = config('GOOGLE_MARKETING_REFRESH_TOKEN', default='')
+GA4_PROPERTY_ID = config('GA4_PROPERTY_ID', default='')
+GSC_SITE_URL = config('GSC_SITE_URL', default='')
 
 # FieldCommand integration
 FIELDCOMMAND_REVIEWS_URL   = config('FIELDCOMMAND_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
