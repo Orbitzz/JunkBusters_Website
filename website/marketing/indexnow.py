@@ -74,4 +74,9 @@ def _default_urls():
         '/pricing/',
         '/faq/',
         '/llms.txt',
+        '/blog/',
+        '/blog/why-junk-removal-costs-more-nashville-waste-crisis/',
+        '/blog/hoarder-house-cleanout-nashville-guide/',
+        '/blog/estate-cleanout-after-death-nashville-guide/',
+        '/blog/storage-unit-cleanout-nashville-guide/',
     ]
