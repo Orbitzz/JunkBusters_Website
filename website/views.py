@@ -609,6 +609,13 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC for professional storage unit clean-outs across Middle TN & Southern KY — Nashville, Clarksville, and Bowling Green. Contact us at 615-881-2505 or schedule online.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Smyrna, TN', 'Lebanon, TN', 'Goodlettsville, TN', 'Spring Hill, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'faqs': [
+            {'q': 'How much does a storage unit cleanout cost?', 'a': 'Storage unit cleanouts typically run $150–$450 depending on how full the unit is and what\'s inside. We price by volume — the more truck space your items take up, the higher the cost. We can give you a firm quote over the phone if you describe the unit size and how full it is.'},
+            {'q': 'Do I need to be at the storage facility during the cleanout?', 'a': 'You need to be there to unlock the unit at the start, but you don\'t have to stay for the duration. Many clients hand us the key and come back when we\'re done. We\'ll call you when the unit is cleared and ready for your final walkthrough.'},
+            {'q': 'Can you clean out a delinquent or abandoned storage unit?', 'a': 'Yes. We work with storage facility owners and managers to clear delinquent units after the lien process is complete. We handle removal, disposal, and leave the unit swept clean and ready to re-rent. Contact us to discuss recurring contracts for facilities with multiple units.'},
+            {'q': 'What items can\'t you remove from a storage unit?', 'a': 'We cannot remove hazardous materials such as propane tanks, certain chemicals, or biological waste. If you\'re unsure about an item, call us ahead of time — we can usually advise over the phone and in many cases coordinate with the right disposal vendor.'},
+            {'q': 'How quickly can you clear a storage unit?', 'a': 'Most single storage units are cleared in 1–3 hours. We offer same-day and next-day scheduling in most parts of our service area — Nashville, Clarksville, and Bowling Green — so you can stop paying monthly rent on a unit you no longer need as quickly as possible.'},
+        ],
     },
 
     'hot-tub-removal': {
@@ -811,6 +818,13 @@ SERVICES = {
         'step_cards': [],
         'trust_body': 'When life brings you to a moment that requires clearing out a loved one\'s home or restoring a property from years of accumulation, Junk Busters LLC is the team you can trust to handle it with professionalism and genuine care. Call 615-881-2505 for a free on-site estimate — we\'ll come to you, assess the property, and provide a transparent quote with no obligation.',
         'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Russellville, KY'],
+        'faqs': [
+            {'q': 'How much does a hoarder home cleanout cost?', 'a': 'Most hoarder home cleanouts range from $500 to $2,500+ depending on the size of the home and the severity of accumulation. We price by volume — you only pay for the truck space we use. We provide a free on-site estimate before any work begins so there are no surprises.'},
+            {'q': 'Do you work with probate attorneys and real estate agents?', 'a': 'Yes. We regularly coordinate with executors, probate attorneys, and listing agents to meet court-ordered or market-deadline timelines. We can provide written confirmation of removal and before/after photos for legal documentation upon request.'},
+            {'q': 'Do I need to be present during the cleanout?', 'a': 'Not necessarily. Many of our clients — especially those managing an estate from out of state — authorize a trusted family member or attorney to be present in their place. We communicate clearly before, during, and after the job so you always know what was removed.'},
+            {'q': 'What happens to the items you remove?', 'a': 'We sort everything into donate, recycle, and dispose categories. Usable furniture and household goods go to local donation centers. Metals and electronics are recycled. Only items that cannot be reused or recycled go to the landfill. We aim to keep as much out of the landfill as possible.'},
+            {'q': 'How long does an estate or hoarder cleanout take?', 'a': 'A single-room or small-unit cleanout can be done in a few hours. A full hoarder home — especially a multi-bedroom house with years of accumulation — typically takes one to three days. We\'ll give you a realistic timeline estimate during your free on-site quote.'},
+        ],
     },
 
     'property-manager-hub': {
