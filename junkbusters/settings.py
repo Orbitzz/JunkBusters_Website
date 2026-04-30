@@ -22,6 +22,7 @@ TELEGRAM_CHANNEL_ID = config('TELEGRAM_CHANNEL_ID', default='')
 GOOGLE_MARKETING_REFRESH_TOKEN = config('GOOGLE_MARKETING_REFRESH_TOKEN', default='')
 GA4_PROPERTY_ID = config('GA4_PROPERTY_ID', default='')
 GSC_SITE_URL = config('GSC_SITE_URL', default='')
+INDEXNOW_KEY = config('INDEXNOW_KEY', default='jb2026indexnow8812ab4c9d3e7f1a')
 
 # FieldCommand integration
 FIELDCOMMAND_REVIEWS_URL   = config('FIELDCOMMAND_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')

@@ -1,6 +1,6 @@
 import sys
 from django.core.management.base import BaseCommand
-from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed
+from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed, indexnow
 
 
 class Command(BaseCommand):
@@ -43,3 +43,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write(self.style.ERROR('Failed to send report'))
             sys.exit(1)
+
+        self.stdout.write('Pinging Bing IndexNow...')
+        pinged = indexnow.ping()
+        self.stdout.write('IndexNow: ' + ('ok' if pinged else 'failed (non-critical)'))

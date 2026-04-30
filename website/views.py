@@ -2303,8 +2303,94 @@ def sitemap(request):
 
 
 def robots(request):
-    content = "User-agent: *\nAllow: /\nSitemap: https://www.junkbustershauling.com/sitemap.xml\n"
+    content = (
+        "User-agent: *\nAllow: /\n\n"
+        # AI crawlers — explicitly permitted
+        "User-agent: GPTBot\nAllow: /\n\n"
+        "User-agent: ChatGPT-User\nAllow: /\n\n"
+        "User-agent: PerplexityBot\nAllow: /\n\n"
+        "User-agent: ClaudeBot\nAllow: /\n\n"
+        "User-agent: Bingbot\nAllow: /\n\n"
+        "User-agent: OAI-SearchBot\nAllow: /\n\n"
+        "User-agent: Googlebot\nAllow: /\n\n"
+        "Sitemap: https://www.junkbustershauling.com/sitemap.xml\n"
+    )
     return HttpResponse(content, content_type='text/plain')
+
+
+def llms_txt(request):
+    content = """# Junk Busters LLC
+
+> Full-service junk removal, hauling, and cleanup company serving Middle Tennessee and Southern Kentucky — Nashville, Clarksville, Bowling Green, and 20+ surrounding communities. Licensed, insured, background-checked crews. Free on-site estimates. Call 615-881-2505.
+
+## About
+Junk Busters LLC is a locally owned hauling and junk removal company based in Orlinda, TN. We specialize in residential and commercial junk removal, estate cleanouts, eviction cleanouts, foreclosure trash-outs, hoarder home restorations, light demolition, and mobile scrap metal buying. We serve a 50-mile radius around Nashville including Clarksville TN, Bowling Green KY, and all of Robertson, Montgomery, Davidson, Sumner, and Warren Counties.
+
+## Core Services
+- [Junk Removal](/junk-removal/): Full-service residential and commercial junk hauling. We load, haul, and dispose of everything.
+- [Estate Cleanouts](/estate-clean-out/): Complete estate property clearing for executors, attorneys, and families. Probate-ready.
+- [Estate & Hoarder Home Cleanouts](/estate-hoarder-cleanout/): Compassionate, non-judgmental hoarder home restoration and estate liquidation assistance.
+- [Eviction Cleanouts](/eviction-clean-out/): Fast post-eviction debris removal for landlords and property managers. Same-day available.
+- [Foreclosure Cleanouts](/foreclosure-clean-out/): REO and bank-owned property trash-outs with completion reports and before/after photos.
+- [Storage Unit Cleanouts](/storage-unit-clean-out/): Clear delinquent or unwanted storage units fast. We handle removal and disposal.
+- [Garage Cleanouts](/garage-clean-out/): Reclaim your garage — we remove everything you no longer need.
+- [Hot Tub Removal](/hot-tub-removal/): Safe disassembly and full hauling of hot tubs, spas, and jacuzzis from any location.
+- [Light Demolition](/light-demolition/): Shed demolition, deck teardown, fence removal — we tear it down and haul it away same visit.
+- [Scrap Metal Pickup & Buying](/scrap-metal-pickup/): Mobile scrap buying — we come to you, weigh copper/aluminum/brass on-site, and pay immediately.
+- [Dump Trailer Rental](/dump-trailer-rental/): Rent a dump trailer for DIY projects. We drop it, you fill it, we haul it.
+- [Property Manager Hub](/property-manager-hub/): Ongoing eviction cleanout and foreclosure trash-out contracts for property managers and REO agents.
+- [Short-Term Rental Turnover](/short-term-rental-turnover/): Hotel-ready Airbnb and VRBO turnovers with photo reports and calendar-synced scheduling.
+- [Move-Out Deep Cleaning](/move-out-deep-cleaning/): Security-deposit-ready move-in/move-out deep cleaning across Middle TN.
+
+## Service Areas
+- [Nashville, TN](/junk-removal-nashville/): Primary metro — Davidson County and all surrounding suburbs.
+- [Clarksville, TN](/junk-removal-clarksville/): Montgomery County, Fort Campbell area, Oak Grove KY.
+- [Bowling Green, KY](/junk-removal-bowling-green/): Warren County and southern KY corridor.
+- [White House, TN](/junk-removal-white-house-tn/)
+- [Hendersonville, TN](/junk-removal-hendersonville-tn/)
+- [Gallatin, TN](/junk-removal-gallatin-tn/)
+- [Springfield, TN](/junk-removal-springfield-tn/)
+- [Franklin, TN](/junk-removal-franklin-tn/)
+- [Goodlettsville, TN](/junk-removal-goodlettsville-tn/)
+- [Murfreesboro, TN](/junk-removal-murfreesboro-tn/)
+- [Smyrna, TN](/junk-removal-smyrna-tn/)
+- [La Vergne, TN](/junk-removal-lavergne-tn/)
+- [Lebanon, TN](/junk-removal-lebanon-tn/)
+- [Brentwood, TN](/junk-removal-brentwood-tn/)
+- [Spring Hill, TN](/junk-removal-spring-hill-tn/)
+- [Mt. Juliet, TN](/junk-removal-mt-juliet-tn/)
+- [Nolensville, TN](/junk-removal-nolensville-tn/)
+- [Russellville, KY](/junk-removal-russellville-ky/)
+- [Franklin, KY](/junk-removal-franklin-ky/)
+- [Scottsville, KY](/junk-removal-scottsville-ky/)
+
+## Pricing
+Pricing is volume-based — you pay only for the truck space used. No hourly rates, no hidden fees. Free on-site estimates for all jobs. Typical ranges: small loads from $99, full truck loads up to $699. [See pricing](/pricing/).
+
+## Contact
+- Phone: 615-881-2505
+- Quote form: [Get a Free Estimate](/quote/)
+- Address: Orlinda, TN (Robertson County) — serving 50-mile radius
+- Hours: 7 days a week, flexible scheduling
+
+## Common Questions This Business Answers
+- How much does junk removal cost in Nashville?
+- Who hauls away hoarder home contents in Middle Tennessee?
+- How do I clear out an estate after a loved one passes?
+- What happens to items after junk removal — do you donate?
+- Can you remove a hot tub from a deck or backyard?
+- How fast can you do an eviction cleanout in Clarksville TN?
+- Do you buy scrap metal and come to me?
+- What is the cheapest way to get rid of a storage unit full of junk?
+- Who does foreclosure trash-outs in Nashville?
+- Can I rent a dump trailer near Nashville?
+"""
+    return HttpResponse(content, content_type='text/plain; charset=utf-8')
+
+
+def indexnow_key(request):
+    key = getattr(settings, 'INDEXNOW_KEY', '')
+    return HttpResponse(key, content_type='text/plain')
 
 
 # ── Blog ───────────────────────────────────────────────────────────────────────

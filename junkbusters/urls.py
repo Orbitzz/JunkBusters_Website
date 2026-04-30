@@ -3,8 +3,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from website import oauth_views, marketing_auth_views
+from website.views import indexnow_key
 
 urlpatterns = [
+    # IndexNow key file — must be at root domain, not under /website/
+    path(f'{settings.INDEXNOW_KEY}.txt', indexnow_key, name='indexnow_key'),
     path('admin/', admin.site.urls),
     path('portal/', include('portal.urls', namespace='portal')),
     path('google-auth/start/', oauth_views.google_auth_start, name='google_auth_start'),

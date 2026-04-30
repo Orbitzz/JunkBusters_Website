@@ -79,6 +79,7 @@ urlpatterns = [
     path('api/embed/member-signup/', views.member_signup_webhook, name='member_signup_webhook'),
     path('sitemap.xml', views.sitemap, name='sitemap'),
     path('robots.txt', views.robots, name='robots'),
+    path('llms.txt', views.llms_txt, name='llms_txt'),
     path('health/', views.health, name='health'),
     path('blog/', views.blog_list, name='blog_list'),
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
