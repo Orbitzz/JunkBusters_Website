@@ -19,7 +19,7 @@
       <h1>Junk Busters: Nashville &amp; Southern KY</h1>
       <p>Serving Middle TN &amp; Southern KY — including Nashville, Clarksville, &amp; Bowling Green</p>
       <div class="hero-actions">
-        <a href="{% url 'website:contact' %}" class="btn btn-yellow">Contact Us</a>
+        <a href="{% url 'website:quote' %}" class="btn btn-yellow">Get a Free Estimate</a>
         <a href="tel:{{ BUSINESS_PHONE }}" class="btn btn-outline">{{ BUSINESS_PHONE }}</a>
       </div>
     </div>
@@ -407,6 +407,23 @@
     </div>
   </div>
 </section>
+
+<!-- Sticky mobile CTA — visible only on phones -->
+<div id="mobile-sticky-cta" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;background:var(--navy-dark);padding:12px 16px;box-shadow:0 -2px 12px rgba(0,0,0,.3);display:flex;gap:10px;align-items:center;justify-content:center;">
+  <a href="tel:{{ BUSINESS_PHONE }}" style="flex:1;text-align:center;background:#fff;color:var(--navy-dark);font-weight:800;font-size:14px;padding:11px 8px;border-radius:8px;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:6px;">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.09 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+    Call Now
+  </a>
+  <a href="{% url 'website:quote' %}" style="flex:1;text-align:center;background:var(--yellow);color:var(--navy-dark);font-weight:800;font-size:14px;padding:11px 8px;border-radius:8px;text-decoration:none;">
+    Free Estimate
+  </a>
+</div>
+<style>
+@media (max-width: 768px) {
+  #mobile-sticky-cta { display: flex !important; }
+  body { padding-bottom: 64px; }
+}
+</style>
 
 {% block extra_scripts %}
 <script>
