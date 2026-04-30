@@ -2393,6 +2393,11 @@ def indexnow_key(request):
     return HttpResponse(key, content_type='text/plain')
 
 
+def bing_site_auth(request):
+    content = '<?xml version="1.0"?>\n<users>\n\t<user>286DF8435EB4CE62345F27FC390A5913</user>\n</users>'
+    return HttpResponse(content, content_type='text/xml')
+
+
 # ── Blog ───────────────────────────────────────────────────────────────────────
 
 def blog_list(request):
