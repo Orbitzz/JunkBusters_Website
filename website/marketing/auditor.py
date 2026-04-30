@@ -17,7 +17,7 @@ PRIORITY_PAGES = [
     '/junk-removal-bowling-green/',
     '/hot-tub-removal/',
     '/garage-clean-out/',
-    '/shed-demolition/',
+    '/light-demolition/',
 ]
 
 _SKIP_TAGS = {'script', 'style', 'noscript', 'head', 'nav', 'footer'}
