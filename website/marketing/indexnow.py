@@ -4,8 +4,13 @@ import os
 import urllib.request
 import urllib.error
 
-INDEXNOW_API = 'https://api.indexnow.org/indexnow'
 SITE_BASE = 'https://www.junkbustershauling.com'
+
+# api.indexnow.org distributes to Bing, Yandex, Naver, Seznam, and Brave
+INDEXNOW_ENDPOINTS = [
+    'https://api.indexnow.org/indexnow',
+    'https://www.bing.com/indexnow',
+]
 
 
 def ping(urls=None):
@@ -28,15 +33,20 @@ def ping(urls=None):
         'urlList': urls[:100],
     }).encode()
 
-    try:
-        req = urllib.request.Request(INDEXNOW_API, data=body, method='POST')
-        req.add_header('Content-Type', 'application/json')
-        with urllib.request.urlopen(req, timeout=10) as resp:
-            return resp.status in (200, 202)
-    except urllib.error.HTTPError as e:
-        return e.code in (200, 202)
-    except Exception:
-        return False
+    success = False
+    for endpoint in INDEXNOW_ENDPOINTS:
+        try:
+            req = urllib.request.Request(endpoint, data=body, method='POST')
+            req.add_header('Content-Type', 'application/json')
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                if resp.status in (200, 202):
+                    success = True
+        except urllib.error.HTTPError as e:
+            if e.code in (200, 202):
+                success = True
+        except Exception:
+            pass
+    return success
 
 
 def _default_urls():
