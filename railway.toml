@@ -2,6 +2,5 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "python manage.py migrate --run-syncdb && python manage.py collectstatic --noinput && gunicorn junkbusters.wsgi --bind 0.0.0.0:$PORT --workers 2"
 healthcheckPath = "/"
 restartPolicyType = "ON_FAILURE"
