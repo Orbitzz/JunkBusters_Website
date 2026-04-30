@@ -1,4 +1,4 @@
-"""Google Analytics 4 Data API client — sessions and key events by page."""
+"""Google Analytics 4 Data API client — sessions and conversions by page."""
 import json
 import os
 import urllib.request
@@ -20,47 +20,50 @@ def fetch_report(access_token):
             return json.loads(resp.read())
 
     try:
-        # Pages by sessions — current 7 days and prior 7 days as separate dateRange dimension
-        data = query({
-            'dateRanges': [
-                {'startDate': '7daysAgo', 'endDate': 'today', 'name': 'current'},
-                {'startDate': '14daysAgo', 'endDate': '8daysAgo', 'name': 'prior'},
-            ],
-            'dimensions': [{'name': 'pagePath'}, {'name': 'dateRange'}],
-            'metrics': [{'name': 'sessions'}, {'name': 'keyEvents'}],
-            'limit': 50,
-            'orderBys': [{'metric': {'metricName': 'sessions'}, 'desc': True}],
+        curr_data = query({
+            'dateRanges': [{'startDate': '7daysAgo', 'endDate': 'today'}],
+            'dimensions': [{'name': 'pagePath'}],
+            'metrics': [{'name': 'sessions'}, {'name': 'conversions'}],
+            'limit': 25,
         })
 
-        curr = {}
-        prior_sessions = {}
-        for row in data.get('rows', []):
-            page = row['dimensionValues'][0]['value']
-            range_name = row['dimensionValues'][1]['value']
-            sessions = int(row['metricValues'][0]['value'])
-            key_events = int(row['metricValues'][1]['value'])
-            if range_name == 'current':
-                curr[page] = {'sessions': sessions, 'key_events': key_events}
-            else:
-                prior_sessions[page] = sessions
+        prior_data = query({
+            'dateRanges': [{'startDate': '14daysAgo', 'endDate': '8daysAgo'}],
+            'dimensions': [{'name': 'pagePath'}],
+            'metrics': [{'name': 'sessions'}],
+            'limit': 25,
+        })
 
-        total_curr = sum(v['sessions'] for v in curr.values())
-        total_prior = sum(prior_sessions.values())
+        curr_pages = [
+            {
+                'page': row['dimensionValues'][0]['value'],
+                'sessions': int(row['metricValues'][0]['value']),
+                'conversions': int(row['metricValues'][1]['value']),
+            }
+            for row in curr_data.get('rows', [])
+        ]
+
+        curr_total = sum(p['sessions'] for p in curr_pages)
+        prior_total = sum(
+            int(row['metricValues'][0]['value'])
+            for row in prior_data.get('rows', [])
+        )
         session_delta = (
-            round((total_curr - total_prior) / total_prior * 100) if total_prior else 0
+            round((curr_total - prior_total) / prior_total * 100) if prior_total else 0
         )
 
-        pages = [{'page': p, **v} for p, v in curr.items()]
-        top_pages = sorted(pages, key=lambda x: x['sessions'], reverse=True)[:5]
+        top_pages = sorted(curr_pages, key=lambda x: x['sessions'], reverse=True)[:5]
         top_converters = sorted(
-            [p for p in pages if p['key_events'] > 0],
-            key=lambda x: x['key_events'],
+            [p for p in curr_pages if p['conversions'] > 0],
+            key=lambda x: x['conversions'],
             reverse=True,
         )[:3]
-        needs_cta = [p for p in pages if p['sessions'] >= 30 and p['key_events'] == 0][:3]
+        needs_cta = [
+            p for p in curr_pages if p['sessions'] >= 30 and p['conversions'] == 0
+        ][:3]
 
         return {
-            'total_sessions': total_curr,
+            'total_sessions': curr_total,
             'session_delta': session_delta,
             'top_pages': top_pages,
             'top_converters': top_converters,
