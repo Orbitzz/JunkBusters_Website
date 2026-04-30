@@ -1,7 +1,64 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 app_name = 'website'
+
+# 301 redirects for old/renamed slugs that Google may have indexed.
+# permanent=True issues a 301 so Google transfers ranking signals to the new URL.
+_R = lambda old, new: path(old, RedirectView.as_view(url=f'/{new}/', permanent=True))
+
+LEGACY_REDIRECTS = [
+    # Service page renames
+    _R('shed-demolition',           'light-demolition'),
+    _R('airbnb-cleaning',           'short-term-rental-turnover'),
+    _R('air-bnb',                   'short-term-rental-turnover'),
+    _R('short-term-rental',         'short-term-rental-turnover'),
+    _R('move-in-out-cleaning',      'move-out-deep-cleaning'),
+    _R('move-in-move-out',          'move-out-deep-cleaning'),
+    _R('moving-cleaning',           'move-out-deep-cleaning'),
+    _R('scrap-metal',               'scrap-metal-pickup'),
+    _R('dump-trailer',              'dump-trailer-rental'),
+    _R('hoarder-cleanout',          'estate-hoarder-cleanout'),
+    _R('estate-cleanout',           'estate-clean-out'),
+    _R('eviction-cleanout',         'eviction-clean-out'),
+    _R('foreclosure-cleanout',      'foreclosure-clean-out'),
+    _R('garage-cleanout',           'garage-clean-out'),
+    _R('storage-unit',              'storage-unit-clean-out'),
+    _R('storage-cleanout',          'storage-unit-clean-out'),
+    _R('hot-tub',                   'hot-tub-removal'),
+    _R('hot-tub-removal-service',   'hot-tub-removal'),
+    _R('property-manager',          'property-manager-hub'),
+    _R('bulk-cardboard',            'bulk-cardboard-removal'),
+    _R('fence',                     'fence-removal'),
+    _R('junk-removal-services',     'junk-removal'),
+    _R('residential-junk-removal',  'junk-removal'),
+    _R('light-demo',                'light-demolition'),
+    _R('demolition',                'light-demolition'),
+    # City pages without state suffix → canonical with suffix
+    _R('junk-removal-nashville-tn',        'junk-removal-nashville'),
+    _R('junk-removal-clarksville-tn',      'junk-removal-clarksville'),
+    _R('junk-removal-bowling-green-ky',    'junk-removal-bowling-green'),
+    _R('junk-removal-white-house',         'junk-removal-white-house-tn'),
+    _R('junk-removal-hendersonville',      'junk-removal-hendersonville-tn'),
+    _R('junk-removal-gallatin',            'junk-removal-gallatin-tn'),
+    _R('junk-removal-springfield',         'junk-removal-springfield-tn'),
+    _R('junk-removal-franklin',            'junk-removal-franklin-tn'),
+    _R('junk-removal-goodlettsville',      'junk-removal-goodlettsville-tn'),
+    _R('junk-removal-portland',            'junk-removal-portland-tn'),
+    _R('junk-removal-murfreesboro',        'junk-removal-murfreesboro-tn'),
+    _R('junk-removal-smyrna',              'junk-removal-smyrna-tn'),
+    _R('junk-removal-lavergne',            'junk-removal-lavergne-tn'),
+    _R('junk-removal-lebanon',             'junk-removal-lebanon-tn'),
+    _R('junk-removal-russellville',        'junk-removal-russellville-ky'),
+    _R('junk-removal-franklin-ky-tn',      'junk-removal-franklin-ky'),
+    _R('junk-removal-scottsville',         'junk-removal-scottsville-ky'),
+    _R('junk-removal-brentwood',           'junk-removal-brentwood-tn'),
+    _R('junk-removal-spring-hill',         'junk-removal-spring-hill-tn'),
+    _R('junk-removal-mt-juliet',           'junk-removal-mt-juliet-tn'),
+    _R('junk-removal-nolensville',         'junk-removal-nolensville-tn'),
+    _R('junk-removal-ashland-city',        'junk-removal-ashland-city-tn'),
+]
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -56,6 +113,8 @@ urlpatterns = [
     path('gift-card/success/',  views.gift_card_success,  name='gift_card_success'),
     path('gift-card/webhook/',  views.gift_card_webhook,  name='gift_card_webhook'),
     path('gift-card/check/',    views.gift_card_check,    name='gift_card_check'),
+    # Legacy redirects — must come before catch-all
+    *LEGACY_REDIRECTS,
     # Individual service pages — must come last (catch-all slug)
     path('<slug:slug>/', views.service_page, name='service_page'),
 ]

@@ -1,6 +1,6 @@
 import sys
 from django.core.management.base import BaseCommand
-from website.marketing import oauth, gsc, ga4, auditor, report, telegram
+from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed
 
 
 class Command(BaseCommand):
@@ -17,7 +17,7 @@ class Command(BaseCommand):
             ga4_data = ga4.fetch_report(token)
         else:
             self.stdout.write(self.style.WARNING(
-                'No Google credentials — sending content audit only. '
+                'No Google credentials — sending audit only. '
                 'Run /marketing-auth/start/ to authorize GSC + GA4.'
             ))
             gsc_data = None
@@ -26,8 +26,14 @@ class Command(BaseCommand):
         self.stdout.write('Auditing site pages...')
         audit_data = auditor.audit_pages()
 
+        self.stdout.write('Checking sitemap health...')
+        sitemap_data = sitemap_checker.check_sitemap()
+
+        self.stdout.write('Checking page speed...')
+        speed_data = pagespeed.check_speed()
+
         self.stdout.write('Building report...')
-        message = report.build(gsc_data, ga4_data, audit_data)
+        message = report.build(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
 
         self.stdout.write('Sending to Telegram...')
         ok = telegram.send(message)

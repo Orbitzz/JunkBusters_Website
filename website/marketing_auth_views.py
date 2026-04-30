@@ -109,7 +109,7 @@ def marketing_run_report(request):
     if request.GET.get('token') != 'jb2026':
         return HttpResponse('Forbidden', status=403)
     import io, sys
-    from website.marketing import oauth, gsc, ga4, auditor, report, telegram
+    from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed
     buf = io.StringIO()
 
     def log(msg):
@@ -134,8 +134,17 @@ def marketing_run_report(request):
     audit_data = auditor.audit_pages()
     log(f'Audited {len(audit_data)} pages')
 
+    log('Checking sitemap health...')
+    sitemap_data = sitemap_checker.check_sitemap()
+    nf = len(sitemap_data.get('not_found', [])) if 'error' not in sitemap_data else '?'
+    log(f'Sitemap: {sitemap_data.get("total", "?")} URLs, {nf} 404s')
+
+    log('Checking page speed...')
+    speed_data = pagespeed.check_speed()
+    log(f'Speed checked {len(speed_data)} pages')
+
     log('Building report...')
-    message = report.build(gsc_data, ga4_data, audit_data)
+    message = report.build(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
 
     log('Sending to Telegram...')
     ok = telegram.send(message)
