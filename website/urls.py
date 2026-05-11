@@ -73,6 +73,7 @@ urlpatterns = [
     path('loyalty/', views.loyalty, name='loyalty'),
     path('track/', views.track, name='track'),
     path('referral/', views.referral, name='referral'),
+    path('api/availability/', views.availability_proxy, name='availability_proxy'),
     path('api/chat/', views.chat_proxy, name='chat_proxy'),
     path('api/chat/poll/', views.chat_poll, name='chat_poll'),
     path('api/service-area-map/', views.service_area_geojson, name='service_area_geojson'),

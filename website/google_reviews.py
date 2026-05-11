@@ -283,16 +283,16 @@ def get_summary_from_places():
     return summary or {'rating': 5.0, 'total': 160}
 
 
-# ── FieldCommand reviews API ───────────────────────────────────────────────────
+# ── OmniHQ reviews API ────────────────────────────────────────────────────────
 
-def _fetch_fieldcommand_reviews():
+def _fetch_omnihq_reviews():
     """
-    Fetch reviews from FieldCommand's widget API (which pulls from GBP OAuth
-    stored in FieldCommand, falling back to FieldCommand's internal review DB).
+    Fetch reviews from OmniHQ's widget API (which pulls from GBP OAuth
+    stored in OmniHQ, falling back to OmniHQ's internal review DB).
     Returns (reviews_list, None) or (None, None) on failure.
     """
-    api_url = getattr(settings, 'FIELDCOMMAND_REVIEWS_URL', '')
-    api_key = getattr(settings, 'FIELDCOMMAND_EMBED_API_KEY', '')
+    api_url = getattr(settings, 'OMNIHQ_REVIEWS_URL', '')
+    api_key = getattr(settings, 'OMNIHQ_EMBED_API_KEY', '')
     if not api_url or not api_key:
         return None, None
     try:
@@ -321,15 +321,15 @@ def _fetch_fieldcommand_reviews():
 def get_reviews():
     """
     Return (reviews_list, is_live).
-    Priority: FieldCommand API → Business Profile API → Places API → static fallback.
+    Priority: OmniHQ API → Business Profile API → Places API → static fallback.
     Results cached for 24 hours.
     """
     cached = _load_cache()
     if cached is not None:
         return cached['reviews'], True
 
-    # 1. Try FieldCommand (one source of truth — FieldCommand manages GBP OAuth)
-    reviews, _ = _fetch_fieldcommand_reviews()
+    # 1. Try OmniHQ (one source of truth — OmniHQ manages GBP OAuth)
+    reviews, _ = _fetch_omnihq_reviews()
     if reviews:
         summary = get_summary_from_places()
         _save_cache(reviews, summary)

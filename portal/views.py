@@ -24,21 +24,21 @@ def _rate_limited(key, max_calls, window_seconds):
     return False
 
 
-FC_EMBED_URL = settings.FIELDCOMMAND_EMBED_URL
-FC_API_KEY   = settings.FIELDCOMMAND_EMBED_API_KEY
+OHQ_EMBED_URL = settings.OMNIHQ_EMBED_URL
+OHQ_API_KEY   = settings.OMNIHQ_EMBED_API_KEY
 
 
-def _call_fc(endpoint, payload):
-    """Call a FieldCommand embed API. Returns parsed JSON dict or None if FC is offline."""
+def _call_ohq(endpoint, payload):
+    """Call an OmniHQ embed API. Returns parsed JSON dict or None if OmniHQ is offline."""
     try:
         import urllib.request as _ur, json as _j
         data = _j.dumps(payload).encode()
         req = _ur.Request(
-            FC_EMBED_URL.format(endpoint=endpoint),
+            OHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
             headers={
                 'Content-Type': 'application/json',
-                'X-FC-EMBED-KEY': FC_API_KEY,
+                'X-FC-EMBED-KEY': OHQ_API_KEY,
             }
         )
         with _ur.urlopen(req, timeout=3) as resp:
@@ -102,8 +102,8 @@ def _send_sms(to_number, body):
 @csrf_exempt
 @require_http_methods(['POST'])
 def job_status_webhook(request):
-    """Receive job status updates from FieldCommand and notify customer via email + SMS."""
-    if request.headers.get('X-FC-EMBED-KEY') != settings.FIELDCOMMAND_EMBED_API_KEY:
+    """Receive job status updates from OmniHQ and notify customer via email + SMS."""
+    if request.headers.get('X-FC-EMBED-KEY') != settings.OMNIHQ_EMBED_API_KEY:
         return HttpResponse(status=403)
     try:
         payload = json.loads(request.body)
@@ -280,10 +280,10 @@ def dashboard(request):
     user = request.user
     profile, _ = CustomerProfile.objects.get_or_create(user=user)
 
-    # Fetch live data from FieldCommand — 60-second per-user cache, graceful fallback
-    cache_jobs      = f'fc_jobs:{user.email}'
-    cache_loyalty   = f'fc_loyalty:{user.email}'
-    cache_referrals = f'fc_referrals:{user.email}'
+    # Fetch live data from OmniHQ — 60-second per-user cache, graceful fallback
+    cache_jobs      = f'ohq_jobs:{user.email}'
+    cache_loyalty   = f'ohq_loyalty:{user.email}'
+    cache_referrals = f'ohq_referrals:{user.email}'
 
     jobs_data = cache.get(cache_jobs)
     if jobs_data is None:
@@ -406,8 +406,8 @@ def profile_view(request):
                 pass
         profile.save()
 
-        # Sync updated contact info to FieldCommand CRM
-        _call_fc('customer', {
+        # Sync updated contact info to OmniHQ CRM
+        _call_ohq('customer', {
             'email':      user.email,
             'first_name': user.first_name,
             'last_name':  user.last_name,

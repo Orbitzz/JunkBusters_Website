@@ -24,10 +24,10 @@ GA4_PROPERTY_ID = config('GA4_PROPERTY_ID', default='')
 GSC_SITE_URL = config('GSC_SITE_URL', default='')
 INDEXNOW_KEY = config('INDEXNOW_KEY', default='jb2026indexnow8812ab4c9d3e7f1a')
 
-# FieldCommand integration
-FIELDCOMMAND_REVIEWS_URL   = config('FIELDCOMMAND_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
-FIELDCOMMAND_EMBED_URL     = config('FIELDCOMMAND_EMBED_URL',     default='http://127.0.0.1:8000/marketing/api/embed/{endpoint}/')
-FIELDCOMMAND_EMBED_API_KEY = config('FIELDCOMMAND_EMBED_API_KEY', default='')
+# OmniHQ integration
+OMNIHQ_REVIEWS_URL   = config('OMNIHQ_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
+OMNIHQ_EMBED_URL     = config('OMNIHQ_EMBED_URL',     default='http://127.0.0.1:8000/marketing/api/embed/{endpoint}/')
+OMNIHQ_EMBED_API_KEY = config('OMNIHQ_EMBED_API_KEY', default='')
 
 # Google review URL
 GOOGLE_REVIEW_URL = config('GOOGLE_REVIEW_URL', default='https://g.page/r/CaQvxFrtKJyzEBM/review')

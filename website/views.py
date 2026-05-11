@@ -21,16 +21,16 @@ def _utm_info(session):
 
 
 def _call_fc(endpoint, payload):
-    """Call FC embed API and return parsed JSON dict. Returns None on failure."""
+    """Call OmniHQ embed API and return parsed JSON dict. Returns None on failure."""
     try:
         import urllib.request as _ur, json as _j
         data = _j.dumps(payload).encode()
         req = _ur.Request(
-            settings.FIELDCOMMAND_EMBED_URL.format(endpoint=endpoint),
+            settings.OMNIHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
             headers={
                 'Content-Type': 'application/json',
-                'X-FC-EMBED-KEY': settings.FIELDCOMMAND_EMBED_API_KEY,
+                'X-FC-EMBED-KEY': settings.OMNIHQ_EMBED_API_KEY,
             }
         )
         with _ur.urlopen(req, timeout=3) as resp:
@@ -40,16 +40,16 @@ def _call_fc(endpoint, payload):
 
 
 def _post_to_fc(endpoint, payload):
-    """Forward data to FieldCommand embed API. Fail silently if FC is down."""
+    """Forward data to OmniHQ embed API. Fail silently if OmniHQ is down."""
     try:
         import urllib.request as _ur, json as _j
         data = _j.dumps(payload).encode()
         req = _ur.Request(
-            settings.FIELDCOMMAND_EMBED_URL.format(endpoint=endpoint),
+            settings.OMNIHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
             headers={
                 'Content-Type': 'application/json',
-                'X-FC-EMBED-KEY': settings.FIELDCOMMAND_EMBED_API_KEY,
+                'X-FC-EMBED-KEY': settings.OMNIHQ_EMBED_API_KEY,
             }
         )
         _ur.urlopen(req, timeout=3)
@@ -64,14 +64,14 @@ from urllib.parse import urlparse as _urlparse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-_fc_parsed = _urlparse(settings.FIELDCOMMAND_EMBED_URL.format(endpoint=''))
-_FC_HOST = _fc_parsed.hostname or '127.0.0.1'
-_FC_PORT = _fc_parsed.port or 8000
-_FC_KEY  = settings.FIELDCOMMAND_EMBED_API_KEY
+_ohq_parsed = _urlparse(settings.OMNIHQ_EMBED_URL.format(endpoint=''))
+_OHQ_HOST = _ohq_parsed.hostname or '127.0.0.1'
+_OHQ_PORT = _ohq_parsed.port or 8000
+_OHQ_KEY  = settings.OMNIHQ_EMBED_API_KEY
 
 
 def _call_fc_multipart(endpoint, fields, files=None):
-    """POST multipart/form-data to FC embed API. Returns parsed JSON or None."""
+    """POST multipart/form-data to OmniHQ embed API. Returns parsed JSON or None."""
     boundary = _uuid.uuid4().hex
     parts = []
     for name, value in fields.items():
@@ -87,7 +87,7 @@ def _call_fc_multipart(endpoint, fields, files=None):
     parts.append(f'--{boundary}--\r\n'.encode())
     body = b''.join(parts)
     try:
-        conn = _http.HTTPConnection(_FC_HOST, _FC_PORT, timeout=5)
+        conn = _http.HTTPConnection(_OHQ_HOST, _OHQ_PORT, timeout=5)
         conn.request(
             'POST',
             f'/marketing/api/embed/{endpoint}/',
@@ -95,7 +95,7 @@ def _call_fc_multipart(endpoint, fields, files=None):
             headers={
                 'Content-Type': f'multipart/form-data; boundary={boundary}',
                 'Content-Length': str(len(body)),
-                'X-FC-EMBED-KEY': _FC_KEY,
+                'X-FC-EMBED-KEY': _OHQ_KEY,
             }
         )
         resp = conn.getresponse()
@@ -104,10 +104,24 @@ def _call_fc_multipart(endpoint, fields, files=None):
         return None
 
 
+@require_http_methods(["POST"])
+def availability_proxy(request):
+    """Server-side proxy for FC availability — keeps the embed API key off the client."""
+    try:
+        payload = _json.loads(request.body)
+        month = str(payload.get('month', ''))[:7]
+    except Exception:
+        return JsonResponse({'success': False, 'busy_dates': []}, status=400)
+    result = _call_fc('availability', {'month': month})
+    if result:
+        return JsonResponse(result)
+    return JsonResponse({'success': False, 'busy_dates': []})
+
+
 @csrf_exempt
 @require_http_methods(["POST"])
 def chat_proxy(request):
-    """Relay chat widget messages to FieldCommand and send email notification."""
+    """Relay chat widget messages to OmniHQ and send email notification."""
     from django.core.cache import cache as _cache
     ip = request.META.get('REMOTE_ADDR', 'unknown')
     count = _cache.get(f'chat:{ip}', 0)
@@ -178,15 +192,15 @@ def chat_proxy(request):
 
 @require_http_methods(["GET"])
 def chat_poll(request):
-    """Proxy poll requests to FieldCommand for new outbound messages."""
+    """Proxy poll requests to OmniHQ for new outbound messages."""
     import urllib.request as _ur, urllib.parse as _up
     thread_id = request.GET.get('thread_id', '')
     since     = request.GET.get('since', '')
     if not thread_id:
         return JsonResponse({'messages': []})
     try:
-        params = _up.urlencode({'thread_id': thread_id, 'since': since, 'key': _FC_KEY})
-        url = f'http://{_FC_HOST}:{_FC_PORT}/marketing/api/embed/chat/poll/?{params}'
+        params = _up.urlencode({'thread_id': thread_id, 'since': since, 'key': _OHQ_KEY})
+        url = f'http://{_OHQ_HOST}:{_OHQ_PORT}/marketing/api/embed/chat/poll/?{params}'
         req = _ur.Request(url)
         with _ur.urlopen(req, timeout=4) as resp:
             return JsonResponse(_json.loads(resp.read()))
@@ -1819,7 +1833,7 @@ def quote(request):
             except Exception:
                 pass
 
-            # Forward to FieldCommand as a BookingRequest lead (with UTM attribution)
+            # Forward to OmniHQ as a BookingRequest lead (with UTM attribution)
             lead_source, referrer = _utm_info(request.session)
             _post_to_fc('quote', {
                 'first_name': d['first_name'],
@@ -1901,7 +1915,7 @@ def booking(request):
             except Exception:
                 pass
 
-            # Forward to FieldCommand — creates Customer + Scheduled Job
+            # Forward to OmniHQ — creates Customer + Scheduled Job
             _post_to_fc('schedule', {
                 'first_name': d['first_name'],
                 'last_name': d['last_name'],
@@ -2208,8 +2222,8 @@ def referral(request):
 @csrf_exempt
 @require_http_methods(['POST'])
 def member_signup_webhook(request):
-    """Receive new-member events from FieldCommand and create / update portal accounts."""
-    if request.headers.get('X-FC-EMBED-KEY') != settings.FIELDCOMMAND_EMBED_API_KEY:
+    """Receive new-member events from OmniHQ and create / update portal accounts."""
+    if request.headers.get('X-FC-EMBED-KEY') != settings.OMNIHQ_EMBED_API_KEY:
         return JsonResponse({'error': 'forbidden'}, status=403)
 
     try:

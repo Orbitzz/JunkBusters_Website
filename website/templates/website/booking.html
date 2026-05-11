@@ -92,14 +92,12 @@
 {% block extra_scripts %}
 <script>
 (function() {
-  var KEY = 'davKlbTza0o9W5Aw-7a-y00VDl2q48o_3_GPgsX3BoI';
-  var API = 'http://127.0.0.1:8000/marketing/api/embed/availability/';
   var busyDates = [];
 
   function loadBusy(month) {
-    fetch(API, {
+    fetch('/api/availability/', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json', 'X-FC-EMBED-KEY': KEY},
+      headers: {'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}'},
       body: JSON.stringify({month: month})
     })
     .then(function(r){ return r.json(); })

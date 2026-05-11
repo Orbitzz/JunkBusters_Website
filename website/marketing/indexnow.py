@@ -18,7 +18,9 @@ def ping(urls=None):
     Submit URLs to IndexNow. If urls is None, submits the sitemap page list.
     Returns True on success.
     """
-    key = os.environ.get('INDEXNOW_KEY', 'jb2026indexnow8812ab4c9d3e7f1a')
+    key = os.environ.get('INDEXNOW_KEY')
+    if not key:
+        return False
     key_location = f'{SITE_BASE}/{key}.txt'
 
     if urls is None:

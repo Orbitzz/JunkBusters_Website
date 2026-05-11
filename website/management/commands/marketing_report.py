@@ -1,6 +1,6 @@
 import sys
 from django.core.management.base import BaseCommand
-from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed, indexnow
+from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed, indexnow, omnihq_sync
 
 
 class Command(BaseCommand):
@@ -43,6 +43,10 @@ class Command(BaseCommand):
         else:
             self.stdout.write(self.style.ERROR('Failed to send report'))
             sys.exit(1)
+
+        self.stdout.write('Syncing to OmniHQ...')
+        synced = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
+        self.stdout.write('OmniHQ sync: ' + ('ok' if synced else 'skipped/failed (non-critical)'))
 
         self.stdout.write('Pinging Bing IndexNow...')
         pinged = indexnow.ping()

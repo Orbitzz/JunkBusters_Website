@@ -109,7 +109,7 @@ def marketing_run_report(request):
     if request.GET.get('token') != 'jb2026':
         return HttpResponse('Forbidden', status=403)
     import io, sys
-    from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed
+    from website.marketing import oauth, gsc, ga4, auditor, report, telegram, sitemap_checker, pagespeed, omnihq_sync
     buf = io.StringIO()
 
     def log(msg):
@@ -149,6 +149,11 @@ def marketing_run_report(request):
     log('Sending to Telegram...')
     ok = telegram.send(message)
     log(f'Telegram send: {"SUCCESS" if ok else "FAILED"}')
+
+    log('Syncing to OmniHQ...')
+    synced = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
+    log(f'OmniHQ sync: {"ok" if synced else "skipped/failed (non-critical)"}')
+
     log('')
     log('--- Report preview ---')
     log(message)
