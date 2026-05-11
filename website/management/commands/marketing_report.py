@@ -45,8 +45,8 @@ class Command(BaseCommand):
             sys.exit(1)
 
         self.stdout.write('Syncing to OmniHQ...')
-        synced = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
-        self.stdout.write('OmniHQ sync: ' + ('ok' if synced else 'skipped/failed (non-critical)'))
+        result = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
+        self.stdout.write('OmniHQ sync: ' + result)
 
         self.stdout.write('Pinging Bing IndexNow...')
         pinged = indexnow.ping()

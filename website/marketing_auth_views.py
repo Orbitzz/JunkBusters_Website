@@ -151,8 +151,8 @@ def marketing_run_report(request):
     log(f'Telegram send: {"SUCCESS" if ok else "FAILED"}')
 
     log('Syncing to OmniHQ...')
-    synced = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
-    log(f'OmniHQ sync: {"ok" if synced else "skipped/failed (non-critical)"}')
+    result = omnihq_sync.post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data)
+    log(f'OmniHQ sync: {result}')
 
     log('')
     log('--- Report preview ---')

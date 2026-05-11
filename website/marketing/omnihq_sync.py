@@ -8,9 +8,9 @@ REPORT_TOKEN = os.environ.get('OMNIHQ_REPORT_TOKEN', '')
 
 def post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data,
                 period_start=None, period_end=None):
-    """POST marketing report data to OmniHQ. Fails silently if not configured."""
+    """POST marketing report data to OmniHQ. Returns a status string."""
     if not WEBHOOK_URL or not REPORT_TOKEN:
-        return False
+        return 'skipped (OMNIHQ_REPORT_WEBHOOK_URL or OMNIHQ_REPORT_TOKEN not set)'
     payload = json.dumps({
         'period_start': str(period_start) if period_start else None,
         'period_end': str(period_end) if period_end else None,
@@ -29,7 +29,7 @@ def post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data,
                 'X-Report-Token': REPORT_TOKEN,
             },
         )
-        urllib.request.urlopen(req, timeout=10)
-        return True
-    except Exception:
-        return False
+        resp = urllib.request.urlopen(req, timeout=10)
+        return f'ok (HTTP {resp.status})'
+    except Exception as e:
+        return f'failed: {e}'
