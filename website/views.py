@@ -6,7 +6,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest, GiftCard
-from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag
+from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag, notify_lead
 
 log = logging.getLogger(__name__)
 
@@ -194,8 +194,28 @@ def chat_proxy(request):
 
     returned_thread_id = (fc_result or {}).get('thread_id') or thread_id or ''
 
-    # Send email only on first message (no existing thread_id)
+    # Send email + Telegram alert only on first message (no existing thread_id)
     if not thread_id:
+        chat_booking = None
+        try:
+            parts = name.split(' ', 1)
+            chat_booking = BookingRequest.objects.create(
+                first_name=parts[0] or 'Chat',
+                last_name=parts[1] if len(parts) > 1 else '.',
+                email=email_val or 'noemail@provided.com',
+                phone=phone or '',
+                service_requested='CHAT',
+                notes=message,
+                ip_address=get_client_ip(request),
+                is_spam=False,
+                spam_reasons='',
+            )
+        except Exception:
+            log.exception('chat: failed to save BookingRequest')
+
+        if chat_booking:
+            notify_lead(chat_booking)
+
         try:
             body_text = (
                 f"New chat message from {name}\n\n"
@@ -1880,6 +1900,9 @@ def quote(request):
                     notify_spam_flag(booking)
                 return redirect('website:quote_success')
 
+            if booking:
+                notify_lead(booking)
+
             # Forward to OmniHQ as a BookingRequest lead (with UTM attribution)
             lead_source, referrer = _utm_info(request.session)
             _post_to_fc('quote', {
@@ -2142,6 +2165,8 @@ def contact(request):
                         notify_spam_flag(booking)
                     success = 'apply'
                 else:
+                    if booking:
+                        notify_lead(booking)
                     try:
                         body = (
                             f"New Job Application from {name}\n\n"
@@ -2219,6 +2244,8 @@ def contact(request):
                         notify_spam_flag(booking)
                     success = 'contact'
                 else:
+                    if booking:
+                        notify_lead(booking)
                     try:
                         body = (
                             f"New contact form message from {name}\n\n"

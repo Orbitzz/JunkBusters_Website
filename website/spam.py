@@ -183,6 +183,33 @@ def notify_spam_flag(row):
         log.exception('spam: telegram notify failed')
 
 
+def notify_lead(row):
+    """Inline Telegram alert for a real (non-flagged) submission.
+
+    Runs alongside the email notification so leads reach a channel Christian
+    actually reads, without waiting on the marketing cron. Email stays as
+    a backup — this is additive, not a replacement.
+    """
+    try:
+        from website.marketing import telegram
+        snippet = (row.notes or '')[:200].replace('\n', ' ').strip()
+        if len(row.notes or '') > 200:
+            snippet += '…'
+        # Distinct header + emoji-free formatting; Christian is scanning the same
+        # channel for spam-digest and lead alerts, so make the difference obvious.
+        msg = (
+            '<b>NEW LEAD</b>\n'
+            f'<b>{row.first_name} {row.last_name}</b>\n'
+            f'phone: <a href="tel:{row.phone}">{row.phone}</a>\n'
+            f'email: {row.email}\n'
+            f'form: {row.service_requested[:80]}\n'
+            f'msg: {snippet}'
+        )
+        telegram.send(msg, timeout=3)
+    except Exception:
+        log.exception('lead: telegram notify failed')
+
+
 # ── Turnstile (wired up in the P1 rollout, not called from views yet) ────────
 
 def verify_turnstile(request):
