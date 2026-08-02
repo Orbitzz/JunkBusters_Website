@@ -69,9 +69,10 @@ def google_auth_callback(request):
     if 'error' in data:
         return HttpResponse(f'<h2>Token error: {data["error"]} — {data.get("error_description", "")}</h2>', status=400)
 
+    refresh_token = data.get('refresh_token', '')
     tokens = {
         'access_token': data.get('access_token'),
-        'refresh_token': data.get('refresh_token'),
+        'refresh_token': refresh_token,
         'expires_at': time.time() + data.get('expires_in', 3600) - 60,
     }
     TOKEN_FILE.write_text(json.dumps(tokens))
@@ -81,11 +82,35 @@ def google_auth_callback(request):
     if cache_file.exists():
         cache_file.unlink()
 
+    # Display the refresh token so it can be pinned to GOOGLE_REVIEWS_REFRESH_TOKEN
+    # on Railway — the file-based storage does not survive redeploys.
+    if refresh_token:
+        return HttpResponse(f"""
+        <html><body style="font-family:sans-serif;max-width:700px;margin:60px auto;padding:0 24px;">
+          <h2 style="color:#1a2e4a;">&#10003; Google Business Profile connected!</h2>
+          <p>Reviews cache cleared. Your website will now fetch live reviews.</p>
+          <h3 style="color:#1a2e4a;margin-top:32px;">One more step — pin this token so it survives redeploys</h3>
+          <p>Copy the refresh token below and add it as
+          <code>GOOGLE_REVIEWS_REFRESH_TOKEN</code> in Railway (web service variables).
+          Without this, re-authorization is required after every deploy.</p>
+          <div style="background:#f0f4f8;border:2px solid #1a2e4a;border-radius:8px;padding:20px 24px;margin:20px 0;">
+            <p style="font-size:11px;color:#64748b;margin:0 0 8px;font-weight:600;letter-spacing:.05em;">
+              GOOGLE_REVIEWS_REFRESH_TOKEN</p>
+            <code style="font-size:13px;word-break:break-all;color:#1a2e4a;display:block;">{refresh_token}</code>
+          </div>
+          <a href="/" style="background:#f5c800;color:#1a2e4a;padding:12px 24px;border-radius:6px;
+             text-decoration:none;font-weight:700;display:inline-block;margin-top:16px;">
+             Go to Homepage</a>
+        </body></html>
+        """)
+
+    # No refresh_token issued (Google only issues on first consent after revoke)
     return HttpResponse("""
     <html><body style="font-family:sans-serif;max-width:600px;margin:60px auto;text-align:center;">
     <h2 style="color:#1a2e4a;">&#10003; Google Business Profile connected!</h2>
-    <p>Refresh token saved. Your website will now fetch all reviews from Google Business Profile.</p>
-    <p>The review cache has been cleared — the next page load will pull live reviews.</p>
+    <p>No refresh token was issued (already authorized). To mint a new one,
+    revoke access at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a> then re-visit
+    <a href="/google-auth/start/">/google-auth/start/</a>.</p>
     <a href="/" style="background:#f5c800;color:#1a2e4a;padding:12px 24px;border-radius:6px;
        text-decoration:none;font-weight:700;display:inline-block;margin-top:16px;">
        Go to Homepage</a>

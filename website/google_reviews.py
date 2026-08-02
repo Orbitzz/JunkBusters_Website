@@ -2,14 +2,16 @@
 Fetch live Google reviews.
 
 Priority order:
-  1. Google Business Profile API (OAuth2) — returns ALL reviews
-  2. Google Places API — fallback, returns max 5 reviews
-  3. Static fallback reviews
+  1. Google Business Profile API (OAuth2) — returns ALL reviews AND accurate total count
+  2. OmniHQ widget API — fallback, returns whatever OmniHQ has cached
+  3. Google Places API — fallback, returns max 5 reviews + user_ratings_total (if key is unrestricted)
+  4. Static fallback reviews
 
-OAuth tokens are stored in _oauth_tokens.json next to this file.
-Run the auth flow by visiting http://localhost:8001/google-auth/start/
+Refresh token resolution: prefer env var GOOGLE_REVIEWS_REFRESH_TOKEN
+(survives redeploys), fall back to _oauth_tokens.json (local dev).
 """
 import json
+import os
 import time
 import urllib.request
 import urllib.parse
@@ -56,6 +58,14 @@ FALLBACK_REVIEWS = [
 # ── Token helpers ──────────────────────────────────────────────────────────────
 
 def _load_tokens():
+    """Resolve the refresh token in this order:
+       1. Env var GOOGLE_REVIEWS_REFRESH_TOKEN (survives Railway redeploys — preferred)
+       2. _oauth_tokens.json on the container filesystem (for local dev / one-off backfill)
+    Access-token cache lives in-memory only; refresh happens each hour when Google's
+    ~1-hour access token expires."""
+    env_refresh = os.environ.get('GOOGLE_REVIEWS_REFRESH_TOKEN', '').strip()
+    if env_refresh:
+        return {'refresh_token': env_refresh, 'access_token': '', 'expires_at': 0}
     try:
         if TOKEN_FILE.exists():
             return json.loads(TOKEN_FILE.read_text())
@@ -65,6 +75,8 @@ def _load_tokens():
 
 
 def _save_tokens(tokens):
+    """Persist tokens to disk. No-op when using the env-var path (nowhere to persist
+    an in-memory access token; refresh happens per-request when cache expires)."""
     try:
         TOKEN_FILE.write_text(json.dumps(tokens))
     except Exception:
@@ -165,17 +177,25 @@ def _fetch_business_profile_reviews(access_token):
             return None, None
         location_name = locations[0]['name']  # e.g. "locations/987654321"
 
-        # Step 3: fetch reviews (paginated, up to 50)
+        # Step 3: fetch reviews (paginated). pageSize=50 is the API max; ceiling of
+        # 10 pages covers up to 500 reviews. Prior version capped at 5×10=50 and
+        # relied on the Places API for the total count — Places has been returning
+        # REQUEST_DENIED for referrer-restricted keys, so the summary was falling
+        # through to a hardcoded 160. len(all_reviews) after full pagination IS
+        # the actual live total from Google Business Profile.
         all_reviews = []
+        api_total = None
         page_token = None
-        for _ in range(5):  # max 5 pages of 10 = 50 reviews
+        for _ in range(10):
             url = (
                 f'https://mybusinessreviews.googleapis.com/v1/{account_name}/{location_name}/reviews'
-                '?pageSize=10'
+                '?pageSize=50'
             )
             if page_token:
                 url += f'&pageToken={page_token}'
             reviews_data = _api_get(url, access_token)
+            if api_total is None and 'totalReviewCount' in reviews_data:
+                api_total = int(reviews_data.get('totalReviewCount') or 0)
             batch = reviews_data.get('reviews', [])
             for r in batch:
                 reviewer = r.get('reviewer', {})
@@ -184,7 +204,6 @@ def _fetch_business_profile_reviews(access_token):
                 star_map = {'ONE': 1, 'TWO': 2, 'THREE': 3, 'FOUR': 4, 'FIVE': 5}
                 rating = star_map.get(star, 5)
                 create_time = r.get('createTime', '')
-                # Compute rough relative time from ISO timestamp
                 relative = _relative_time(create_time)
                 all_reviews.append({
                     'author_name': reviewer.get('displayName', 'Customer'),
@@ -197,10 +216,10 @@ def _fetch_business_profile_reviews(access_token):
             if not page_token:
                 break
 
-        # Step 4: summary (total + avg rating)
+        # Step 4: summary. Prefer the API's totalReviewCount when present, otherwise
+        # use len(all_reviews) — either way, no dependency on Places API for the total.
         avg_rating = (sum(r['rating'] for r in all_reviews) / len(all_reviews)) if all_reviews else 5.0
-        # Get total count from Places API summary (more accurate)
-        total = get_summary_from_places().get('total', len(all_reviews))
+        total = api_total if api_total else len(all_reviews)
         summary = {'rating': round(avg_rating, 1), 'total': total}
 
         return all_reviews, summary
@@ -321,27 +340,28 @@ def _fetch_omnihq_reviews():
 def get_reviews():
     """
     Return (reviews_list, is_live).
-    Priority: OmniHQ API → Business Profile API → Places API → static fallback.
-    Results cached for 24 hours.
+    Priority: Business Profile API → OmniHQ API → Places API → static fallback.
+    GBP is first because it is the only source that returns an accurate
+    total review count. Results cached for 24 hours.
     """
     cached = _load_cache()
     if cached is not None:
         return cached['reviews'], True
 
-    # 1. Try OmniHQ (one source of truth — OmniHQ manages GBP OAuth)
-    reviews, _ = _fetch_omnihq_reviews()
-    if reviews:
-        summary = get_summary_from_places()
-        _save_cache(reviews, summary)
-        return reviews, True
-
-    # 2. Fall back to direct Business Profile API (if this site has its own tokens)
+    # 1. GBP (via env-var refresh token or file-based token) — accurate total
     access_token = get_valid_access_token()
     if access_token:
         reviews, summary = _fetch_business_profile_reviews(access_token)
         if reviews:
             _save_cache(reviews, summary)
             return reviews, True
+
+    # 2. Fall back to OmniHQ widget API — uses OmniHQ's own GBP OAuth
+    reviews, _ = _fetch_omnihq_reviews()
+    if reviews:
+        summary = get_summary_from_places() or {'rating': 5.0, 'total': len(reviews)}
+        _save_cache(reviews, summary)
+        return reviews, True
 
     # 3. Fall back to Places API (max 5 reviews)
     reviews, summary = _fetch_places_reviews()
@@ -353,9 +373,16 @@ def get_reviews():
 
 
 def get_summary():
-    """Return {'rating': X, 'total': Y} — from cache or live."""
+    """Return {'rating': X, 'total': Y} — from cache, live GBP fetch, Places API, or fallback."""
     cached = _load_cache()
     if cached and cached.get('summary'):
         return cached['summary']
+    # If we can hit GBP, that has the accurate total.
+    access_token = get_valid_access_token()
+    if access_token:
+        reviews, summary = _fetch_business_profile_reviews(access_token)
+        if summary:
+            _save_cache(reviews or [], summary)
+            return summary
     _, summary = _fetch_places_reviews()
     return summary or {'rating': 5.0, 'total': 160}
