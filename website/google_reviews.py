@@ -323,9 +323,10 @@ def _fetch_places_reviews():
 
 
 def get_summary_from_places():
-    """Used internally to get total review count from Places API."""
+    """Used internally to get total review count from Places API. Returns None on failure
+    so callers can decide their own fallback (env var vs len(reviews) vs default)."""
     _, summary = _fetch_places_reviews()
-    return summary or {'rating': 5.0, 'total': 160}
+    return summary
 
 
 # ── OmniHQ reviews API ────────────────────────────────────────────────────────
@@ -382,10 +383,15 @@ def get_reviews():
             _save_cache(reviews, summary)
             return reviews, True
 
-    # 2. Fall back to OmniHQ widget API — uses OmniHQ's own GBP OAuth
+    # 2. Fall back to OmniHQ widget API — uses OmniHQ's own GBP OAuth.
+    # Note: OmniHQ typically returns a curated subset (last N), so len(reviews)
+    # is NOT the total. Use env-var fallback for the total when Places is dead.
     reviews, _ = _fetch_omnihq_reviews()
     if reviews:
-        summary = get_summary_from_places() or {'rating': 5.0, 'total': len(reviews)}
+        summary = get_summary_from_places()
+        if not summary:
+            fallback_total = int(os.environ.get('GOOGLE_REVIEWS_TOTAL_FALLBACK', '160') or '160')
+            summary = {'rating': 5.0, 'total': fallback_total}
         _save_cache(reviews, summary)
         return reviews, True
 
