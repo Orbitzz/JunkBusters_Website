@@ -21,7 +21,8 @@ from django.conf import settings
 
 CACHE_FILE = Path(__file__).parent / '_google_reviews_cache.json'
 TOKEN_FILE = Path(__file__).parent / '_oauth_tokens.json'
-CACHE_TTL = 86400  # 24 hours
+IDS_FILE   = Path(__file__).parent / '_gbp_ids.json'  # long-lived account/location IDs
+CACHE_TTL  = 86400  # 24 hours
 
 FALLBACK_REVIEWS = [
     {
@@ -150,32 +151,57 @@ def _api_get(url, access_token):
         return json.loads(resp.read())
 
 
+def _load_ids():
+    try:
+        if IDS_FILE.exists():
+            d = json.loads(IDS_FILE.read_text())
+            if d.get('account_name') and d.get('location_name'):
+                return d['account_name'], d['location_name']
+    except Exception:
+        pass
+    return None, None
+
+
+def _save_ids(account_name, location_name):
+    try:
+        IDS_FILE.write_text(json.dumps({'account_name': account_name, 'location_name': location_name}))
+    except Exception:
+        pass
+
+
 def _fetch_business_profile_reviews(access_token):
     """
     Fetch reviews from Google Business Profile API.
     Returns (reviews_list, summary_dict) or (None, None) on failure.
+
+    Account and location IDs are cached permanently in _gbp_ids.json — the
+    /v1/accounts and /v1/{account}/locations endpoints are rate-limited to
+    ~1 request per minute and the identifiers never change. Only the reviews
+    pagination runs per fetch, which has a much higher quota.
     """
     try:
-        # Step 1: get account list
-        accounts_data = _api_get(
-            'https://mybusinessaccountmanagement.googleapis.com/v1/accounts',
-            access_token,
-        )
-        accounts = accounts_data.get('accounts', [])
-        if not accounts:
-            return None, None
-        account_name = accounts[0]['name']  # e.g. "accounts/123456789"
+        account_name, location_name = _load_ids()
+        if not account_name or not location_name:
+            # First-time lookup: fetch and cache identifiers.
+            accounts_data = _api_get(
+                'https://mybusinessaccountmanagement.googleapis.com/v1/accounts',
+                access_token,
+            )
+            accounts = accounts_data.get('accounts', [])
+            if not accounts:
+                return None, None
+            account_name = accounts[0]['name']
 
-        # Step 2: get location list
-        locations_data = _api_get(
-            f'https://mybusinessinformation.googleapis.com/v1/{account_name}/locations'
-            '?readMask=name,title,storefrontAddress',
-            access_token,
-        )
-        locations = locations_data.get('locations', [])
-        if not locations:
-            return None, None
-        location_name = locations[0]['name']  # e.g. "locations/987654321"
+            locations_data = _api_get(
+                f'https://mybusinessinformation.googleapis.com/v1/{account_name}/locations'
+                '?readMask=name,title,storefrontAddress',
+                access_token,
+            )
+            locations = locations_data.get('locations', [])
+            if not locations:
+                return None, None
+            location_name = locations[0]['name']
+            _save_ids(account_name, location_name)
 
         # Step 3: fetch reviews (paginated). pageSize=50 is the API max; ceiling of
         # 10 pages covers up to 500 reviews. Prior version capped at 5×10=50 and
