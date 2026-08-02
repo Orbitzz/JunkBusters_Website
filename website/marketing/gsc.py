@@ -33,7 +33,7 @@ def fetch_report(access_token):
         req = urllib.request.Request(endpoint, data=body, method='POST')
         req.add_header('Authorization', f'Bearer {access_token}')
         req.add_header('Content-Type', 'application/json')
-        with urllib.request.urlopen(req, timeout=15) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             return json.loads(resp.read()).get('rows', [])
 
     try:

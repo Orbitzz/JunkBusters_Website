@@ -24,7 +24,7 @@ def get_access_token():
 
     try:
         req = urllib.request.Request(TOKEN_URL, data=body, method='POST')
-        with urllib.request.urlopen(req, timeout=10) as resp:
+        with urllib.request.urlopen(req, timeout=30) as resp:
             data = json.loads(resp.read())
         return data.get('access_token')
     except Exception as e:
