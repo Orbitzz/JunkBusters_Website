@@ -64,6 +64,12 @@
             <textarea name="description" id="id_description" rows="4" placeholder="Describe what needs to be removed or cleaned...">{{ form.description.value|default:'' }}</textarea>
           </div>
         </div>
+        {% if TURNSTILE_SITEKEY %}
+        <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITEKEY }}" style="margin:16px 0;"></div>
+        {% endif %}
+        {% if form.non_field_errors %}
+        <div class="error" style="margin:8px 0;color:#dc2626;">{{ form.non_field_errors.0 }}</div>
+        {% endif %}
         <div class="form-submit">
           <button type="submit" class="btn btn-yellow">Submit Quote Request</button>
         </div>

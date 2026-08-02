@@ -24,6 +24,14 @@ GA4_PROPERTY_ID = config('GA4_PROPERTY_ID', default='')
 GSC_SITE_URL = config('GSC_SITE_URL', default='')
 INDEXNOW_KEY = config('INDEXNOW_KEY', default='jb2026indexnow8812ab4c9d3e7f1a')
 
+# Cloudflare Turnstile (bot protection on lead forms). Ships with empty keys →
+# verify_turnstile() fails open so a missed provisioning step cannot drop real
+# leads. Flip TURNSTILE_REQUIRED=True only after both keys are populated on
+# Railway and verified.
+TURNSTILE_SITEKEY     = config('TURNSTILE_SITEKEY',     default='')
+TURNSTILE_SECRET_KEY  = config('TURNSTILE_SECRET_KEY',  default='')
+TURNSTILE_REQUIRED    = config('TURNSTILE_REQUIRED',    default=False, cast=bool)
+
 # OmniHQ integration
 OMNIHQ_REVIEWS_URL   = config('OMNIHQ_REVIEWS_URL',   default='http://127.0.0.1:8000/marketing/api/widget/reviews/')
 OMNIHQ_EMBED_URL     = config('OMNIHQ_EMBED_URL',     default='http://127.0.0.1:8000/marketing/api/embed/{endpoint}/')

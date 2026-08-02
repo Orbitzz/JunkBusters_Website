@@ -38,4 +38,5 @@ def business_info(request):
         'GOOGLE_REVIEW_URL': GOOGLE_REVIEW_URL,
         'qr_code_exists': QR_CODE_PATH.exists(),
         'nav_logo_exists': LOGO_PATH.exists(),
+        'TURNSTILE_SITEKEY': getattr(settings, 'TURNSTILE_SITEKEY', ''),
     }

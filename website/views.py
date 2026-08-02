@@ -6,7 +6,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest, GiftCard
-from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag, notify_lead
+from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag, notify_lead, verify_turnstile
 
 log = logging.getLogger(__name__)
 
@@ -153,6 +153,10 @@ def chat_proxy(request):
     # Rate limit only on new conversations — existing threads stay frictionless
     if not thread_id and not rate_limit_ok(request, 'chat', limit=5, window=3600):
         return JsonResponse({'success': True, 'thread_id': ''})
+
+    # Turnstile only on first message; continuing an existing conversation stays frictionless
+    if not thread_id and not verify_turnstile(request):
+        return JsonResponse({'success': False, 'message': 'Verification failed. Please refresh and try again.'}, status=400)
 
     # Spam scoring on the first message only. Flagged → save marker row, return
     # generic success so bots cannot probe the filter, do NOT forward to OmniHQ.
@@ -1859,6 +1863,9 @@ def quote(request):
 
         form = QuoteForm(request.POST, request.FILES)
         if form.is_valid():
+            if not verify_turnstile(request):
+                form.add_error(None, 'Please complete the security check and try again.')
+                return render(request, 'website/quote.html', {'form': form})
             d = form.cleaned_data
             photo = request.FILES.get('photo')
 
@@ -2117,6 +2124,9 @@ def contact(request):
     if request.method == 'POST':
         if not rate_limit_ok(request, 'contact', limit=5, window=3600):
             return render(request, 'website/contact.html', {'success': 'contact'})
+
+        if not verify_turnstile(request):
+            return render(request, 'website/contact.html', {'success': None, 'turnstile_error': True})
 
         form_type = request.POST.get('form_type', 'contact')
 

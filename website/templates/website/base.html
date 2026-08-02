@@ -122,6 +122,9 @@
 
   <link rel="preconnect" href="https://basemaps.cartocdn.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {% if TURNSTILE_SITEKEY %}
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  {% endif %}
   {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -660,6 +663,9 @@ document.querySelectorAll('.why-item-btn').forEach(function(btn) {
       <span id="jb-f-fname" style="font-size:11px;color:#94a3b8;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:140px;"></span>
     </div>
     <div id="jb-f-preview" style="display:none;margin-bottom:10px;"><img id="jb-f-preview-img" style="max-height:80px;border-radius:8px;border:1px solid #e5e7eb;"></div>
+    {% if TURNSTILE_SITEKEY %}
+    <div id="jb-turnstile" class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITEKEY }}" data-callback="jbTurnstileOk" style="margin-bottom:10px;"></div>
+    {% endif %}
     <button id="jb-f-send" style="width:100%;padding:12px;background:#F5A500;color:#1a2e4a;border:none;border-radius:8px;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit;">Send Message</button>
     <div id="jb-f-status" style="margin-top:8px;font-size:13px;text-align:center;color:#64748b;min-height:18px;"></div>
   </div>
@@ -889,6 +895,10 @@ document.querySelectorAll('.why-item-btn').forEach(function(btn) {
   });
 
   /* ── Send helpers ─────────────────────────────────────────────────── */
+  // Turnstile token capture — server enforces on first message only.
+  var jbTurnstileToken = '';
+  window.jbTurnstileOk = function(t){ jbTurnstileToken = t || ''; };
+
   function buildFormData(name, phone, email, message, threadId){
     var fd = new FormData();
     fd.append('name', name);
@@ -896,6 +906,7 @@ document.querySelectorAll('.why-item-btn').forEach(function(btn) {
     fd.append('email', email);
     fd.append('message', message);
     if (threadId) fd.append('thread_id', threadId);
+    if (!threadId && jbTurnstileToken) fd.append('cf-turnstile-response', jbTurnstileToken);
     if (pendingFile) fd.append('attachment', pendingFile.file, pendingFile.file.name);
     return fd;
   }

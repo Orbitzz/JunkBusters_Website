@@ -115,6 +115,12 @@
                 <input type="file" name="photo" accept="image/*" style="font-size:13px;color:#374151;">
               </div>
             </div>
+            {% if TURNSTILE_SITEKEY %}
+            <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITEKEY }}" style="margin:12px 0;"></div>
+            {% endif %}
+            {% if turnstile_error %}
+            <div style="color:#dc2626;font-size:13px;margin:8px 0;">Please complete the security check and try again.</div>
+            {% endif %}
             <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Send Message →</button>
           </form>
         </div>
@@ -180,6 +186,12 @@
                 <input type="file" name="resume" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="font-size:13px;color:#374151;">
               </div>
             </div>
+            {% if TURNSTILE_SITEKEY %}
+            <div class="cf-turnstile" data-sitekey="{{ TURNSTILE_SITEKEY }}" style="margin:12px 0;"></div>
+            {% endif %}
+            {% if turnstile_error %}
+            <div style="color:#dc2626;font-size:13px;margin:8px 0;">Please complete the security check and try again.</div>
+            {% endif %}
             <button type="submit" class="btn btn-yellow" style="width:100%;padding:14px;">Submit Application →</button>
           </form>
         </div>

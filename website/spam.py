@@ -1,17 +1,15 @@
-"""Bot / spam controls for lead-form endpoints.
-
-Three primitives:
-  - check_honeypot(request): True if any honeypot field is non-empty.
-  - is_spam(name, phone, email, message): heuristic scorer, returns (flagged, reasons).
-  - rate_limit_ok(request, key_prefix, limit, window): per-IP token bucket via Django cache.
-
-Turnstile verification lives in verify_turnstile() and is wired up in a later rollout.
-"""
+"""Bot / spam controls for lead-form endpoints."""
+import json
 import logging
 import re
+import urllib.parse
+import urllib.request
+from django.conf import settings
 from django.core.cache import cache
 
 log = logging.getLogger(__name__)
+
+_TURNSTILE_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify'
 
 
 # ── Regex primitives ─────────────────────────────────────────────────────────
@@ -210,8 +208,53 @@ def notify_lead(row):
         log.exception('lead: telegram notify failed')
 
 
-# ── Turnstile (wired up in the P1 rollout, not called from views yet) ────────
+# ── Turnstile ────────────────────────────────────────────────────────────────
 
 def verify_turnstile(request):
-    """Placeholder — implemented and wired in Priority 1 rollout."""
-    return True
+    """Verify a Cloudflare Turnstile token against Cloudflare's siteverify endpoint.
+
+    Fail-open when TURNSTILE_SECRET_KEY is unset (misconfig-safe during rollout).
+    Set TURNSTILE_REQUIRED=True on Railway once the widget is confirmed working
+    to switch to fail-closed on missing/invalid tokens.
+
+    Token arrives in POST as 'cf-turnstile-response' for form submits, or under
+    'cf_turnstile_response' inside the JSON body for the chat proxy.
+    """
+    secret = getattr(settings, 'TURNSTILE_SECRET_KEY', '')
+    required = getattr(settings, 'TURNSTILE_REQUIRED', False)
+
+    if not secret:
+        if required:
+            log.error('TURNSTILE_SECRET_KEY missing and TURNSTILE_REQUIRED=True — blocking submission')
+            return False
+        # Fail-open: intentional during rollout so a missing key does not drop leads.
+        return True
+
+    token = request.POST.get('cf-turnstile-response', '')
+    if not token and request.content_type and 'json' in request.content_type:
+        try:
+            token = (json.loads(request.body or b'{}').get('cf_turnstile_response') or '')
+        except Exception:
+            token = ''
+
+    if not token:
+        log.warning('Turnstile: no token in request')
+        return not required
+
+    body = urllib.parse.urlencode({
+        'secret': secret,
+        'response': token,
+        'remoteip': get_client_ip(request),
+    }).encode()
+    try:
+        req = urllib.request.Request(_TURNSTILE_URL, data=body, method='POST')
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            data = json.loads(resp.read())
+        if data.get('success'):
+            return True
+        log.warning('Turnstile: verify failed — %s', data.get('error-codes'))
+        return False
+    except Exception as e:
+        log.exception('Turnstile: verify exception %s', e)
+        # Network hiccups should not drop real leads unless strictly required.
+        return not required
