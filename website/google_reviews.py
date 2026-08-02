@@ -399,11 +399,16 @@ def get_reviews():
 
 
 def get_summary():
-    """Return {'rating': X, 'total': Y} — from cache, live GBP fetch, Places API, or fallback."""
+    """Return {'rating': X, 'total': Y} — from cache, live GBP fetch, Places API, or fallback.
+
+    Final fallback total comes from env var GOOGLE_REVIEWS_TOTAL_FALLBACK when set.
+    This exists because the Business Profile Account Management API has a very tight
+    per-project quota; when it 429s, the site should still show an accurate count.
+    Update the env var manually when the live GBP number changes materially.
+    """
     cached = _load_cache()
     if cached and cached.get('summary'):
         return cached['summary']
-    # If we can hit GBP, that has the accurate total.
     access_token = get_valid_access_token()
     if access_token:
         reviews, summary = _fetch_business_profile_reviews(access_token)
@@ -411,4 +416,7 @@ def get_summary():
             _save_cache(reviews or [], summary)
             return summary
     _, summary = _fetch_places_reviews()
-    return summary or {'rating': 5.0, 'total': 160}
+    if summary:
+        return summary
+    fallback_total = int(os.environ.get('GOOGLE_REVIEWS_TOTAL_FALLBACK', '160') or '160')
+    return {'rating': 5.0, 'total': fallback_total}
