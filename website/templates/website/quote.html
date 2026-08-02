@@ -12,6 +12,7 @@
 
       <form method="post" novalidate>
         {% csrf_token %}
+        <input type="text" name="company_website" style="position:absolute;left:-9999px;" tabindex="-1" autocomplete="off" aria-hidden="true">
         <div class="form-grid">
           <div class="form-group">
             <label for="id_first_name">{{ form.first_name.label }}</label>

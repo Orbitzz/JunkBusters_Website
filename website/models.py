@@ -36,6 +36,8 @@ class BookingRequest(models.Model):
     notes = models.TextField(blank=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_spam = models.BooleanField(default=False, db_index=True)
+    spam_reasons = models.TextField(blank=True, default='')
 
     class Meta:
         ordering = ['-created_at']

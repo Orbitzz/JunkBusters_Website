@@ -4,7 +4,7 @@ import os
 import urllib.request
 
 
-def send(message, parse_mode='HTML'):
+def send(message, parse_mode='HTML', timeout=10):
     token = os.environ.get('TELEGRAM_BOT_TOKEN', '')
     channel_id = os.environ.get('TELEGRAM_CHANNEL_ID', '')
 
@@ -34,7 +34,7 @@ def send(message, parse_mode='HTML'):
         req = urllib.request.Request(url, data=body, method='POST')
         req.add_header('Content-Type', 'application/json')
         try:
-            with urllib.request.urlopen(req, timeout=10) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 result = json.loads(resp.read())
                 if not result.get('ok'):
                     print(f'[telegram] Send failed: {result}')

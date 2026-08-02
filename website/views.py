@@ -1,3 +1,4 @@
+import logging
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -5,6 +6,9 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest, GiftCard
+from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag
+
+log = logging.getLogger(__name__)
 
 def _utm_info(session):
     """Return (lead_source, referrer) strings from session UTM data."""
@@ -122,13 +126,6 @@ def availability_proxy(request):
 @require_http_methods(["POST"])
 def chat_proxy(request):
     """Relay chat widget messages to OmniHQ and send email notification."""
-    from django.core.cache import cache as _cache
-    ip = request.META.get('REMOTE_ADDR', 'unknown')
-    count = _cache.get(f'chat:{ip}', 0)
-    if count >= 10:
-        return JsonResponse({'error': 'rate limited'}, status=429)
-    _cache.set(f'chat:{ip}', count + 1, 60)
-
     content_type = request.content_type or ''
     attachment_file = None
 
@@ -152,6 +149,35 @@ def chat_proxy(request):
 
     if not message:
         return JsonResponse({'success': False, 'message': 'Message is required.'}, status=400)
+
+    # Rate limit only on new conversations — existing threads stay frictionless
+    if not thread_id and not rate_limit_ok(request, 'chat', limit=5, window=3600):
+        return JsonResponse({'success': True, 'thread_id': ''})
+
+    # Spam scoring on the first message only. Flagged → save marker row, return
+    # generic success so bots cannot probe the filter, do NOT forward to OmniHQ.
+    if not thread_id:
+        flagged, reasons = is_spam(name=name, phone=phone, email=email_val, message=message)
+        if flagged:
+            booking = None
+            try:
+                parts = name.split(' ', 1)
+                booking = BookingRequest.objects.create(
+                    first_name=parts[0] or 'Chat',
+                    last_name=parts[1] if len(parts) > 1 else '.',
+                    email=email_val or 'noemail@provided.com',
+                    phone=phone or '',
+                    service_requested='CHAT (spam)',
+                    notes=message,
+                    ip_address=get_client_ip(request),
+                    is_spam=True,
+                    spam_reasons=','.join(reasons),
+                )
+            except Exception:
+                log.exception('chat: failed to save flagged BookingRequest')
+            if booking:
+                notify_spam_flag(booking)
+            return JsonResponse({'success': True, 'thread_id': ''})
 
     lead_source, referrer = _utm_info(request.session)
     fields = {'name': name, 'phone': phone, 'email': email_val, 'message': message,
@@ -183,9 +209,9 @@ def chat_proxy(request):
                 from_email=settings.DEFAULT_FROM_EMAIL,
                 to=[settings.CONTACT_EMAIL],
                 reply_to=[email_val] if email_val else [],
-            ).send(fail_silently=True)
+            ).send(fail_silently=False)
         except Exception:
-            pass
+            log.exception('chat: email notify failed')
 
     return JsonResponse({'success': True, 'thread_id': str(returned_thread_id)})
 
@@ -1808,16 +1834,30 @@ def city_ashland_city(request):  return _render_city(request, 'ashland-city')
 @require_http_methods(['GET', 'POST'])
 def quote(request):
     if request.method == 'POST':
-        # Honeypot check — bots fill this hidden field, humans leave it blank
-        if request.POST.get('website_url', ''):
+        if not rate_limit_ok(request, 'quote', limit=5, window=3600):
             return redirect('website:quote_success')
 
         form = QuoteForm(request.POST, request.FILES)
         if form.is_valid():
             d = form.cleaned_data
             photo = request.FILES.get('photo')
+
+            flagged = False
+            reasons = []
+            if check_honeypot(request):
+                flagged = True
+                reasons = ['honeypot']
+            else:
+                flagged, reasons = is_spam(
+                    name=f"{d['first_name']} {d.get('last_name', '')}",
+                    phone=d.get('phone', ''),
+                    email=d.get('email', ''),
+                    message=d.get('description', ''),
+                )
+
+            booking = None
             try:
-                BookingRequest.objects.create(
+                booking = BookingRequest.objects.create(
                     first_name=d['first_name'],
                     last_name=d.get('last_name') or '.',
                     email=d['email'],
@@ -1828,10 +1868,17 @@ def quote(request):
                     state=d.get('state', ''),
                     zip_code=d.get('zip_code', ''),
                     notes=d.get('description', ''),
-                    ip_address=request.META.get('REMOTE_ADDR'),
+                    ip_address=get_client_ip(request),
+                    is_spam=flagged,
+                    spam_reasons=','.join(reasons),
                 )
             except Exception:
-                pass
+                log.exception('quote: failed to save BookingRequest')
+
+            if flagged:
+                if booking:
+                    notify_spam_flag(booking)
+                return redirect('website:quote_success')
 
             # Forward to OmniHQ as a BookingRequest lead (with UTM attribution)
             lead_source, referrer = _utm_info(request.session)
@@ -1869,9 +1916,9 @@ def quote(request):
                 )
                 if photo:
                     msg.attach(photo.name, photo.read(), photo.content_type)
-                msg.send(fail_silently=True)
+                msg.send(fail_silently=False)
             except Exception:
-                pass
+                log.exception('quote: email notify failed')
 
             return redirect('website:quote_success')
     else:
@@ -2045,8 +2092,8 @@ def gallery(request):
 def contact(request):
     success = None
     if request.method == 'POST':
-        if request.POST.get('website_url', ''):
-            return render(request, 'website/contact.html', {'success': None})
+        if not rate_limit_ok(request, 'contact', limit=5, window=3600):
+            return render(request, 'website/contact.html', {'success': 'contact'})
 
         form_type = request.POST.get('form_type', 'contact')
 
@@ -2060,54 +2107,74 @@ def contact(request):
             resume = request.FILES.get('resume')
 
             if name and phone and email:
+                flagged = False
+                reasons = []
+                if check_honeypot(request):
+                    flagged = True
+                    reasons = ['honeypot']
+                else:
+                    flagged, reasons = is_spam(
+                        name=name,
+                        phone=phone,
+                        email=email,
+                        message=f'{position} {availability} {experience}',
+                    )
+
+                booking = None
                 try:
                     parts = name.split(' ', 1)
-                    BookingRequest.objects.create(
+                    booking = BookingRequest.objects.create(
                         first_name=parts[0],
                         last_name=parts[1] if len(parts) > 1 else '.',
                         email=email,
                         phone=phone,
                         service_requested=f'JOB APPLICATION — {position}',
                         notes=f"Availability: {availability}\n\n{experience}",
-                        ip_address=request.META.get('REMOTE_ADDR'),
+                        ip_address=get_client_ip(request),
+                        is_spam=flagged,
+                        spam_reasons=','.join(reasons),
                     )
                 except Exception:
-                    pass
+                    log.exception('apply: failed to save BookingRequest')
 
-                try:
-                    body = (
-                        f"New Job Application from {name}\n\n"
-                        f"Phone:        {phone}\n"
-                        f"Email:        {email}\n"
-                        f"Position:     {position}\n"
-                        f"Availability: {availability}\n\n"
-                        f"About Applicant:\n{experience}\n"
-                    )
-                    msg = EmailMessage(
-                        subject=f"Job Application — {name} ({position})",
-                        body=body,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        to=[settings.CONTACT_EMAIL],
-                        reply_to=[email],
-                    )
-                    if resume:
-                        msg.attach(resume.name, resume.read(), resume.content_type)
-                    msg.send(fail_silently=True)
-                except Exception:
-                    pass
+                if flagged:
+                    if booking:
+                        notify_spam_flag(booking)
+                    success = 'apply'
+                else:
+                    try:
+                        body = (
+                            f"New Job Application from {name}\n\n"
+                            f"Phone:        {phone}\n"
+                            f"Email:        {email}\n"
+                            f"Position:     {position}\n"
+                            f"Availability: {availability}\n\n"
+                            f"About Applicant:\n{experience}\n"
+                        )
+                        msg = EmailMessage(
+                            subject=f"Job Application — {name} ({position})",
+                            body=body,
+                            from_email=settings.DEFAULT_FROM_EMAIL,
+                            to=[settings.CONTACT_EMAIL],
+                            reply_to=[email],
+                        )
+                        if resume:
+                            msg.attach(resume.name, resume.read(), resume.content_type)
+                        msg.send(fail_silently=False)
+                    except Exception:
+                        log.exception('apply: email notify failed')
 
-                # Forward to FC Inbox as a lead thread
-                _job_src, _job_ref = _utm_info(request.session)
-                _call_fc('chat', {
-                    'name': name,
-                    'phone': phone,
-                    'email': email,
-                    'message': f"JOB APPLICATION — {position}\n\nAvailability: {availability}\n\n{experience}",
-                    'lead_source': f'Job Application / {_job_src}',
-                    'referrer':    _job_ref,
-                })
+                    _job_src, _job_ref = _utm_info(request.session)
+                    _call_fc('chat', {
+                        'name': name,
+                        'phone': phone,
+                        'email': email,
+                        'message': f"JOB APPLICATION — {position}\n\nAvailability: {availability}\n\n{experience}",
+                        'lead_source': f'Job Application / {_job_src}',
+                        'referrer':    _job_ref,
+                    })
 
-                success = 'apply'
+                    success = 'apply'
 
         else:
             name = request.POST.get('name', '').strip()
@@ -2117,52 +2184,72 @@ def contact(request):
             photo = request.FILES.get('photo')
 
             if name and (phone or email):
+                flagged = False
+                reasons = []
+                if check_honeypot(request):
+                    flagged = True
+                    reasons = ['honeypot']
+                else:
+                    flagged, reasons = is_spam(
+                        name=name,
+                        phone=phone,
+                        email=email,
+                        message=message,
+                    )
+
+                booking = None
                 try:
                     parts = name.split(' ', 1)
-                    BookingRequest.objects.create(
+                    booking = BookingRequest.objects.create(
                         first_name=parts[0],
                         last_name=parts[1] if len(parts) > 1 else '.',
                         email=email or 'noemail@provided.com',
                         phone=phone or '',
                         service_requested='Contact form inquiry',
                         notes=message,
-                        ip_address=request.META.get('REMOTE_ADDR'),
+                        ip_address=get_client_ip(request),
+                        is_spam=flagged,
+                        spam_reasons=','.join(reasons),
                     )
                 except Exception:
-                    pass
+                    log.exception('contact: failed to save BookingRequest')
 
-                try:
-                    body = (
-                        f"New contact form message from {name}\n\n"
-                        f"Phone:   {phone}\n"
-                        f"Email:   {email}\n\n"
-                        f"Message:\n{message}\n"
-                    )
-                    msg = EmailMessage(
-                        subject=f"New Contact Message — {name}",
-                        body=body,
-                        from_email=settings.DEFAULT_FROM_EMAIL,
-                        to=[settings.CONTACT_EMAIL],
-                        reply_to=[email] if email else [],
-                    )
-                    if photo:
-                        msg.attach(photo.name, photo.read(), photo.content_type)
-                    msg.send(fail_silently=True)
-                except Exception:
-                    pass
+                if flagged:
+                    if booking:
+                        notify_spam_flag(booking)
+                    success = 'contact'
+                else:
+                    try:
+                        body = (
+                            f"New contact form message from {name}\n\n"
+                            f"Phone:   {phone}\n"
+                            f"Email:   {email}\n\n"
+                            f"Message:\n{message}\n"
+                        )
+                        msg = EmailMessage(
+                            subject=f"New Contact Message — {name}",
+                            body=body,
+                            from_email=settings.DEFAULT_FROM_EMAIL,
+                            to=[settings.CONTACT_EMAIL],
+                            reply_to=[email] if email else [],
+                        )
+                        if photo:
+                            msg.attach(photo.name, photo.read(), photo.content_type)
+                        msg.send(fail_silently=False)
+                    except Exception:
+                        log.exception('contact: email notify failed')
 
-                # Forward to FC Inbox as a lead thread
-                _con_src, _con_ref = _utm_info(request.session)
-                _call_fc('chat', {
-                    'name': name,
-                    'phone': phone or '',
-                    'email': email or '',
-                    'message': message,
-                    'lead_source': _con_src,
-                    'referrer':    _con_ref,
-                })
+                    _con_src, _con_ref = _utm_info(request.session)
+                    _call_fc('chat', {
+                        'name': name,
+                        'phone': phone or '',
+                        'email': email or '',
+                        'message': message,
+                        'lead_source': _con_src,
+                        'referrer':    _con_ref,
+                    })
 
-                success = 'contact'
+                    success = 'contact'
 
     return render(request, 'website/contact.html', {'success': success})
 
