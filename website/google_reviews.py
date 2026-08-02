@@ -22,7 +22,13 @@ from django.conf import settings
 CACHE_FILE = Path(__file__).parent / '_google_reviews_cache.json'
 TOKEN_FILE = Path(__file__).parent / '_oauth_tokens.json'
 IDS_FILE   = Path(__file__).parent / '_gbp_ids.json'  # long-lived account/location IDs
-CACHE_TTL  = 86400  # 24 hours
+
+# TTLs vary by data source so a non-authoritative fallback (Places API,
+# OmniHQ, hardcoded env fallback) cannot mask a working GBP for 24 hours.
+# GBP-sourced caches live long; anything else expires quickly so GBP is
+# retried on the next request after recovery.
+CACHE_TTL_GBP      = 86400  # 24 hours — authoritative
+CACHE_TTL_FALLBACK = 3600   # 1 hour  — retry GBP hourly
 
 FALLBACK_REVIEWS = [
     {
@@ -125,19 +131,25 @@ def _load_cache():
     try:
         if CACHE_FILE.exists():
             data = json.loads(CACHE_FILE.read_text())
-            if time.time() - data.get('fetched_at', 0) < CACHE_TTL:
+            age = time.time() - data.get('fetched_at', 0)
+            ttl = CACHE_TTL_GBP if data.get('source') == 'gbp' else CACHE_TTL_FALLBACK
+            if age < ttl:
                 return data
     except Exception:
         pass
     return None
 
 
-def _save_cache(reviews, summary):
+def _save_cache(reviews, summary, source):
+    """source ∈ {'gbp', 'omnihq', 'places', 'fallback'} controls the entry's TTL.
+    Only 'gbp' entries live 24h; everything else expires in 1h so a recovered
+    Business Profile API is picked up on the next request."""
     try:
         CACHE_FILE.write_text(json.dumps({
             'fetched_at': time.time(),
             'reviews': reviews,
             'summary': summary,
+            'source': source,
         }))
     except Exception:
         pass
@@ -380,7 +392,7 @@ def get_reviews():
     if access_token:
         reviews, summary = _fetch_business_profile_reviews(access_token)
         if reviews:
-            _save_cache(reviews, summary)
+            _save_cache(reviews, summary, source='gbp')
             return reviews, True
 
     # 2. Fall back to OmniHQ widget API — uses OmniHQ's own GBP OAuth.
@@ -392,13 +404,13 @@ def get_reviews():
         if not summary:
             fallback_total = int(os.environ.get('GOOGLE_REVIEWS_TOTAL_FALLBACK', '160') or '160')
             summary = {'rating': 5.0, 'total': fallback_total}
-        _save_cache(reviews, summary)
+        _save_cache(reviews, summary, source='omnihq')
         return reviews, True
 
     # 3. Fall back to Places API (max 5 reviews)
     reviews, summary = _fetch_places_reviews()
     if reviews:
-        _save_cache(reviews, summary)
+        _save_cache(reviews, summary, source='places')
         return reviews, True
 
     return FALLBACK_REVIEWS, False
@@ -410,7 +422,7 @@ def get_summary():
     Final fallback total comes from env var GOOGLE_REVIEWS_TOTAL_FALLBACK when set.
     This exists because the Business Profile Account Management API has a very tight
     per-project quota; when it 429s, the site should still show an accurate count.
-    Update the env var manually when the live GBP number changes materially.
+    Non-authoritative cache entries only live 1h so GBP is retried after recovery.
     """
     cached = _load_cache()
     if cached and cached.get('summary'):
@@ -419,7 +431,7 @@ def get_summary():
     if access_token:
         reviews, summary = _fetch_business_profile_reviews(access_token)
         if summary:
-            _save_cache(reviews or [], summary)
+            _save_cache(reviews or [], summary, source='gbp')
             return summary
     _, summary = _fetch_places_reviews()
     if summary:
