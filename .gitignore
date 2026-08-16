@@ -21,3 +21,12 @@ website/_oauth_tokens.json
 # OS
 .DS_Store
 Thumbs.db
+
+# Session scratch (agent config, one-off analysis dumps, drafts)
+.claude/
+_task2.txt
+_dburl.txt
+_legit_leads*.tsv
+_missed_bots.tsv
+_real_leads*.tsv
+BLOG_POST_Nashville_Waste_Crisis.html
