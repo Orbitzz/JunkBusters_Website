@@ -94,6 +94,33 @@ SENTRY_DSN = config('SENTRY_DSN', default='')
 if SENTRY_DSN:
     sentry_sdk.init(dsn=SENTRY_DSN, traces_sample_rate=0.2)
 
+# Django's default LOGGING under DEBUG=False routes django.request errors only
+# to the mail_admins handler, which is unwired here. Force ERROR-level tracebacks
+# to stderr so Railway logs pick them up. A 500 that lands in Sentry but not in
+# stderr can go three months without discovery — see portal/dashboard NameError,
+# May-Aug 2026.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{asctime} {levelname} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'stderr': {
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stderr',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django.request': {'handlers': ['stderr'], 'level': 'ERROR', 'propagate': False},
+        'django.server':  {'handlers': ['stderr'], 'level': 'INFO',  'propagate': False},
+    },
+}
+
 # Twilio (SMS for job status notifications)
 TWILIO_ACCOUNT_SID = config('TWILIO_ACCOUNT_SID', default='')
 TWILIO_AUTH_TOKEN  = config('TWILIO_AUTH_TOKEN',  default='')

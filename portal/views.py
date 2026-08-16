@@ -287,23 +287,23 @@ def dashboard(request):
 
     jobs_data = cache.get(cache_jobs)
     if jobs_data is None:
-        jobs_data = _call_fc('jobs', {'email': user.email})
+        jobs_data = _call_ohq('jobs', {'email': user.email})
         cache.set(cache_jobs, jobs_data, 60)
 
     loyalty_data = cache.get(cache_loyalty)
     if loyalty_data is None:
-        loyalty_data = _call_fc('loyalty', {'email': user.email})
+        loyalty_data = _call_ohq('loyalty', {'email': user.email})
         cache.set(cache_loyalty, loyalty_data, 60)
 
     referrals_data = cache.get(cache_referrals)
     if referrals_data is None:
-        referrals_data = _call_fc('referrals', {'email': user.email})
+        referrals_data = _call_ohq('referrals', {'email': user.email})
         cache.set(cache_referrals, referrals_data, 60)
 
     fc_online = jobs_data is not None
 
     if fc_online:
-        _call_fc('engagement', {'email': user.email, 'event': 'portal_dashboard_view', 'source': 'portal'})
+        _call_ohq('engagement', {'email': user.email, 'event': 'portal_dashboard_view', 'source': 'portal'})
 
     jobs      = jobs_data.get('jobs', [])       if (jobs_data      and jobs_data.get('success'))      else []
     loyalty   = loyalty_data                    if (loyalty_data   and loyalty_data.get('success') and loyalty_data.get('found')) else None
@@ -361,7 +361,7 @@ def portal_gift_cards(request):
 def portal_referral_submit(request):
     user = request.user
     profile, _ = CustomerProfile.objects.get_or_create(user=user)
-    _call_fc('referral', {
+    _call_ohq('referral', {
         'referrer_first_name': user.first_name,
         'referrer_last_name':  user.last_name,
         'referrer_email':      user.email,
