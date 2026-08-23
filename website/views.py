@@ -424,6 +424,59 @@ LEGACY_REDIRECTS = {
     'junk-removal-service-warren-county-ky':     '/junk-removal-bowling-green/',
     'junk-removal-service-middle-tn':            '/junk-removal-nashville/',
     'junk-removal-service-southern-ky':          '/junk-removal-bowling-green/',
+
+    # Migrated in from urls.py _R() list so both /old/ and /old forms
+    # route through the catch-all <slug:slug>/ and 301 correctly. The
+    # prior URL-pattern-based approach only caught the no-slash form.
+    # Service page renames
+    'shed-demolition':                  '/light-demolition/',
+    'airbnb-cleaning':                  '/short-term-rental-turnover/',
+    'air-bnb':                          '/short-term-rental-turnover/',
+    'short-term-rental':                '/short-term-rental-turnover/',
+    'move-in-out-cleaning':             '/move-out-deep-cleaning/',
+    'move-in-move-out':                 '/move-out-deep-cleaning/',
+    'moving-cleaning':                  '/move-out-deep-cleaning/',
+    'scrap-metal':                      '/scrap-metal-pickup/',
+    'dump-trailer':                     '/dump-trailer-rental/',
+    'hoarder-cleanout':                 '/estate-hoarder-cleanout/',
+    'estate-cleanout':                  '/estate-clean-out/',
+    'eviction-cleanout':                '/eviction-clean-out/',
+    'foreclosure-cleanout':             '/foreclosure-clean-out/',
+    'garage-cleanout':                  '/garage-clean-out/',
+    'storage-unit':                     '/storage-unit-clean-out/',
+    'storage-cleanout':                 '/storage-unit-clean-out/',
+    'hot-tub':                          '/hot-tub-removal/',
+    'hot-tub-removal-service':          '/hot-tub-removal/',
+    'property-manager':                 '/property-manager-hub/',
+    'bulk-cardboard':                   '/bulk-cardboard-removal/',
+    'fence':                            '/fence-removal/',
+    'junk-removal-services':            '/junk-removal/',
+    'residential-junk-removal':         '/junk-removal/',
+    'light-demo':                       '/light-demolition/',
+    'demolition':                       '/light-demolition/',
+    # City pages without state suffix -> canonical with suffix
+    'junk-removal-nashville-tn':        '/junk-removal-nashville/',
+    'junk-removal-clarksville-tn':      '/junk-removal-clarksville/',
+    'junk-removal-bowling-green-ky':    '/junk-removal-bowling-green/',
+    'junk-removal-white-house':         '/junk-removal-white-house-tn/',
+    'junk-removal-hendersonville':      '/junk-removal-hendersonville-tn/',
+    'junk-removal-gallatin':            '/junk-removal-gallatin-tn/',
+    'junk-removal-springfield':         '/junk-removal-springfield-tn/',
+    'junk-removal-franklin':            '/junk-removal-franklin-tn/',
+    'junk-removal-goodlettsville':      '/junk-removal-goodlettsville-tn/',
+    'junk-removal-portland':            '/junk-removal-portland-tn/',
+    'junk-removal-murfreesboro':        '/junk-removal-murfreesboro-tn/',
+    'junk-removal-smyrna':              '/junk-removal-smyrna-tn/',
+    'junk-removal-lavergne':            '/junk-removal-lavergne-tn/',
+    'junk-removal-lebanon':             '/junk-removal-lebanon-tn/',
+    'junk-removal-russellville':        '/junk-removal-russellville-ky/',
+    'junk-removal-franklin-ky-tn':      '/junk-removal-franklin-ky/',
+    'junk-removal-scottsville':         '/junk-removal-scottsville-ky/',
+    'junk-removal-brentwood':           '/junk-removal-brentwood-tn/',
+    'junk-removal-spring-hill':         '/junk-removal-spring-hill-tn/',
+    'junk-removal-mt-juliet':           '/junk-removal-mt-juliet-tn/',
+    'junk-removal-nolensville':         '/junk-removal-nolensville-tn/',
+    'junk-removal-ashland-city':        '/junk-removal-ashland-city-tn/',
 }
 
 # ── Service page data ─────────────────────────────────────────────────────────
@@ -1855,7 +1908,7 @@ def city_nolensville(request):   return _render_city(request, 'nolensville')
 def city_ashland_city(request):  return _render_city(request, 'ashland-city')
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET', 'HEAD', 'POST'])
 def quote(request):
     if request.method == 'POST':
         if not rate_limit_ok(request, 'quote', limit=5, window=3600):
@@ -1966,7 +2019,7 @@ def quote_success(request):
     })
 
 
-@require_http_methods(['GET', 'POST'])
+@require_http_methods(['GET', 'HEAD', 'POST'])
 def booking(request):
     if request.method == 'POST':
         form = BookingForm(request.POST)
@@ -2435,9 +2488,15 @@ def member_signup_webhook(request):
 
 
 def sitemap(request):
+    from .models import BlogPost
     slugs = list(SERVICES.keys())
     city_slugs = [p['slug'] for p in CITY_PAGES.values()]
-    return render(request, 'website/sitemap.xml', {'slugs': slugs, 'city_slugs': city_slugs}, content_type='application/xml')
+    blog_slugs = list(BlogPost.objects.filter(is_live=True).values_list('slug', flat=True))
+    return render(request, 'website/sitemap.xml', {
+        'slugs':      slugs,
+        'city_slugs': city_slugs,
+        'blog_slugs': blog_slugs,
+    }, content_type='application/xml')
 
 
 def robots(request):
@@ -2639,9 +2698,9 @@ def _gift_card_email_html(gift_card):
       <p style="margin:0 0 8px;color:#475569;font-size:14px;">To redeem, simply mention this code when you book a service:</p>
       <ul style="margin:0 0 24px;padding-left:20px;color:#475569;font-size:14px;line-height:2;">
         <li>Call us at <a href="tel:6158812505" style="color:#0d1b2a;font-weight:700;">615-881-2505</a></li>
-        <li>Book online at <a href="https://junkbustershauling.com" style="color:#0d1b2a;font-weight:700;">junkbustershauling.com</a></li>
+        <li>Book online at <a href="https://www.junkbustershauling.com" style="color:#0d1b2a;font-weight:700;">junkbustershauling.com</a></li>
       </ul>
-      <a href="https://junkbustershauling.com/gift-card/check/" style="display:inline-block;background:#f5c842;color:#0d1b2a;font-weight:800;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">Check Balance</a>
+      <a href="https://www.junkbustershauling.com/gift-card/check/" style="display:inline-block;background:#f5c842;color:#0d1b2a;font-weight:800;font-size:14px;padding:12px 24px;border-radius:8px;text-decoration:none;">Check Balance</a>
     </div>
     <div style="background:#f8fafc;padding:20px 40px;text-align:center;font-size:12px;color:#94a3b8;">
       Junk Busters LLC &nbsp;·&nbsp; 615-881-2505 &nbsp;·&nbsp; junkbustershauling.com<br>

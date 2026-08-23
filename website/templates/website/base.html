@@ -9,9 +9,9 @@
   <title>{% block title %}Junk Removal Nashville &amp; Southern KY | Junk Busters LLC{% endblock %}</title>
   <meta name="description" content="{% block meta_desc %}Junk Busters LLC provides junk removal, estate clean-outs, and cleaning services across Middle TN &amp; Southern KY — including Nashville, Clarksville, Bowling Green, and a 50-mile radius around Orlinda, TN. Call 615-881-2505 for a free quote.{% endblock %}">
   <meta name="keywords" content="{% block meta_keywords %}estate cleanout Nashville TN, foreclosure cleanout Clarksville TN, junk removal Clarksville TN, dumpster rental Bowling Green KY, scrap copper pickup Middle Tennessee, junk removal Nashville TN, junk removal Bowling Green KY, junk hauling Middle Tennessee, eviction cleanout Nashville, shed demolition Tennessee, hot tub removal Nashville, scrap metal pickup TN KY, garage clean out Clarksville, junk removal Robertson County, junk removal Montgomery County, cleaning services Nashville, junk removal near me{% endblock %}">
-  <meta name="robots" content="index, follow">
+  {% block robots %}<meta name="robots" content="index, follow">{% endblock %}
   <meta name="google-site-verification" content="hqr_4KGn8dYWDbLusEIY9ZTBvWYzze8ZigKeWJm7xP0">
-  <link rel="canonical" href="{% block canonical %}https://www.junkbustershauling.com{% endblock %}">
+  <link rel="canonical" href="{% block canonical %}https://www.junkbustershauling.com{{ request.path }}{% endblock %}">
 
   <!-- ── Open Graph ────────────────────────────────────────────────────── -->
   <meta property="og:type" content="website">
