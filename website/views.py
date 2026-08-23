@@ -2727,7 +2727,7 @@ def _send_gift_card_email(gift_card):
         f'Your code: {gift_card.code}\n\n'
         + (f'Their message: {gift_card.recipient_message}\n\n' if gift_card.recipient_message else '')
         + 'To redeem: mention your code when booking at junkbustershauling.com or call 615-881-2505.\n\n'
-          'Check balance: https://junkbustershauling.com/gift-card/check/\n\n'
+          'Check balance: https://www.junkbustershauling.com/gift-card/check/\n\n'
           '— Junk Busters LLC\n615-881-2505\njunkbustershauling.com'
     )
     msg = EmailMultiAlternatives(
