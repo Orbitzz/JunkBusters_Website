@@ -2500,18 +2500,24 @@ def sitemap(request):
 
 
 def robots(request):
-    content = (
-        "User-agent: *\nAllow: /\n\n"
-        # AI crawlers — explicitly permitted
-        "User-agent: GPTBot\nAllow: /\n\n"
-        "User-agent: ChatGPT-User\nAllow: /\n\n"
-        "User-agent: PerplexityBot\nAllow: /\n\n"
-        "User-agent: ClaudeBot\nAllow: /\n\n"
-        "User-agent: Bingbot\nAllow: /\n\n"
-        "User-agent: OAI-SearchBot\nAllow: /\n\n"
-        "User-agent: Googlebot\nAllow: /\n\n"
-        "Sitemap: https://www.junkbustershauling.com/sitemap.xml\n"
-    )
+    # robots.txt spec: bots match ONLY the most specific User-agent group.
+    # Named crawlers with their own group ignore the '*' group entirely, so
+    # every Disallow must be listed under every named group too — otherwise
+    # Googlebot would ignore a Disallow that lives only under '*'.
+    # Longer path prefixes win over shorter within a group, so 'Disallow: /api/'
+    # correctly overrides 'Allow: /' for /api/* paths.
+    INTERNAL_DISALLOW = [
+        '/api/',                # JSON/AJAX proxies to OmniHQ — 405 on GET
+        '/gift-card/webhook/',  # Stripe webhook — 405 on GET
+        '/portal/webhook/',     # OmniHQ job-status webhook — 405 on GET
+    ]
+    AGENTS = ['*', 'GPTBot', 'ChatGPT-User', 'PerplexityBot', 'ClaudeBot',
+              'Bingbot', 'OAI-SearchBot', 'Googlebot']
+    blocks = []
+    for ua in AGENTS:
+        lines = [f'User-agent: {ua}', 'Allow: /'] + [f'Disallow: {p}' for p in INTERNAL_DISALLOW]
+        blocks.append('\n'.join(lines))
+    content = '\n\n'.join(blocks) + '\n\nSitemap: https://www.junkbustershauling.com/sitemap.xml\n'
     return HttpResponse(content, content_type='text/plain')
 
 

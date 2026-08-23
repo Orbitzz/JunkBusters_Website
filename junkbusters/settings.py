@@ -62,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'website.middleware.UTMCaptureMiddleware',
+    'website.middleware.NoindexInternalEndpointsMiddleware',
 ]
 
 ROOT_URLCONF = 'junkbusters.urls'
