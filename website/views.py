@@ -268,6 +268,11 @@ REVIEWS = [
 ]
 
 CITY_URL_MAP = {
+    # Every town name still resolves to a URL. Towns whose own city page was
+    # removed in the 2026-08-17 consolidation now point to the nearest surviving
+    # hub: Kentucky towns -> franklin-ky, everything else -> nashville. The
+    # names themselves stay so /areas-we-serve/ and service-page "we also serve"
+    # lists still show them as content.
     'Nashville, TN': '/junk-removal-nashville/',
     'East Nashville, TN': '/junk-removal-nashville/',
     'Antioch, TN': '/junk-removal-nashville/',
@@ -277,14 +282,14 @@ CITY_URL_MAP = {
     'Madison, TN': '/junk-removal-nashville/',
     'Berry Hill, TN': '/junk-removal-nashville/',
     'Old Hickory, TN': '/junk-removal-nashville/',
-    'Clarksville, TN': '/junk-removal-clarksville/',
-    'Fort Campbell, KY': '/junk-removal-clarksville/',
-    'Oak Grove, KY': '/junk-removal-clarksville/',
-    'Hopkinsville, KY': '/junk-removal-clarksville/',
-    'Cunningham, TN': '/junk-removal-clarksville/',
-    'Bowling Green, KY': '/junk-removal-bowling-green/',
-    'Alvaton, KY': '/junk-removal-bowling-green/',
-    'Smiths Grove, KY': '/junk-removal-bowling-green/',
+    'Clarksville, TN': '/junk-removal-nashville/',
+    'Fort Campbell, KY': '/junk-removal-nashville/',
+    'Oak Grove, KY': '/junk-removal-nashville/',
+    'Hopkinsville, KY': '/junk-removal-nashville/',
+    'Cunningham, TN': '/junk-removal-nashville/',
+    'Bowling Green, KY': '/junk-removal-franklin-ky/',
+    'Alvaton, KY': '/junk-removal-franklin-ky/',
+    'Smiths Grove, KY': '/junk-removal-franklin-ky/',
     'White House, TN': '/junk-removal-white-house-tn/',
     'Greenbrier, TN': '/junk-removal-white-house-tn/',
     'Millersville, TN': '/junk-removal-white-house-tn/',
@@ -299,43 +304,43 @@ CITY_URL_MAP = {
     'Springfield, TN': '/junk-removal-springfield-tn/',
     'Coopertown, TN': '/junk-removal-springfield-tn/',
     'Adams, TN': '/junk-removal-springfield-tn/',
-    'Franklin, TN': '/junk-removal-franklin-tn/',
-    'Brentwood, TN': '/junk-removal-brentwood-tn/',
-    'Spring Hill, TN': '/junk-removal-spring-hill-tn/',
-    'Nolensville, TN': '/junk-removal-nolensville-tn/',
-    'Thompson\'s Station, TN': '/junk-removal-spring-hill-tn/',
-    'Fairview, TN': '/junk-removal-franklin-tn/',
-    'College Grove, TN': '/junk-removal-franklin-tn/',
+    'Franklin, TN': '/junk-removal-nashville/',
+    'Brentwood, TN': '/junk-removal-nashville/',
+    'Spring Hill, TN': '/junk-removal-nashville/',
+    'Nolensville, TN': '/junk-removal-nashville/',
+    'Thompson\'s Station, TN': '/junk-removal-nashville/',
+    'Fairview, TN': '/junk-removal-nashville/',
+    'College Grove, TN': '/junk-removal-nashville/',
     'Goodlettsville, TN': '/junk-removal-goodlettsville-tn/',
     'Ridgetop, TN': '/junk-removal-goodlettsville-tn/',
-    'Murfreesboro, TN': '/junk-removal-murfreesboro-tn/',
-    'Smyrna, TN': '/junk-removal-smyrna-tn/',
-    'La Vergne, TN': '/junk-removal-lavergne-tn/',
-    'Lavergne, TN': '/junk-removal-lavergne-tn/',
-    'Lebanon, TN': '/junk-removal-lebanon-tn/',
-    'Mt. Juliet, TN': '/junk-removal-mt-juliet-tn/',
-    'Watertown, TN': '/junk-removal-lebanon-tn/',
-    'Carthage, TN': '/junk-removal-lebanon-tn/',
-    'Gladeville, TN': '/junk-removal-mt-juliet-tn/',
-    'Eagleville, TN': '/junk-removal-murfreesboro-tn/',
-    'Ashland City, TN': '/junk-removal-ashland-city-tn/',
-    'Kingston Springs, TN': '/junk-removal-ashland-city-tn/',
-    'Pegram, TN': '/junk-removal-ashland-city-tn/',
-    'Pleasant View, TN': '/junk-removal-ashland-city-tn/',
-    'Chapmansboro, TN': '/junk-removal-ashland-city-tn/',
-    'Pembroke, TN': '/junk-removal-clarksville/',
-    'Southside, TN': '/junk-removal-clarksville/',
+    'Murfreesboro, TN': '/junk-removal-nashville/',
+    'Smyrna, TN': '/junk-removal-nashville/',
+    'La Vergne, TN': '/junk-removal-nashville/',
+    'Lavergne, TN': '/junk-removal-nashville/',
+    'Lebanon, TN': '/junk-removal-nashville/',
+    'Mt. Juliet, TN': '/junk-removal-nashville/',
+    'Watertown, TN': '/junk-removal-nashville/',
+    'Carthage, TN': '/junk-removal-nashville/',
+    'Gladeville, TN': '/junk-removal-nashville/',
+    'Eagleville, TN': '/junk-removal-nashville/',
+    'Ashland City, TN': '/junk-removal-nashville/',
+    'Kingston Springs, TN': '/junk-removal-nashville/',
+    'Pegram, TN': '/junk-removal-nashville/',
+    'Pleasant View, TN': '/junk-removal-nashville/',
+    'Chapmansboro, TN': '/junk-removal-nashville/',
+    'Pembroke, TN': '/junk-removal-nashville/',
+    'Southside, TN': '/junk-removal-nashville/',
     'Orlinda, TN': '/junk-removal-springfield-tn/',
-    'Russellville, KY': '/junk-removal-russellville-ky/',
-    'Scottsville, KY': '/junk-removal-scottsville-ky/',
-    'Adairville, KY': '/junk-removal-russellville-ky/',
+    'Russellville, KY': '/junk-removal-franklin-ky/',
+    'Scottsville, KY': '/junk-removal-franklin-ky/',
+    'Adairville, KY': '/junk-removal-franklin-ky/',
     'Franklin, KY': '/junk-removal-franklin-ky/',
-    'Auburn, KY': '/junk-removal-russellville-ky/',
-    'Lewisburg, KY': '/junk-removal-russellville-ky/',
-    'Oakland, KY': '/junk-removal-bowling-green/',
-    'Woodburn, KY': '/junk-removal-bowling-green/',
-    'Rockfield, KY': '/junk-removal-bowling-green/',
-    'Morgantown, KY': '/kentucky/',
+    'Auburn, KY': '/junk-removal-franklin-ky/',
+    'Lewisburg, KY': '/junk-removal-franklin-ky/',
+    'Oakland, KY': '/junk-removal-franklin-ky/',
+    'Woodburn, KY': '/junk-removal-franklin-ky/',
+    'Rockfield, KY': '/junk-removal-franklin-ky/',
+    'Morgantown, KY': '/junk-removal-franklin-ky/',
 }
 
 
@@ -344,6 +349,10 @@ def enrich_areas(areas):
     return [{'name': a, 'url': CITY_URL_MAP.get(a, '/areas-we-serve/')} for a in areas]
 
 
+# Cities rendered as clickable links on /areas-we-serve/. Only the 8 surviving
+# city pages appear here. The other 15 towns still appear on that page as
+# plain-text chips (see areas() view's tn_areas / ky_areas), so no service-area
+# names disappear from the page — only the links do.
 SERVICE_AREAS_PRIMARY = [
     # Tennessee
     {'name': 'Nashville, TN',      'url': '/junk-removal-nashville/'},
@@ -353,39 +362,27 @@ SERVICE_AREAS_PRIMARY = [
     {'name': 'Gallatin, TN',       'url': '/junk-removal-gallatin-tn/'},
     {'name': 'Hendersonville, TN', 'url': '/junk-removal-hendersonville-tn/'},
     {'name': 'Portland, TN',       'url': '/junk-removal-portland-tn/'},
-    {'name': 'Clarksville, TN',    'url': '/junk-removal-clarksville/'},
-    {'name': 'Franklin, TN',       'url': '/junk-removal-franklin-tn/'},
-    {'name': 'Brentwood, TN',      'url': '/junk-removal-brentwood-tn/'},
-    {'name': 'Spring Hill, TN',    'url': '/junk-removal-spring-hill-tn/'},
-    {'name': 'Nolensville, TN',    'url': '/junk-removal-nolensville-tn/'},
-    {'name': 'Lebanon, TN',        'url': '/junk-removal-lebanon-tn/'},
-    {'name': 'Mt. Juliet, TN',     'url': '/junk-removal-mt-juliet-tn/'},
-    {'name': 'Murfreesboro, TN',   'url': '/junk-removal-murfreesboro-tn/'},
-    {'name': 'Smyrna, TN',         'url': '/junk-removal-smyrna-tn/'},
-    {'name': 'La Vergne, TN',      'url': '/junk-removal-lavergne-tn/'},
-    {'name': 'Ashland City, TN',   'url': '/junk-removal-ashland-city-tn/'},
     # Kentucky
-    {'name': 'Bowling Green, KY',  'url': '/junk-removal-bowling-green/'},
-    {'name': 'Russellville, KY',   'url': '/junk-removal-russellville-ky/'},
     {'name': 'Franklin, KY',       'url': '/junk-removal-franklin-ky/'},
-    {'name': 'Scottsville, KY',    'url': '/junk-removal-scottsville-ky/'},
-    {'name': 'Adairville, KY',     'url': '/junk-removal-russellville-ky/'},
 ]
+# Counties still show as clickable links, but retargeted to the nearest surviving
+# hub. Williamson, Wilson, Rutherford, Cheatham, Montgomery all serve from
+# Nashville; Warren, Logan, Allen KY all serve from Franklin KY.
 SERVICE_AREAS_SECONDARY = [
     # Tennessee counties
     {'name': 'Davidson County, TN',   'url': '/junk-removal-nashville/'},
     {'name': 'Robertson County, TN',  'url': '/junk-removal-springfield-tn/'},
     {'name': 'Sumner County, TN',     'url': '/junk-removal-gallatin-tn/'},
-    {'name': 'Williamson County, TN', 'url': '/junk-removal-franklin-tn/'},
-    {'name': 'Wilson County, TN',     'url': '/junk-removal-lebanon-tn/'},
-    {'name': 'Rutherford County, TN', 'url': '/junk-removal-murfreesboro-tn/'},
-    {'name': 'Cheatham County, TN',   'url': '/junk-removal-ashland-city-tn/'},
-    {'name': 'Montgomery County, TN', 'url': '/junk-removal-clarksville/'},
+    {'name': 'Williamson County, TN', 'url': '/junk-removal-nashville/'},
+    {'name': 'Wilson County, TN',     'url': '/junk-removal-nashville/'},
+    {'name': 'Rutherford County, TN', 'url': '/junk-removal-nashville/'},
+    {'name': 'Cheatham County, TN',   'url': '/junk-removal-nashville/'},
+    {'name': 'Montgomery County, TN', 'url': '/junk-removal-nashville/'},
     # Kentucky counties
-    {'name': 'Warren County, KY',     'url': '/junk-removal-bowling-green/'},
-    {'name': 'Logan County, KY',      'url': '/junk-removal-russellville-ky/'},
+    {'name': 'Warren County, KY',     'url': '/junk-removal-franklin-ky/'},
+    {'name': 'Logan County, KY',      'url': '/junk-removal-franklin-ky/'},
     {'name': 'Simpson County, KY',    'url': '/junk-removal-franklin-ky/'},
-    {'name': 'Allen County, KY',      'url': '/junk-removal-scottsville-ky/'},
+    {'name': 'Allen County, KY',      'url': '/junk-removal-franklin-ky/'},
 ]
 
 NASHVILLE_AREAS = [
@@ -400,35 +397,36 @@ LEGACY_REDIRECTS = {
     # Renamed service slugs
     'bulk-cardboard-removal-and-pickup': '/bulk-cardboard-removal/',
 
-    # Old junk-removal-service-{city}-{state} city pages
-    'junk-removal-service-clarksville-tn':      '/junk-removal-clarksville/',
+    # Old junk-removal-service-{city}-{state} city pages. Historically pointed
+    # at the corresponding hub city; in the 2026-08-17 consolidation those hubs
+    # were reduced to 8 survivors, so every old-service-city URL now goes
+    # directly to the nearest surviving hub in a single 301 hop (Kentucky ->
+    # franklin-ky, everything else -> nashville).
+    'junk-removal-service-clarksville-tn':      '/junk-removal-nashville/',
     'junk-removal-service-nashville-tn':         '/junk-removal-nashville/',
-    'junk-removal-service-bowling-green-ky':     '/junk-removal-bowling-green/',
+    'junk-removal-service-bowling-green-ky':     '/junk-removal-franklin-ky/',
     'junk-removal-service-gallatin-tn':          '/junk-removal-gallatin-tn/',
     'junk-removal-service-hendersonville-tn':    '/junk-removal-hendersonville-tn/',
     'junk-removal-service-white-house-tn':       '/junk-removal-white-house-tn/',
     'junk-removal-service-springfield-tn':       '/junk-removal-springfield-tn/',
-    'junk-removal-service-franklin-tn':          '/junk-removal-franklin-tn/',
+    'junk-removal-service-franklin-tn':          '/junk-removal-nashville/',
     'junk-removal-service-goodlettsville-tn':    '/junk-removal-goodlettsville-tn/',
     'junk-removal-service-portland-tn':          '/junk-removal-portland-tn/',
-    'junk-removal-service-scottsville-ky':       '/junk-removal-scottsville-ky/',
-    'junk-removal-service-adairville-ky':        '/junk-removal-russellville-ky/',
-    'junk-removal-service-russellville-ky':      '/junk-removal-russellville-ky/',
+    'junk-removal-service-scottsville-ky':       '/junk-removal-franklin-ky/',
+    'junk-removal-service-adairville-ky':        '/junk-removal-franklin-ky/',
+    'junk-removal-service-russellville-ky':      '/junk-removal-franklin-ky/',
     'junk-removal-service-franklin-ky':          '/junk-removal-franklin-ky/',
-    'junk-removal-service-auburn-ky':            '/junk-removal-russellville-ky/',
-    'junk-removal-service-lewisburg-ky':         '/junk-removal-russellville-ky/',
+    'junk-removal-service-auburn-ky':            '/junk-removal-franklin-ky/',
+    'junk-removal-service-lewisburg-ky':         '/junk-removal-franklin-ky/',
     'junk-removal-service-davidson-county-tn':   '/junk-removal-nashville/',
     'junk-removal-service-sumner-county-tn':     '/junk-removal-hendersonville-tn/',
     'junk-removal-service-robertson-county-tn':  '/junk-removal-springfield-tn/',
-    'junk-removal-service-montgomery-county-tn': '/junk-removal-clarksville/',
-    'junk-removal-service-warren-county-ky':     '/junk-removal-bowling-green/',
+    'junk-removal-service-montgomery-county-tn': '/junk-removal-nashville/',
+    'junk-removal-service-warren-county-ky':     '/junk-removal-franklin-ky/',
     'junk-removal-service-middle-tn':            '/junk-removal-nashville/',
-    'junk-removal-service-southern-ky':          '/junk-removal-bowling-green/',
+    'junk-removal-service-southern-ky':          '/junk-removal-franklin-ky/',
 
-    # Migrated in from urls.py _R() list so both /old/ and /old forms
-    # route through the catch-all <slug:slug>/ and 301 correctly. The
-    # prior URL-pattern-based approach only caught the no-slash form.
-    # Service page renames
+    # Service page renames (from the S12 rewire out of urls.py _R() lists)
     'shed-demolition':                  '/light-demolition/',
     'airbnb-cleaning':                  '/short-term-rental-turnover/',
     'air-bnb':                          '/short-term-rental-turnover/',
@@ -454,29 +452,53 @@ LEGACY_REDIRECTS = {
     'residential-junk-removal':         '/junk-removal/',
     'light-demo':                       '/light-demolition/',
     'demolition':                       '/light-demolition/',
-    # City pages without state suffix -> canonical with suffix
+    # Air-duct-cleaning removed as an orphan service (2026-08-17). Redirect to
+    # the services index.
+    'air-duct-cleaning':                '/services/',
+
+    # City slug no-suffix / wrong-suffix variants. Every one goes to a surviving
+    # hub in a single 301 hop; historically some 301'd to a removed city page
+    # which then would have needed a second 301. Consolidated.
     'junk-removal-nashville-tn':        '/junk-removal-nashville/',
-    'junk-removal-clarksville-tn':      '/junk-removal-clarksville/',
-    'junk-removal-bowling-green-ky':    '/junk-removal-bowling-green/',
+    'junk-removal-clarksville-tn':      '/junk-removal-nashville/',
+    'junk-removal-bowling-green-ky':    '/junk-removal-franklin-ky/',
     'junk-removal-white-house':         '/junk-removal-white-house-tn/',
     'junk-removal-hendersonville':      '/junk-removal-hendersonville-tn/',
     'junk-removal-gallatin':            '/junk-removal-gallatin-tn/',
     'junk-removal-springfield':         '/junk-removal-springfield-tn/',
-    'junk-removal-franklin':            '/junk-removal-franklin-tn/',
+    'junk-removal-franklin':            '/junk-removal-nashville/',
     'junk-removal-goodlettsville':      '/junk-removal-goodlettsville-tn/',
     'junk-removal-portland':            '/junk-removal-portland-tn/',
-    'junk-removal-murfreesboro':        '/junk-removal-murfreesboro-tn/',
-    'junk-removal-smyrna':              '/junk-removal-smyrna-tn/',
-    'junk-removal-lavergne':            '/junk-removal-lavergne-tn/',
-    'junk-removal-lebanon':             '/junk-removal-lebanon-tn/',
-    'junk-removal-russellville':        '/junk-removal-russellville-ky/',
+    'junk-removal-murfreesboro':        '/junk-removal-nashville/',
+    'junk-removal-smyrna':              '/junk-removal-nashville/',
+    'junk-removal-lavergne':            '/junk-removal-nashville/',
+    'junk-removal-lebanon':             '/junk-removal-nashville/',
+    'junk-removal-russellville':        '/junk-removal-franklin-ky/',
     'junk-removal-franklin-ky-tn':      '/junk-removal-franklin-ky/',
-    'junk-removal-scottsville':         '/junk-removal-scottsville-ky/',
-    'junk-removal-brentwood':           '/junk-removal-brentwood-tn/',
-    'junk-removal-spring-hill':         '/junk-removal-spring-hill-tn/',
-    'junk-removal-mt-juliet':           '/junk-removal-mt-juliet-tn/',
-    'junk-removal-nolensville':         '/junk-removal-nolensville-tn/',
-    'junk-removal-ashland-city':        '/junk-removal-ashland-city-tn/',
+    'junk-removal-scottsville':         '/junk-removal-franklin-ky/',
+    'junk-removal-brentwood':           '/junk-removal-nashville/',
+    'junk-removal-spring-hill':         '/junk-removal-nashville/',
+    'junk-removal-mt-juliet':           '/junk-removal-nashville/',
+    'junk-removal-nolensville':         '/junk-removal-nashville/',
+    'junk-removal-ashland-city':        '/junk-removal-nashville/',
+
+    # 2026-08-17 city-page consolidation: 15 city pages removed. Each redirects
+    # to the nearest surviving hub. KY pages must not redirect into TN pages.
+    'junk-removal-clarksville':         '/junk-removal-nashville/',
+    'junk-removal-bowling-green':       '/junk-removal-franklin-ky/',
+    'junk-removal-russellville-ky':     '/junk-removal-franklin-ky/',
+    'junk-removal-scottsville-ky':      '/junk-removal-franklin-ky/',
+    'junk-removal-lebanon-tn':          '/junk-removal-nashville/',
+    'junk-removal-ashland-city-tn':     '/junk-removal-nashville/',
+    'junk-removal-mt-juliet-tn':        '/junk-removal-nashville/',
+    'junk-removal-brentwood-tn':        '/junk-removal-nashville/',
+    'junk-removal-franklin-tn':         '/junk-removal-nashville/',
+    'junk-removal-spring-hill-tn':      '/junk-removal-nashville/',
+    'junk-removal-murfreesboro-tn':     '/junk-removal-nashville/',
+    'junk-removal-smyrna-tn':           '/junk-removal-nashville/',
+    'junk-removal-lavergne-tn':         '/junk-removal-nashville/',
+    'junk-removal-nolensville-tn':      '/junk-removal-nashville/',
+    'kentucky':                         '/junk-removal-franklin-ky/',
 }
 
 # ── Service page data ─────────────────────────────────────────────────────────
@@ -505,7 +527,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC to deliver fast and professional junk removal services across Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green. We have access to the knowledge, tools, and expertise to handle items of all sizes, including heavy and bulky ones. Our team follows a structured approach, making each job seamless and hassle-free. Every job is handled with professionalism, efficiency, and proper disposal methods. Our safe disposal practices help reduce environmental impact. Give us a call now to schedule a service.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN', 'Goodlettsville, TN', 'Russellville, KY', 'La Vergne, TN'],
+        'local_areas': ['Nashville, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN', 'Goodlettsville, TN'],
         'faqs': [
             {'q': 'How is junk removal priced?', 'a': 'Volume-based — you only pay for the space your load takes in our truck. Most jobs run $75–$600. Factors include total volume, weight (heavy construction debris costs more due to rising landfill tipping fees across Middle TN), item type (mattresses, hot tubs, and tires carry disposal surcharges), and access difficulty. We quote upfront before we lift a finger.'},
             {'q': 'Do you offer same-day pickup?', 'a': 'Yes, subject to availability. Call 615-881-2505 by mid-morning and we\'ll do our best to fit you in the same day. Next-day slots are almost always available.'},
@@ -535,7 +557,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Our team is trained to handle your project with the utmost professionalism, ensuring that all debris is removed completely and your property is left clean and ready for your next project.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Spring Hill, TN', 'Franklin, TN', 'Lebanon, TN', 'Portland, TN', 'Franklin, KY', 'Russellville, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Portland, TN', 'Franklin, KY'],
     },
 
     'estate-clean-out': {
@@ -564,7 +586,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'At Junk Busters, we understand the sensitive nature of estate cleanouts. Our dedicated team is committed to providing compassionate support and dependable services every step of the way. Contact us today at 615-881-2505 to schedule a consultation and entrust us with the cleanout and restoration of your estate.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Brentwood, TN', 'Thompson\'s Station, TN', 'Spring Hill, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How long does an estate cleanout take?', 'a': 'Most single-family homes: 1–2 days. Larger estates with multiple outbuildings or decades of accumulation can take 2–4 days. We\'ll walk the property and give you a realistic timeline on the spot.'},
             {'q': 'How do you handle sentimental or high-value items?', 'a': 'We move only what you designate for removal. Items you want kept, donated, or appraised are flagged before we start — we never make those decisions for you. We can coordinate pickup with local estate sale companies or appraisers.'},
@@ -598,7 +620,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters for professional and compassionate eviction property cleanouts. Contact us at 615-881-2505 or schedule online.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'La Vergne, TN', 'Smyrna, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Thompson\'s Station, TN', 'Spring Hill, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How fast can you turn around an eviction cleanout?', 'a': 'We offer next-day and often same-day scheduling for eviction cleanouts. We know landlords and property managers are often on tight legal timelines. Call 615-881-2505 and tell us your situation.'},
             {'q': 'Do you handle biohazard situations?', 'a': 'We handle standard eviction debris. For units with confirmed biohazard contamination (blood, sewage, mold), we recommend a certified biohazard remediation company first — we can refer you. Once the hazard is cleared, we handle the remainder.'},
@@ -631,7 +653,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Our pricing approach is designed to provide competitive rates while delivering high-quality and reliable foreclosure cleanout services to our clients. We strive to exceed expectations and ensure a smooth and stress-free experience from start to finish. Call us at 615-881-2505 or book online today to find out why we are the preeminent service provider in the area.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Lebanon, TN', 'La Vergne, TN', 'Smyrna, TN', 'Franklin, TN', 'Mt. Juliet, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Brentwood, TN', 'Franklin, KY', 'Spring Hill, TN'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Can you coordinate with a bank or asset manager?', 'a': 'Yes. We\'re experienced working with REO asset managers, bank-assigned property managers, and listing agents. We can coordinate access, provide itemized removal reports, and turn properties over quickly.'},
             {'q': 'What about abandoned vehicles on the property?', 'a': 'Abandoned vehicles require a title or legal authorization to remove — we\'ll advise you on the process, but we don\'t tow vehicles ourselves. We handle all other property contents.'},
@@ -665,7 +687,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC is proud to help Middle TN & Southern KY businesses and homeowners recycle responsibly. Call 615-881-2505 to schedule your bulk cardboard pickup anywhere in Nashville, Clarksville, or Bowling Green today.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Smyrna, TN', 'Lebanon, TN', 'Goodlettsville, TN', 'Spring Hill, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
     },
 
     'garage-clean-out': {
@@ -693,7 +715,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Ready to reclaim your garage space? Schedule your garage clean-out with Junk Busters today by visiting our website at calling us directly at 615-881-2505 to discuss your needs and set up a service time.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Smyrna, TN', 'Lebanon, TN', 'Goodlettsville, TN', 'Spring Hill, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Can you sort donations from trash?', 'a': 'Yes. Tell us what you want to keep, donate, or trash before we start. We\'ll stage items accordingly and coordinate donation pickups with local charities.'},
             {'q': 'What about old paint cans, chemicals, or motor oil?', 'a': 'We don\'t haul hazardous materials — wet paint, motor oil, pesticides, herbicides, and pool chemicals require household hazardous waste drop-off events (most counties hold them quarterly). We\'ll help you identify what qualifies so you can plan ahead.'},
@@ -725,7 +747,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC for professional storage unit clean-outs across Middle TN & Southern KY — Nashville, Clarksville, and Bowling Green. Contact us at 615-881-2505 or schedule online.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Smyrna, TN', 'Lebanon, TN', 'Goodlettsville, TN', 'Spring Hill, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How much does a storage unit cleanout cost?', 'a': 'Storage unit cleanouts typically run $150–$450 depending on how full the unit is and what\'s inside. We price by volume — the more truck space your items take up, the higher the cost. We can give you a firm quote over the phone if you describe the unit size and how full it is.'},
             {'q': 'Do I need to be at the storage facility during the cleanout?', 'a': 'You need to be there to unlock the unit at the start, but you don\'t have to stay for the duration. Many clients hand us the key and come back when we\'re done. We\'ll call you when the unit is cleared and ready for your final walkthrough.'},
@@ -759,7 +781,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC provides competitive pricing and transparent quotes, with no hidden fees. Residents across Middle TN and Southern KY — Nashville, Clarksville, Bowling Green, and beyond — can trust us for efficient and reliable hot tub removal. Call 615-881-2505 today.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Smyrna, TN', 'Spring Hill, TN', 'Franklin, TN', 'Lebanon, TN', 'Portland, TN', 'La Vergne, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Do I need to disconnect the electrical before you arrive?', 'a': 'Yes — the electrical connection must be disconnected by a licensed electrician (or at the breaker) before we arrive. We don\'t perform electrical work. Most electricians can cap off a hot tub circuit in under an hour.'},
             {'q': 'How do you get a hot tub out?', 'a': 'We disassemble the hot tub on-site using reciprocating saws and hand tools, breaking it into sections that fit through standard gates and doorways. No cranes needed in most cases.'},
@@ -791,7 +813,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC delivers reliable residential cleaning for a better living experience. We help keep your property clean, making sure all areas receive proper care. Our experienced cleaning crew in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, pays attention to every room, making sure all areas receive proper care. If you want to learn more about our residential cleaning services in White House & Nashville, reach out to us today.',
-        'local_areas': ['White House', 'Nashville TN', 'Goodlettsville', 'Springfield', 'Gallatin', 'Hendersonville', 'La Vergne', 'Davidson County', 'Robertson County', 'Sumner County'],
+        'local_areas': ['White House', 'Nashville TN', 'Goodlettsville', 'Springfield', 'Gallatin', 'Hendersonville', 'Davidson County', 'Robertson County', 'Sumner County'],
     },
 
     'air-bnb-cleaning': {
@@ -817,7 +839,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC delivers reliable AirBnB cleaning for a better guest experience. We help keep your rental property clean, making sure all areas receive proper care. Our experienced cleaning crew in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, pays attention to every room, making sure all areas receive proper care. Hosts benefit from fast turnovers, allowing new guests to check in without delay. To find out more information about our services and scheduling options, reach out to us today.',
-        'local_areas': ['Nashville TN', 'White House', 'Hendersonville', 'Gallatin', 'Goodlettsville', 'Brentwood', 'Franklin TN', 'Murfreesboro', 'Smyrna', 'Spring Hill', 'Mt. Juliet', 'Lebanon'],
+        'local_areas': ['Nashville TN', 'White House', 'Hendersonville', 'Gallatin', 'Goodlettsville'],
     },
 
     'move-in-move-out-cleaning': {
@@ -850,7 +872,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Experience the thoroughness of Junk Busters\' move-in/move-out deep cleaning services. Call 615-881-2505 or book online today to schedule your appointment and enjoy a pristine property.',
-        'local_areas': ['White House', 'Nashville TN', 'La Vergne', 'Davidson County', 'Robertson County', 'Williamson County', 'Sumner County', 'Wilson County'],
+        'local_areas': ['White House', 'Nashville TN', 'Davidson County', 'Robertson County', 'Williamson County', 'Sumner County', 'Wilson County'],
     },
 
     'recurring-maid-services': {
@@ -879,32 +901,6 @@ SERVICES = {
         'local_areas': ['White House', 'Nashville TN', 'Goodlettsville', 'Hendersonville', 'Gallatin', 'Springfield', 'Robertson County', 'Davidson County', 'Sumner County', 'Williamson County'],
     },
 
-    'air-duct-cleaning': {
-        'slug': 'air-duct-cleaning',
-        'title': 'Air Duct Cleaning',
-        'hero_h1': 'Air Duct Cleaning Services in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green',
-        'hero_sub': 'Improve indoor air quality with professional air duct cleaning across Middle TN & Southern KY.',
-        'meta_desc': 'Professional air duct cleaning services in Nashville, White House & Middle Tennessee. Junk Busters improves indoor air quality with industry-grade equipment. Call 615-881-2505.',
-        'meta_keywords': 'air duct cleaning Nashville TN, duct cleaning Nashville Tennessee, HVAC cleaning Nashville, air duct cleaning White House TN, air quality improvement Nashville Davidson County',
-        'section1_title': 'Air Duct Cleaning Services',
-        'section1_body': [
-            'Your home\'s air duct system plays a critical role in maintaining indoor air quality and HVAC efficiency. Over time, dust, allergens, pet dander, and debris accumulate in ductwork, reducing airflow and circulating pollutants throughout your home. Junk Busters provides professional air duct cleaning services in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, using industry-grade equipment to remove buildup and improve your home\'s air quality.',
-            'Regular air duct cleaning helps reduce respiratory irritants, eliminate musty odors, and improve the efficiency of your heating and cooling system. Homes with pets, allergy sufferers, or recent renovation work particularly benefit from thorough duct cleaning.',
-            'Our process includes a complete inspection of your duct system, high-powered vacuum extraction, and a final quality check to ensure clean, clear airflow throughout your home.',
-        ],
-        'cards_title': 'Benefits of Professional Air Duct Cleaning',
-        'yellow_cards': [
-            {'title': 'Improved Air Quality', 'body': 'Remove dust, pollen, pet dander, mold spores, and other allergens from your duct system, creating cleaner, healthier air for your family.'},
-            {'title': 'Better HVAC Efficiency', 'body': 'Clean ducts allow your heating and cooling system to operate at peak efficiency, potentially reducing energy bills and extending system life.'},
-            {'title': 'Odor Elimination', 'body': 'Musty smells from mold, mildew, or accumulated debris are eliminated, leaving your home smelling fresh and clean.'},
-            {'title': 'Healthier Home Environment', 'body': 'Especially important for households with allergy sufferers, asthma patients, or young children — clean air ducts mean fewer airborne irritants circulating through your living space.'},
-        ],
-        'section2_title': None,
-        'section2_body': [],
-        'step_cards': [],
-        'trust_body': 'Breathe easier with Junk Busters. Our professional air duct cleaning service uses industry-grade equipment to thoroughly clean your home\'s duct system. Call 615-881-2505 to schedule your appointment today.',
-        'local_areas': ['Nashville TN', 'White House', 'Hendersonville', 'Gallatin', 'Goodlettsville', 'Springfield', 'Brentwood', 'Franklin TN', 'Murfreesboro', 'Smyrna'],
-    },
 
     # ── 6 New Service Pages ───────────────────────────────────────────────────
 
@@ -934,7 +930,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'When life brings you to a moment that requires clearing out a loved one\'s home or restoring a property from years of accumulation, Junk Busters LLC is the team you can trust to handle it with professionalism and genuine care. Call 615-881-2505 for a free on-site estimate — we\'ll come to you, assess the property, and provide a transparent quote with no obligation.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Russellville, KY'],
+        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How much does a hoarder home cleanout cost?', 'a': 'Most hoarder home cleanouts range from $500 to $2,500+ depending on the size of the home and the severity of accumulation. We price by volume — you only pay for the truck space we use. We provide a free on-site estimate before any work begins so there are no surprises.'},
             {'q': 'Do you work with probate attorneys and real estate agents?', 'a': 'Yes. We regularly coordinate with executors, probate attorneys, and listing agents to meet court-ordered or market-deadline timelines. We can provide written confirmation of removal and before/after photos for legal documentation upon request.'},
@@ -970,7 +966,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Ready to add Junk Busters LLC to your vendor list? Call 615-881-2505 to discuss your portfolio needs and get a free baseline quote. We offer same-day estimates and can often be on-site within 24 hours of your first call.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Goodlettsville, TN'],
+        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Goodlettsville, TN'],
     },
 
     'scrap-metal-pickup': {
@@ -1000,7 +996,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Stop hauling scrap across town. Junk Busters LLC comes to your location anywhere in Middle TN or Southern KY, weighs your material honestly, and pays you fairly. Call 615-881-2505 today to schedule your mobile scrap pickup and get a free estimate on your load.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Russellville, KY', 'Franklin, KY', 'Portland, TN', 'Gallatin, TN'],
+        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Franklin, KY', 'Portland, TN', 'Gallatin, TN'],
     },
 
     'short-term-rental-turnover': {
@@ -1027,7 +1023,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Your guests deserve a hotel-quality experience. Junk Busters LLC delivers exactly that — every turnover, every time. Call 615-881-2505 to schedule your first turnover cleaning and discuss a recurring plan that matches your booking calendar. Serving Nashville, Clarksville, Bowling Green, and the full Middle TN & Southern KY region.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Brentwood, TN', 'Franklin, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Murfreesboro, TN', 'Spring Hill, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
     },
 
     'move-out-deep-cleaning': {
@@ -1054,7 +1050,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Whether you\'re moving out and want your full deposit back, or moving in and want a genuinely clean start, Junk Busters LLC delivers a deep clean that passes inspection. Call 615-881-2505 for a free estimate. We serve Clarksville, Nashville, Bowling Green, and the full Middle TN & Southern KY region.',
-        'local_areas': ['Clarksville, TN', 'Nashville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'La Vergne, TN'],
+        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY'],
     },
 
     'light-demolition': {
@@ -1083,7 +1079,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC combines light demolition expertise with our full-service hauling operation — meaning the same crew that tears it down loads it up and drives it away. No subcontractors, no coordination headaches. Call 615-881-2505 for a free on-site estimate anywhere in Nashville, Clarksville, Bowling Green, or the surrounding Middle TN & Southern KY area.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN'],
+        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN'],
         'faqs': [
             {'q': 'Do I need a permit to demolish a shed?', 'a': 'In most Tennessee and Kentucky municipalities, sheds under 200 sq ft don\'t require a demolition permit — but rules vary by county. We recommend confirming with your local codes office. We\'re not responsible for permit compliance.'},
             {'q': 'How long does shed demolition take?', 'a': 'Most residential sheds: 2–4 hours including cleanup and haul-away. Larger structures or those with concrete slabs take longer.'},
@@ -1120,95 +1116,11 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC is growing its trailer fleet to give more customers the flexibility to handle jobs on their own terms. Right now we run one trailer and we take care of it like it\'s the only one we\'ve got — because it is. You\'ll get the same on-time, professional service we bring to every full-service job. Call 615-881-2505 to reserve your trailer today.',
-        'local_areas': ['Nashville, TN', 'Clarksville, TN', 'Bowling Green, KY', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Goodlettsville, TN', 'Portland, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Franklin, KY', 'Simpson County, KY'],
+        'local_areas': ['Nashville, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Goodlettsville, TN', 'Portland, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Franklin, KY', 'Simpson County, KY'],
     },
 }
 
 CITY_PAGES = {
-    'clarksville': {
-        'slug': 'junk-removal-clarksville',
-        'city_name': 'Clarksville, TN',
-        'region_name': 'Montgomery County & the Fort Campbell Area',
-        'meta_title': 'Junk Removal Clarksville TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Clarksville, TN with fast junk removal, eviction cleanouts, move-out cleaning, shed demolition & scrap metal pickup. Fort Campbell area specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Clarksville TN, eviction cleanout Clarksville, move out cleaning Clarksville TN, shed demolition Clarksville, hot tub removal Clarksville, foreclosure cleanout Montgomery County, junk hauling Fort Campbell area, estate cleanout Clarksville TN',
-        'hero_h1': 'Junk Removal & Cleanup Services in Clarksville, TN',
-        'hero_sub': 'Serving Fort Campbell, Oak Grove, Hopkinsville & all of Montgomery County. Background-checked crews. Same-day availability. Call 615-881-2505.',
-        'area_served': 'Clarksville TN, Montgomery County TN, Fort Campbell KY, Oak Grove KY',
-        'intro': [
-            'Junk Busters LLC is your trusted junk removal and cleanout company serving Clarksville, TN and the greater Montgomery County area. With Fort Campbell driving constant military relocation, Clarksville sees more PCS moves, rental turnovers, and eviction cleanouts than almost any other city our size — and we are built for exactly that demand.',
-            'Whether you are a property manager who needs a fast eviction trash-out, a homeowner clearing out before a PCS move, or a landlord prepping a rental for the next tenant, our background-checked and insured crews arrive on time, work fast, and haul everything away in one trip. No dump runs for you. No hauling heavy furniture down the stairs. We handle it all.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for furniture, appliances, yard debris, and more. Upfront pricing, no hidden fees.', 'slug': 'junk-removal'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Rapid eviction trash-outs for Clarksville landlords and property managers. We clear the unit and haul everything away.', 'slug': 'eviction-clean-out'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get foreclosed and bank-owned properties market-ready fast. REO and asset management specialists.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe disassembly and full removal of hot tubs and spas from any backyard or deck location.', 'slug': 'hot-tub-removal'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, deck removal, fence demo — we knock it down and haul it away in one visit.', 'slug': 'light-demolition'},
-            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for Clarksville apartments, homes, and rental properties.', 'slug': 'move-out-deep-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We come to you and pay cash on the spot for copper, aluminum, and brass. No trips to the yard.', 'slug': 'scrap-metal-pickup'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate full-estate clearing for probate, senior downsizing, and real estate readiness in Clarksville.', 'slug': 'estate-clean-out'},
-        ],
-        'trust_body': "Junk Busters LLC is Middle TN & Southern KY's dependable cleanout crew. We've served hundreds of Clarksville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. Military families, real estate agents, and property management companies trust us to get the job done right the first time. Give us a call and we'll have a crew out to you in no time.",
-        'local_areas': ['Clarksville, TN', 'Fort Campbell, KY', 'Oak Grove, KY', 'Hopkinsville, KY', 'Cunningham, TN', 'Pembroke, KY', 'Southside, TN', 'Woodlawn, TN', 'Adams, TN', 'Erin, TN', 'Sango, TN', 'Pleasant View, TN'],
-        'disposal_note': 'Bi-County Solid Waste (serving Montgomery County) charges $48/ton for Class I waste loads over 2,500 lbs, plus a $10 fee per mattress or box spring. Most standard residential jobs stay well within competitive pricing. We\'ll give you an exact quote before any work begins.',
-    },
-    'bowling-green': {
-        'slug': 'junk-removal-bowling-green',
-        'city_name': 'Bowling Green, KY',
-        'region_name': 'Warren County & Southern Kentucky',
-        'meta_title': 'Junk Removal Bowling Green KY | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Bowling Green, KY with professional junk removal, estate cleanouts, eviction cleanouts, hot tub removal & scrap metal buying. Warren County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Bowling Green KY, estate cleanout Bowling Green, eviction cleanout Warren County KY, hot tub removal Bowling Green, scrap metal pickup Bowling Green KY, junk hauling Southern Kentucky, garage cleanout Bowling Green',
-        'hero_h1': 'Junk Removal & Cleanout Services in Bowling Green, KY',
-        'hero_sub': "Serving Warren County, Franklin KY, Scottsville & all of Southern Kentucky. Fast, reliable, fully insured. Call 615-881-2505.",
-        'area_served': 'Bowling Green KY, Warren County KY, Simpson County KY, Logan County KY',
-        'intro': [
-            "Junk Busters LLC brings professional junk removal and cleanout services to Bowling Green, KY and the entire Southern Kentucky region. As one of the few regional companies actively serving Warren County with a dedicated presence, we offer Bowling Green residents and businesses something the big national franchises can't: a local crew that knows the area, arrives on time, and charges a fair flat rate.",
-            "Bowling Green's growing rental market, Western Kentucky University's student housing turnover, and an active real estate scene create consistent demand for fast, reliable cleanout services. Whether you're clearing an estate in Alvaton, hauling junk from a storage unit on Scottsville Road, or need a move-out deep clean before handing back the keys, Junk Busters is your crew.",
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service junk haul-away for Bowling Green homes, businesses, and rental properties. Upfront pricing.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for probate, senior downsizing, and real estate readiness in Warren County.', 'slug': 'estate-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Rapid eviction trash-outs for Bowling Green landlords and property managers. We turn units over fast.', 'slug': 'eviction-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your garage or storage space — we remove everything you no longer need, quickly and cleanly.', 'slug': 'garage-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe disassembly and disposal of hot tubs and spas anywhere in Warren County and beyond.', 'slug': 'hot-tub-removal'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We buy copper, aluminum & brass — we come to your Bowling Green location and pay cash on site.', 'slug': 'scrap-metal-pickup'},
-            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for Bowling Green apartments, houses, and student rentals.', 'slug': 'move-out-deep-cleaning'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, deck removal, fence demo in the Bowling Green area — we haul it away in one trip.', 'slug': 'light-demolition'},
-        ],
-        'trust_body': "Junk Busters LLC is proud to be one of the few regional hauling companies that genuinely serves Bowling Green and Southern Kentucky — not just lists it as a service area. Our crews make the drive. Our pricing is upfront. And our work speaks for itself. Call 615-881-2505 for a free estimate and we'll get a crew out to you fast.",
-        'local_areas': ['Bowling Green, KY', 'Franklin, KY', 'Scottsville, KY', 'Russellville, KY', 'Alvaton, KY', 'Oakland, KY', 'Smiths Grove, KY', 'Lewisburg, KY', 'Auburn, KY', 'Rockfield, KY', 'Plano, KY', 'Woodburn, KY'],
-        'disposal_note': 'Benson Valley Landfill serves Warren County with tonnage-based commercial pricing (direct quote required for commercial loads). We maintain an active commercial account to keep rates competitive for Bowling Green and Warren County customers.',
-    },
-    'kentucky': {
-        'slug': 'kentucky',
-        'city_name': 'Southern Kentucky',
-        'region_name': 'Southern Kentucky — Warren, Simpson, Logan & Allen Counties',
-        'meta_title': 'Junk Removal Southern Kentucky | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves all of Southern Kentucky — Bowling Green, Franklin, Russellville, Scottsville & beyond. Junk removal, estate cleanouts, scrap metal buying & more. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Kentucky, junk removal Southern KY, junk removal Warren County KY, junk removal Simpson County KY, cleanout services Logan County KY, junk hauling Allen County KY, estate cleanout Bowling Green, scrap metal pickup Kentucky',
-        'hero_h1': "Junk Busters Kentucky — Southern KY's Junk Removal & Cleanout Company",
-        'hero_sub': 'Serving Warren, Simpson, Logan & Allen Counties — Bowling Green, Franklin, Russellville & beyond. Fully insured. Call 615-881-2505.',
-        'area_served': 'Southern Kentucky — Warren County, Simpson County, Logan County, Allen County',
-        'intro': [
-            "Junk Busters LLC is the Nashville–Clarksville–Bowling Green triangle's most versatile junk removal and cleanout company, and we actively serve all of Southern Kentucky. From Bowling Green in Warren County to Franklin in Simpson County, Russellville in Logan County, and Scottsville in Allen County — our crews make the drive so you don't have to haul it yourself.",
-            "Southern Kentucky has historically been underserved by professional junk removal and property cleanout companies. The big national franchises rarely travel this far. Junk Busters was built differently. Headquartered in Orlinda, TN — just south of the Kentucky state line — we've been serving KY customers since day one. We know the roads, we know the communities, and we're committed to showing up.",
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'We haul it all — furniture, appliances, yard debris, mattresses & more. Flat-rate pricing, no hidden fees.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Full estate clearing for probate, senior downsizing, and real estate readiness across Southern KY.', 'slug': 'estate-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Kentucky landlords and property managers. We turn units over quickly.', 'slug': 'eviction-clean-out'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'REO and bank-owned property cleanouts across Warren, Simpson, Logan & Allen Counties.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa disassembly and removal anywhere in Southern Kentucky.', 'slug': 'hot-tub-removal'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We buy copper, aluminum & brass — we come to your Kentucky location and pay cash on site.', 'slug': 'scrap-metal-pickup'},
-            {'name': 'Light Demolition', 'desc': 'Shed demolition, deck teardown, fence removal across Southern KY. We haul it away in one trip.', 'slug': 'light-demolition'},
-            {'name': 'Garage Clean-Out', 'desc': 'Garage and storage unit cleanouts for Southern KY homeowners. Fast scheduling, flat-rate pricing.', 'slug': 'garage-clean-out'},
-        ],
-        'trust_body': "Junk Busters LLC is based right at the Tennessee–Kentucky border in Orlinda, TN — which makes us genuinely local to Southern Kentucky in a way that Nashville-based companies simply aren't. We serve Warren, Simpson, Logan, and Allen Counties with the same professionalism, speed, and fair pricing we bring to every job across Middle TN. Call 615-881-2505 for a free estimate.",
-        'local_areas': ['Bowling Green, KY', 'Franklin, KY', 'Russellville, KY', 'Scottsville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Smiths Grove, KY', 'Oakland, KY', 'Alvaton, KY', 'Morgantown, KY', 'Woodburn, KY'],
-        'disposal_note': 'Disposal rates vary across our Southern Kentucky service area. Benson Valley (Warren County) is tonnage-based with commercial quotes; Allen County Landfill charges $51.50/ton; Simpson County Convenience Center charges $45/yard C&D; Logan County Solid Waste charges $38/ton. We factor in the applicable county rate on every estimate — no hidden disposal fees.',
-    },
     'nashville': {
         'slug': 'junk-removal-nashville',
         'city_name': 'Nashville, TN',
@@ -1234,7 +1146,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We come to your Nashville location and pay cash on the spot for copper, aluminum & brass.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC has served hundreds of Nashville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. We are locally owned, fully insured, and committed to leaving your space clutter-free. Call 615-881-2505 today for a free estimate.',
-        'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Goodlettsville, TN', 'Berry Hill, TN', 'Oak Hill, TN', 'Forest Hills, TN', 'Brentwood, TN'],
+        'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Goodlettsville, TN', 'Berry Hill, TN'],
         'disposal_note': "Nashville's waste disposal landscape changed significantly in 2022 when WM's Southern Services C&D landfill — the only commercial C&D facility in Davidson County — stopped accepting third-party haulers to preserve remaining capacity. A TN Court of Appeals ruling in September 2023 denied their expansion permit. As a result, we route construction debris and large loads to surrounding county facilities, which adds transport time and tipping costs on larger jobs. We're upfront about this on every quote.",
     },
     'white-house': {
@@ -1346,36 +1258,8 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Springfield area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is Robertson County\'s local junk removal and cleanout company. Headquartered in Orlinda, we\'re just minutes from Springfield and ready to serve. Upfront pricing, no hidden fees, and crews that show up when they say they will. Call 615-881-2505 today.',
-        'local_areas': ['Springfield, TN', 'White House, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Robertson County, TN', 'Pleasant View, TN'],
+        'local_areas': ['Springfield, TN', 'White House, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Robertson County, TN'],
         'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
-    },
-    'franklin': {
-        'slug': 'junk-removal-franklin-tn',
-        'city_name': 'Franklin, TN',
-        'region_name': 'Williamson County',
-        'meta_title': 'Junk Removal Franklin TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Franklin, TN with junk removal, estate cleanouts, move-out cleaning & more. Williamson County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Franklin TN, estate cleanout Franklin, move out cleaning Williamson County, junk hauling Franklin Tennessee, cleanout services Franklin TN, Brentwood junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Franklin, TN',
-        'hero_sub': 'Serving Franklin, Brentwood, Spring Hill & all of Williamson County. Background-checked and fully insured. Call 615-881-2505.',
-        'area_served': 'Franklin TN, Williamson County TN, Brentwood TN, Spring Hill TN',
-        'intro': [
-            'Junk Busters LLC serves Franklin and Williamson County with premium junk removal and cleanout services. Franklin\'s upscale residential market and active real estate scene create consistent demand for reliable, professional hauling — and that\'s exactly what we deliver.',
-            'Our background-checked, insured crews handle everything from single furniture pickups to complete estate cleanouts. We work quickly and efficiently, leaving your property spotless and ready for its next chapter.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Franklin homes and Williamson County properties.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate and thorough estate clearing for Williamson County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Move-Out Deep Cleaning', 'desc': 'Security-deposit-ready move-out cleaning for Franklin rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Franklin garage — we sort, haul, and dispose responsibly.', 'slug': 'garage-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Franklin and Williamson County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Franklin landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Williamson County REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Franklin area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC brings dependable, professionally priced junk removal to Franklin and all of Williamson County. Our crews are background-checked, insured, and committed to exceptional service. Call 615-881-2505 for a free on-site estimate.',
-        'local_areas': ['Franklin, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN', 'Thompson\'s Station, TN', 'Fairview, TN', 'College Grove, TN', 'Arrington, TN', 'Triune, TN', 'Williamson County, TN', 'Nashville, TN', 'Antioch, TN'],
-        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
     },
     'goodlettsville': {
         'slug': 'junk-removal-goodlettsville-tn',
@@ -1434,150 +1318,10 @@ CITY_PAGES = {
         'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
 
-    'murfreesboro': {
-        'slug': 'junk-removal-murfreesboro-tn',
-        'city_name': 'Murfreesboro, TN',
-        'region_name': 'Rutherford County',
-        'meta_title': 'Junk Removal Murfreesboro TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Murfreesboro, TN with junk removal, estate cleanouts, garage cleanouts & more. Rutherford County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Murfreesboro TN, estate cleanout Murfreesboro, garage cleanout Rutherford County, junk hauling Murfreesboro Tennessee, furniture removal Murfreesboro TN',
-        'hero_h1': 'Junk Removal & Cleanout Services in Murfreesboro, TN',
-        'hero_sub': 'Serving Murfreesboro, Smyrna, La Vergne & all of Rutherford County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Murfreesboro TN, Rutherford County TN, Smyrna TN, La Vergne TN',
-        'intro': [
-            'Junk Busters LLC brings fast, professional junk removal to Murfreesboro and all of Rutherford County. As one of Tennessee\'s fastest-growing cities, Murfreesboro generates constant demand for reliable hauling — from downtown renovations to growing suburban neighborhoods near MTSU.',
-            'Our background-checked crew handles everything from single-item pickups to full estate cleanouts. We show up on time, work efficiently, and haul everything away so you don\'t have to make a single trip to the dump.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Murfreesboro homes, rentals, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Rutherford County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Murfreesboro landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Murfreesboro garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Murfreesboro and Rutherford County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Murfreesboro REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Murfreesboro rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the Murfreesboro area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Murfreesboro, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Murfreesboro, TN', 'Smyrna, TN', 'La Vergne, TN', 'Nashville, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN', 'Rutherford County, TN', 'Franklin, TN'],
-        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
-    },
 
-    'smyrna': {
-        'slug': 'junk-removal-smyrna-tn',
-        'city_name': 'Smyrna, TN',
-        'region_name': 'Rutherford County',
-        'meta_title': 'Junk Removal Smyrna TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Smyrna, TN with junk removal, estate cleanouts, garage cleanouts & more. Rutherford County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Smyrna TN, estate cleanout Smyrna Tennessee, garage cleanout Rutherford County, junk hauling Smyrna TN, furniture removal Smyrna',
-        'hero_h1': 'Junk Removal & Cleanout Services in Smyrna, TN',
-        'hero_sub': 'Serving Smyrna, Murfreesboro, La Vergne & Rutherford County. Fast scheduling, upfront pricing. Call 615-881-2505.',
-        'area_served': 'Smyrna TN, Rutherford County TN, Murfreesboro TN, La Vergne TN',
-        'intro': [
-            'Junk Busters LLC serves Smyrna and Rutherford County with reliable, affordable junk removal and cleanout services. Smyrna\'s growing residential neighborhoods and active rental market create consistent demand for a hauling team that shows up on time and gets the job done.',
-            'From single furniture pickups to full garage cleanouts and estate clearances, our crew handles every job with professionalism and upfront pricing — no hidden fees, no surprises.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Smyrna homes, rentals, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Smyrna and Rutherford County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Smyrna garage — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Smyrna landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Smyrna and Rutherford County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Smyrna REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Smyrna rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Smyrna area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your go-to junk removal crew in Smyrna, TN. Same-day and next-day scheduling, flat-rate upfront pricing, and a background-checked team that treats your property right. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Smyrna, TN', 'Murfreesboro, TN', 'La Vergne, TN', 'Nashville, TN', 'Rutherford County, TN', 'Brentwood, TN', 'Nolensville, TN'],
-        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
-    },
 
-    'lavergne': {
-        'slug': 'junk-removal-lavergne-tn',
-        'city_name': 'La Vergne, TN',
-        'region_name': 'Rutherford County',
-        'meta_title': 'Junk Removal La Vergne TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves La Vergne, TN with junk removal, estate cleanouts, garage cleanouts & more. Rutherford County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal La Vergne TN, junk removal Lavergne Tennessee, estate cleanout La Vergne, garage cleanout Rutherford County, junk hauling La Vergne TN',
-        'hero_h1': 'Junk Removal & Cleanout Services in La Vergne, TN',
-        'hero_sub': 'Serving La Vergne, Smyrna, Murfreesboro & Rutherford County. Same-day availability, upfront pricing. Call 615-881-2505.',
-        'area_served': 'La Vergne TN, Rutherford County TN, Smyrna TN, Murfreesboro TN',
-        'intro': [
-            'Junk Busters LLC serves La Vergne and the surrounding Rutherford County area with fast, professional junk removal and cleanout services. La Vergne\'s proximity to Nashville and its dense residential and industrial mix means there\'s always junk to haul — and we\'re ready for it.',
-            'Our crew provides upfront pricing, reliable scheduling, and clean efficient service for everything from appliance removal to full property cleanouts. No job is too big or too small.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for La Vergne homes and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for La Vergne and Rutherford County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your La Vergne garage — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for La Vergne landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in La Vergne and Rutherford County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get La Vergne REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for La Vergne rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the La Vergne area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your trusted junk removal team in La Vergne, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['La Vergne, TN', 'Smyrna, TN', 'Murfreesboro, TN', 'Nashville, TN', 'Rutherford County, TN', 'Antioch, TN', 'Brentwood, TN'],
-        'disposal_note': 'Middle Point Landfill on Landfill Road is the primary disposal facility for Rutherford County. Current gate rate is $99/ton minimum — we maintain a commercial account that provides volume-based rate reductions for frequent loads. Important local context: Middle Point serves 34 counties and is projected to reach capacity within 4–6 years. The Rutherford County Commission has even proposed capping waste intake from other counties to extend the landfill\'s life. We monitor this situation closely because it directly affects our pricing.',
-    },
 
-    'lebanon': {
-        'slug': 'junk-removal-lebanon-tn',
-        'city_name': 'Lebanon, TN',
-        'region_name': 'Wilson County',
-        'meta_title': 'Junk Removal Lebanon TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Lebanon, TN with junk removal, estate cleanouts, garage cleanouts & more. Wilson County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Lebanon TN, estate cleanout Lebanon Tennessee, junk hauling Wilson County, garage cleanout Lebanon TN, Mt. Juliet junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Lebanon, TN',
-        'hero_sub': 'Serving Lebanon, Mt. Juliet, Watertown & all of Wilson County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Lebanon TN, Wilson County TN, Mt. Juliet TN, Watertown TN',
-        'intro': [
-            'Junk Busters LLC serves Lebanon and all of Wilson County with dependable junk removal and cleanout services. As the county seat of one of Tennessee\'s fastest-growing counties, Lebanon sees constant residential turnover, renovation activity, and estate clearances — all of which need a hauling crew that can keep up.',
-            'Our team offers fast scheduling, upfront pricing, and professional service whether you need a single item removed or a full property cleared. We haul furniture, appliances, yard debris, construction waste, and more.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Lebanon homes, rentals, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Wilson County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Lebanon landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Lebanon garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Lebanon and Wilson County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Lebanon REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Lebanon rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the Lebanon area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Lebanon, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Lebanon, TN', 'Mt. Juliet, TN', 'Watertown, TN', 'Carthage, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Wilson County, TN', 'Old Hickory, TN'],
-        'disposal_note': 'Wilson County Landfill charges $18/cu yd for C&D debris and $100/ton for shingles — shingle disposal is among the highest per-ton rates in our service area, so we flag this on roofing debris estimates. Standard junk removal rates here remain competitive.',
-    },
 
-    'russellville': {
-        'slug': 'junk-removal-russellville-ky',
-        'city_name': 'Russellville, KY',
-        'region_name': 'Logan County',
-        'meta_title': 'Junk Removal Russellville KY | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Russellville, KY with junk removal, estate cleanouts, garage cleanouts & more. Logan County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Russellville KY, estate cleanout Russellville Kentucky, junk hauling Logan County KY, garage cleanout Russellville, Adairville junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Russellville, KY',
-        'hero_sub': 'Serving Russellville, Adairville, Auburn & all of Logan County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Russellville KY, Logan County KY, Adairville KY, Auburn KY',
-        'intro': [
-            'Junk Busters LLC serves Russellville and all of Logan County with reliable junk removal and cleanout services. As the Logan County seat, Russellville is a close neighbor to our Bowling Green operations — we make regular runs through the area and can typically schedule service quickly.',
-            'From estate cleanouts to garage haul-aways and appliance removal, our crew handles every job with upfront pricing and professional service. No hidden fees, no surprises — just a clean property when we\'re done.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Russellville homes, farms, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Logan County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Russellville garage or outbuilding — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Russellville landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Russellville and Logan County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Russellville REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, fence removal, and deck demo in the Russellville area.', 'slug': 'light-demolition'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Logan County.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your trusted junk removal team in Russellville, KY. We offer upfront pricing, flexible scheduling, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Russellville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Bowling Green, KY', 'Franklin, KY', 'Scottsville, KY', 'Logan County, KY'],
-        'disposal_note': 'Logan County Solid Waste charges $38/ton (effective September 2024) — one of the more competitive rates in our Kentucky service area. Standard jobs here price well.',
-    },
 
     'franklin-ky': {
         'slug': 'junk-removal-franklin-ky',
@@ -1604,183 +1348,15 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Simpson County.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is your reliable junk removal partner in Franklin, KY. We offer transparent flat-rate pricing, flexible scheduling, and a professional crew that works efficiently and respectfully. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Franklin, KY', 'Bowling Green, KY', 'Russellville, KY', 'Scottsville, KY', 'Simpson County, KY', 'Nashville, TN', 'Springfield, TN'],
+        'local_areas': ['Franklin, KY', 'Simpson County, KY', 'Nashville, TN', 'Springfield, TN'],
         'disposal_note': 'Simpson County Convenience Center charges $45/yard for C&D debris and $25 for large truck loads. We factor these fees into estimates for heavier hauls out of Franklin, KY.',
     },
 
-    'scottsville': {
-        'slug': 'junk-removal-scottsville-ky',
-        'city_name': 'Scottsville, KY',
-        'region_name': 'Allen County',
-        'meta_title': 'Junk Removal Scottsville KY | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Scottsville, KY with junk removal, estate cleanouts, garage cleanouts & more. Allen County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Scottsville KY, estate cleanout Scottsville Kentucky, junk hauling Allen County KY, garage cleanout Scottsville, southern Kentucky junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Scottsville, KY',
-        'hero_sub': 'Serving Scottsville, Allen County & surrounding Southern KY communities. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Scottsville KY, Allen County KY, Southern Kentucky',
-        'intro': [
-            'Junk Busters LLC serves Scottsville and Allen County with professional junk removal and cleanout services. As the Allen County seat, Scottsville sits in the heart of the Southern Kentucky region we serve — and our crew makes the drive regularly to help homeowners, landlords, and businesses clear out what they no longer need.',
-            'From furniture and appliance removal to full estate cleanouts, we handle every job with upfront pricing and a professional crew. No dump runs, no hassle — just a clean property when we leave.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Scottsville homes, farms, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Allen County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Scottsville garage or outbuilding — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Scottsville landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Scottsville and Allen County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Scottsville REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, fence removal, and deck demo in the Scottsville area.', 'slug': 'light-demolition'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Allen County.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Scottsville, KY. We offer same-day and next-day scheduling when available, transparent flat-rate pricing, and a crew that works hard and leaves your property clean. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Scottsville, KY', 'Russellville, KY', 'Franklin, KY', 'Bowling Green, KY', 'Adairville, KY', 'Allen County, KY', 'Nashville, TN'],
-        'disposal_note': 'Allen County Landfill charges $51.50/ton gate fee. We factor this into estimates on larger loads from the Scottsville area.',
-    },
 
-    'brentwood': {
-        'slug': 'junk-removal-brentwood-tn',
-        'city_name': 'Brentwood, TN',
-        'region_name': 'Williamson County',
-        'meta_title': 'Junk Removal Brentwood TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Brentwood, TN with junk removal, estate cleanouts, furniture removal & more. Williamson County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Brentwood TN, estate cleanout Brentwood Tennessee, furniture removal Brentwood, junk hauling Williamson County, cleanout services Brentwood TN',
-        'hero_h1': 'Junk Removal & Cleanout Services in Brentwood, TN',
-        'hero_sub': 'Serving Brentwood, Franklin, Nolensville & all of Williamson County. White-glove service, upfront pricing. Call 615-881-2505.',
-        'area_served': 'Brentwood TN, Williamson County TN, Franklin TN, Nolensville TN',
-        'intro': [
-            'Junk Busters LLC brings professional junk removal and estate cleanout services to Brentwood and all of Williamson County. Brentwood\'s high-value properties and active real estate market create steady demand for careful, professional hauling — and our crew treats every home with the respect it deserves.',
-            'Whether you\'re clearing out before a sale, downsizing, handling an estate, or simply reclaiming a garage, we provide upfront pricing, background-checked crews, and same-day scheduling when available. No mess left behind.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Brentwood homes and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Brentwood and Williamson County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Brentwood garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
-            {'name': 'Furniture Removal', 'desc': 'White-glove furniture haul-away for Brentwood homes and estates.', 'slug': 'junk-removal'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Brentwood and Williamson County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Brentwood REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Brentwood rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Brentwood.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is Brentwood\'s trusted junk removal team. We understand the standards Brentwood homeowners expect — our crews are professional, punctual, and careful with your property. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Brentwood, TN', 'Franklin, TN', 'Nolensville, TN', 'Nashville, TN', 'Spring Hill, TN', 'Thompson\'s Station, TN', 'Williamson County, TN', 'Antioch, TN'],
-        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
-    },
 
-    'spring-hill': {
-        'slug': 'junk-removal-spring-hill-tn',
-        'city_name': 'Spring Hill, TN',
-        'region_name': 'Williamson & Maury Counties',
-        'meta_title': 'Junk Removal Spring Hill TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Spring Hill, TN with junk removal, estate cleanouts, garage cleanouts & more. Williamson & Maury County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Spring Hill TN, estate cleanout Spring Hill Tennessee, junk hauling Williamson County, garage cleanout Spring Hill TN, Thompson\'s Station junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Spring Hill, TN',
-        'hero_sub': 'Serving Spring Hill, Thompson\'s Station, Fairview & Williamson/Maury Counties. Fast scheduling, upfront pricing. Call 615-881-2505.',
-        'area_served': 'Spring Hill TN, Williamson County TN, Maury County TN, Thompson\'s Station TN',
-        'intro': [
-            'Junk Busters LLC serves Spring Hill and the surrounding Williamson and Maury County area with professional junk removal and cleanout services. As one of Tennessee\'s fastest-growing cities, Spring Hill generates constant demand for reliable hauling — from new construction debris to estate cleanouts in established neighborhoods.',
-            'Our crew provides upfront flat-rate pricing, background-checked service, and fast scheduling. Whether you need a single item removed or a full property cleared, we handle it efficiently and leave things spotless.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Spring Hill homes and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Williamson and Maury County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Spring Hill garage — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Spring Hill landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Spring Hill and surrounding areas.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Spring Hill REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Spring Hill rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Spring Hill area.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Spring Hill, TN. Same-day and next-day scheduling, transparent flat-rate pricing, and a crew that works hard and leaves your property clean. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Spring Hill, TN', 'Thompson\'s Station, TN', 'Franklin, TN', 'Brentwood, TN', 'Nolensville, TN', 'Fairview, TN', 'Columbia, TN', 'Williamson County, TN', 'Nashville, TN'],
-        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
-    },
 
-    'mt-juliet': {
-        'slug': 'junk-removal-mt-juliet-tn',
-        'city_name': 'Mt. Juliet, TN',
-        'region_name': 'Wilson County',
-        'meta_title': 'Junk Removal Mt. Juliet TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Mt. Juliet, TN with junk removal, estate cleanouts, garage cleanouts & more. Wilson County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Mt. Juliet TN, junk removal Mount Juliet Tennessee, estate cleanout Mt. Juliet, junk hauling Wilson County, garage cleanout Mt. Juliet TN',
-        'hero_h1': 'Junk Removal & Cleanout Services in Mt. Juliet, TN',
-        'hero_sub': 'Serving Mt. Juliet, Lebanon, Watertown & all of Wilson County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Mt. Juliet TN, Wilson County TN, Lebanon TN, Watertown TN',
-        'intro': [
-            'Junk Busters LLC serves Mt. Juliet and all of Wilson County with fast, professional junk removal and cleanout services. One of Tennessee\'s fastest-growing communities, Mt. Juliet sees constant residential activity — new homeowners clearing out, families downsizing, and landlords turning over properties.',
-            'Our crew arrives on time, works efficiently, and hauls everything away so you never have to make a dump run. Upfront flat-rate pricing means no surprises when the job is done.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Mt. Juliet homes and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Wilson County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Mt. Juliet garage — we haul everything you no longer need.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Mt. Juliet landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Mt. Juliet and Wilson County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Mt. Juliet REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Mt. Juliet rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Mt. Juliet.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Mt. Juliet, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Mt. Juliet, TN', 'Lebanon, TN', 'Watertown, TN', 'Gladeville, TN', 'Old Hickory, TN', 'Hermitage, TN', 'Nashville, TN', 'Hendersonville, TN', 'Wilson County, TN'],
-        'disposal_note': 'Wilson County Landfill charges $18/cu yd for C&D debris and $100/ton for shingles — shingle disposal is among the highest per-ton rates in our service area, so we flag this on roofing debris estimates. Standard junk removal rates here remain competitive.',
-    },
 
-    'nolensville': {
-        'slug': 'junk-removal-nolensville-tn',
-        'city_name': 'Nolensville, TN',
-        'region_name': 'Williamson County',
-        'meta_title': 'Junk Removal Nolensville TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Nolensville, TN with junk removal, estate cleanouts, garage cleanouts & more. Williamson County specialists. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Nolensville TN, estate cleanout Nolensville Tennessee, junk hauling Williamson County, garage cleanout Nolensville TN, furniture removal Nolensville',
-        'hero_h1': 'Junk Removal & Cleanout Services in Nolensville, TN',
-        'hero_sub': 'Serving Nolensville, Brentwood, Franklin & Williamson County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Nolensville TN, Williamson County TN, Brentwood TN, Franklin TN',
-        'intro': [
-            'Junk Busters LLC serves Nolensville and Williamson County with reliable, professional junk removal and cleanout services. Nolensville\'s rapidly growing upscale neighborhoods make it one of the most in-demand markets we serve — whether you\'re clearing out a new build, handling an estate, or simply reclaiming your garage.',
-            'Our crew provides upfront flat-rate pricing, background-checked service, and professional hauling for any size job. We handle furniture, appliances, renovation debris, and full property cleanouts.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Nolensville homes and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Nolensville and Williamson County families.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Nolensville garage — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Nolensville and Williamson County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Nolensville REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Move-Out Cleaning', 'desc': 'Security-deposit-ready cleaning for Nolensville rental properties.', 'slug': 'move-in-move-out-cleaning'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, deck demo, and fence removal in the Nolensville area.', 'slug': 'light-demolition'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Nolensville.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your trusted junk removal team in Nolensville, TN. We bring the same professional standards Williamson County homeowners expect — on-time crews, upfront pricing, and a property left cleaner than we found it. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Nolensville, TN', 'Brentwood, TN', 'Franklin, TN', 'Spring Hill, TN', 'Nashville, TN', 'Antioch, TN', 'Williamson County, TN', 'Smyrna, TN'],
-        'disposal_note': 'Williamson County Landfill charges $75/ton — the highest tipping rate in our primary Tennessee service area. Effective April 1, 2024, mattresses and box springs are each charged an additional $20 disposal fee. We factor these costs transparently into every estimate — no surprises on your final bill.',
-    },
 
-    'ashland-city': {
-        'slug': 'junk-removal-ashland-city-tn',
-        'city_name': 'Ashland City, TN',
-        'region_name': 'Cheatham County',
-        'meta_title': 'Junk Removal Ashland City TN | Junk Busters LLC',
-        'meta_desc': 'Junk Busters LLC serves Ashland City, TN and all of Cheatham County with junk removal, estate cleanouts, garage cleanouts & more. Call 615-881-2505.',
-        'meta_keywords': 'junk removal Ashland City TN, junk removal Cheatham County Tennessee, estate cleanout Ashland City, garage cleanout Cheatham County, Kingston Springs junk removal',
-        'hero_h1': 'Junk Removal & Cleanout Services in Ashland City, TN',
-        'hero_sub': 'Serving Ashland City, Kingston Springs, Pegram & all of Cheatham County. Upfront pricing, fully insured. Call 615-881-2505.',
-        'area_served': 'Ashland City TN, Cheatham County TN, Kingston Springs TN, Pegram TN',
-        'intro': [
-            'Junk Busters LLC serves Ashland City and all of Cheatham County with dependable junk removal and cleanout services. Tucked between Nashville and Clarksville along the Cumberland River, Cheatham County is a rural community where big national hauling franchises rarely reach — and that\'s exactly where we fill the gap.',
-            'From single-item pickups to full estate and property cleanouts, our crew makes the drive to Cheatham County regularly. Upfront flat-rate pricing, background-checked crews, and professional service every time.',
-        ],
-        'services': [
-            {'name': 'Junk Removal', 'desc': 'Full-service haul-away for Ashland City homes, farms, and businesses.', 'slug': 'junk-removal'},
-            {'name': 'Estate Clean-Out', 'desc': 'Compassionate estate clearing for Cheatham County families and real estate agents.', 'slug': 'estate-clean-out'},
-            {'name': 'Garage Clean-Out', 'desc': 'Reclaim your Ashland City garage or outbuilding — we haul everything away.', 'slug': 'garage-clean-out'},
-            {'name': 'Eviction Clean-Out', 'desc': 'Fast eviction trash-outs for Cheatham County landlords and property managers.', 'slug': 'eviction-clean-out'},
-            {'name': 'Hot Tub Removal', 'desc': 'Safe hot tub and spa removal in Ashland City and Cheatham County.', 'slug': 'hot-tub-removal'},
-            {'name': 'Foreclosure Clean-Out', 'desc': 'Get Cheatham County REO properties market-ready fast.', 'slug': 'foreclosure-clean-out'},
-            {'name': 'Light Demolition', 'desc': 'Shed teardown, fence removal, and deck demo in the Ashland City area.', 'slug': 'light-demolition'},
-            {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Cheatham County.', 'slug': 'scrap-metal-pickup'},
-        ],
-        'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Ashland City and Cheatham County. We make the drive out so you don\'t have to haul it yourself. Upfront pricing, reliable scheduling, and a crew that treats your property right. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Ashland City, TN', 'Kingston Springs, TN', 'Pegram, TN', 'Pleasant View, TN', 'Chapmansboro, TN', 'Clarksville, TN', 'Nashville, TN', 'Springfield, TN', 'Cheatham County, TN'],
-        'disposal_note': 'Cheatham County Solid Waste charges $77/ton (effective July 2025) — one of the higher rates in our service area. We factor this into estimates for larger loads and always quote upfront.',
-    },
 }
 
 ADDITIONAL_SERVICES = [
@@ -1883,29 +1459,14 @@ def _render_city(request, city_key):
     })
 
 
-def city_clarksville(request):   return _render_city(request, 'clarksville')
-def city_bowling_green(request): return _render_city(request, 'bowling-green')
-def city_kentucky(request):      return _render_city(request, 'kentucky')
 def city_nashville(request):     return _render_city(request, 'nashville')
 def city_white_house(request):   return _render_city(request, 'white-house')
 def city_hendersonville(request):return _render_city(request, 'hendersonville')
 def city_gallatin(request):      return _render_city(request, 'gallatin')
 def city_springfield(request):   return _render_city(request, 'springfield')
-def city_franklin(request):      return _render_city(request, 'franklin')
 def city_goodlettsville(request):return _render_city(request, 'goodlettsville')
 def city_portland(request):      return _render_city(request, 'portland')
-def city_murfreesboro(request):  return _render_city(request, 'murfreesboro')
-def city_smyrna(request):        return _render_city(request, 'smyrna')
-def city_lavergne(request):      return _render_city(request, 'lavergne')
-def city_lebanon(request):       return _render_city(request, 'lebanon')
-def city_russellville(request):  return _render_city(request, 'russellville')
 def city_franklin_ky(request):   return _render_city(request, 'franklin-ky')
-def city_scottsville(request):   return _render_city(request, 'scottsville')
-def city_brentwood(request):     return _render_city(request, 'brentwood')
-def city_spring_hill(request):   return _render_city(request, 'spring-hill')
-def city_mt_juliet(request):     return _render_city(request, 'mt-juliet')
-def city_nolensville(request):   return _render_city(request, 'nolensville')
-def city_ashland_city(request):  return _render_city(request, 'ashland-city')
 
 
 @require_http_methods(['GET', 'HEAD', 'POST'])
@@ -2546,26 +2107,17 @@ Junk Busters LLC is a locally owned hauling and junk removal company based in Or
 - [Move-Out Deep Cleaning](/move-out-deep-cleaning/): Security-deposit-ready move-in/move-out deep cleaning across Middle TN.
 
 ## Service Areas
-- [Nashville, TN](/junk-removal-nashville/): Primary metro — Davidson County and all surrounding suburbs.
-- [Clarksville, TN](/junk-removal-clarksville/): Montgomery County, Fort Campbell area, Oak Grove KY.
-- [Bowling Green, KY](/junk-removal-bowling-green/): Warren County and southern KY corridor.
-- [White House, TN](/junk-removal-white-house-tn/)
-- [Hendersonville, TN](/junk-removal-hendersonville-tn/)
-- [Gallatin, TN](/junk-removal-gallatin-tn/)
-- [Springfield, TN](/junk-removal-springfield-tn/)
-- [Franklin, TN](/junk-removal-franklin-tn/)
-- [Goodlettsville, TN](/junk-removal-goodlettsville-tn/)
-- [Murfreesboro, TN](/junk-removal-murfreesboro-tn/)
-- [Smyrna, TN](/junk-removal-smyrna-tn/)
-- [La Vergne, TN](/junk-removal-lavergne-tn/)
-- [Lebanon, TN](/junk-removal-lebanon-tn/)
-- [Brentwood, TN](/junk-removal-brentwood-tn/)
-- [Spring Hill, TN](/junk-removal-spring-hill-tn/)
-- [Mt. Juliet, TN](/junk-removal-mt-juliet-tn/)
-- [Nolensville, TN](/junk-removal-nolensville-tn/)
-- [Russellville, KY](/junk-removal-russellville-ky/)
-- [Franklin, KY](/junk-removal-franklin-ky/)
-- [Scottsville, KY](/junk-removal-scottsville-ky/)
+Junk Busters serves the full Nashville–Middle TN & Southern KY region. Every town and
+county named on /areas-we-serve/ is in the coverage area; the pages below are the
+hubs from which service is dispatched.
+- [Nashville, TN](/junk-removal-nashville/): Davidson County plus Antioch, Bellevue, Donelson, Hermitage, Madison, Berry Hill, Old Hickory. Also covers Clarksville, Franklin TN, Brentwood, Spring Hill, Nolensville, Murfreesboro, Smyrna, La Vergne, Lebanon, Mt. Juliet, Ashland City, and Montgomery County.
+- [Springfield, TN](/junk-removal-springfield-tn/): Robertson County — Coopertown, Adams, Orlinda.
+- [White House, TN](/junk-removal-white-house-tn/): Sumner/Robertson border — Greenbrier, Millersville, Cottontown, Cedar Hill.
+- [Portland, TN](/junk-removal-portland-tn/): Northern Sumner County — Mitchellville.
+- [Gallatin, TN](/junk-removal-gallatin-tn/): Central Sumner County — Westmoreland, Bethpage.
+- [Hendersonville, TN](/junk-removal-hendersonville-tn/): Southern Sumner County.
+- [Goodlettsville, TN](/junk-removal-goodlettsville-tn/): North Davidson County — Ridgetop.
+- [Franklin, KY](/junk-removal-franklin-ky/): Southern KY hub — Simpson, Logan, Warren, Allen Counties, plus Bowling Green, Russellville, Scottsville, Adairville, Auburn, Lewisburg, Alvaton, Smiths Grove, Oakland, Woodburn, Rockfield, Morgantown.
 
 ## Pricing
 Pricing is volume-based — you pay only for the truck space used. No hourly rates, no hidden fees. Free on-site estimates for all jobs. Typical ranges: small loads from $99, full truck loads up to $699. [See pricing](/pricing/).

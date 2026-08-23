@@ -36,30 +36,17 @@ urlpatterns = [
     path('blog/<slug:slug>/', views.blog_detail, name='blog_detail'),
     path('pricing/', views.pricing, name='pricing'),
     path('faq/', views.faq, name='faq'),
-    # City landing pages — before catch-all
-    path('junk-removal-clarksville/', views.city_clarksville, name='city_clarksville'),
-    path('junk-removal-bowling-green/', views.city_bowling_green, name='city_bowling_green'),
-    path('kentucky/', views.city_kentucky, name='city_kentucky'),
+    # City landing pages — before catch-all. 15 city pages + /kentucky/ hub
+    # were removed in the 2026-08-17 consolidation and now 301 to their
+    # nearest surviving hub via LEGACY_REDIRECTS in service_page.
     path('junk-removal-nashville/', views.city_nashville, name='city_nashville'),
     path('junk-removal-white-house-tn/', views.city_white_house, name='city_white_house'),
     path('junk-removal-hendersonville-tn/', views.city_hendersonville, name='city_hendersonville'),
     path('junk-removal-gallatin-tn/', views.city_gallatin, name='city_gallatin'),
     path('junk-removal-springfield-tn/', views.city_springfield, name='city_springfield'),
-    path('junk-removal-franklin-tn/', views.city_franklin, name='city_franklin'),
     path('junk-removal-goodlettsville-tn/', views.city_goodlettsville, name='city_goodlettsville'),
     path('junk-removal-portland-tn/',       views.city_portland,       name='city_portland'),
-    path('junk-removal-murfreesboro-tn/',   views.city_murfreesboro,   name='city_murfreesboro'),
-    path('junk-removal-smyrna-tn/',         views.city_smyrna,         name='city_smyrna'),
-    path('junk-removal-lavergne-tn/',       views.city_lavergne,       name='city_lavergne'),
-    path('junk-removal-lebanon-tn/',        views.city_lebanon,        name='city_lebanon'),
-    path('junk-removal-russellville-ky/',   views.city_russellville,   name='city_russellville'),
     path('junk-removal-franklin-ky/',       views.city_franklin_ky,    name='city_franklin_ky'),
-    path('junk-removal-scottsville-ky/',    views.city_scottsville,    name='city_scottsville'),
-    path('junk-removal-brentwood-tn/',      views.city_brentwood,      name='city_brentwood'),
-    path('junk-removal-spring-hill-tn/',    views.city_spring_hill,    name='city_spring_hill'),
-    path('junk-removal-mt-juliet-tn/',      views.city_mt_juliet,      name='city_mt_juliet'),
-    path('junk-removal-nolensville-tn/',    views.city_nolensville,    name='city_nolensville'),
-    path('junk-removal-ashland-city-tn/',   views.city_ashland_city,   name='city_ashland_city'),
     # Gift cards
     path('gift-card/',          views.gift_card_purchase, name='gift_card'),
     path('gift-card/success/',  views.gift_card_success,  name='gift_card_success'),
