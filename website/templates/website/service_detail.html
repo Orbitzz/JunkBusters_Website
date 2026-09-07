@@ -125,6 +125,9 @@
 <section class="section section-alt" style="padding:32px 0;">
   <div class="container">
     <h2 style="font-size:20px;font-weight:800;margin-bottom:16px;">{{ svc.title }} — Areas We Serve:</h2>
+    {% if hub_cities %}
+    <p style="color:var(--text-muted);font-size:15px;line-height:1.75;margin-bottom:20px;">{{ svc.title }} is dispatched from all eight of our Middle Tennessee and Southern Kentucky hubs — {% for hub in hub_cities %}<a href="{{ hub.url }}" style="color:var(--yellow-dark);font-weight:600;">{{ hub.name }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %}, and {% else %}, {% endif %}{% endif %}{% endfor %}. Each linked city page lists that community's disposal fees, sub-neighborhoods, and same-day availability.</p>
+    {% endif %}
     <div class="location-grid">
       {% for loc in local_areas %}
       <a href="{{ loc.url }}" style="color:var(--navy);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:6px;" onmouseover="this.style.color='var(--yellow-dark)'" onmouseout="this.style.color='var(--navy)'"><img src="{% static 'img/mappin.png' %}" alt="" width="16" height="16" style="flex-shrink:0;">{{ loc.name }}</a>

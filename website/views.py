@@ -341,6 +341,20 @@ CITY_URL_MAP = {
     'Woodburn, KY': '/junk-removal-franklin-ky/',
     'Rockfield, KY': '/junk-removal-franklin-ky/',
     'Morgantown, KY': '/junk-removal-franklin-ky/',
+    # Counties resolve to their nearest hub so county chips on service pages
+    # link to a city hub rather than falling back to /areas-we-serve/.
+    'Davidson County, TN':   '/junk-removal-nashville/',
+    'Robertson County, TN':  '/junk-removal-springfield-tn/',
+    'Sumner County, TN':     '/junk-removal-gallatin-tn/',
+    'Williamson County, TN': '/junk-removal-nashville/',
+    'Wilson County, TN':     '/junk-removal-nashville/',
+    'Rutherford County, TN': '/junk-removal-nashville/',
+    'Cheatham County, TN':   '/junk-removal-nashville/',
+    'Montgomery County, TN': '/junk-removal-nashville/',
+    'Warren County, KY':     '/junk-removal-franklin-ky/',
+    'Logan County, KY':      '/junk-removal-franklin-ky/',
+    'Simpson County, KY':    '/junk-removal-franklin-ky/',
+    'Allen County, KY':      '/junk-removal-franklin-ky/',
 }
 
 
@@ -527,7 +541,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC to deliver fast and professional junk removal services across Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green. We have access to the knowledge, tools, and expertise to handle items of all sizes, including heavy and bulky ones. Our team follows a structured approach, making each job seamless and hassle-free. Every job is handled with professionalism, efficiency, and proper disposal methods. Our safe disposal practices help reduce environmental impact. Give us a call now to schedule a service.',
-        'local_areas': ['Nashville, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN', 'Goodlettsville, TN'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
         'faqs': [
             {'q': 'How is junk removal priced?', 'a': 'Volume-based — you only pay for the space your load takes in our truck. Most jobs run $75–$600. Factors include total volume, weight (heavy construction debris costs more due to rising landfill tipping fees across Middle TN), item type (mattresses, hot tubs, and tires carry disposal surcharges), and access difficulty. We quote upfront before we lift a finger.'},
             {'q': 'Do you offer same-day pickup?', 'a': 'Yes, subject to availability. Call 615-881-2505 by mid-morning and we\'ll do our best to fit you in the same day. Next-day slots are almost always available.'},
@@ -557,7 +571,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Our team is trained to handle your project with the utmost professionalism, ensuring that all debris is removed completely and your property is left clean and ready for your next project.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Portland, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
     },
 
     'estate-clean-out': {
@@ -586,7 +600,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'At Junk Busters, we understand the sensitive nature of estate cleanouts. Our dedicated team is committed to providing compassionate support and dependable services every step of the way. Contact us today at 615-881-2505 to schedule a consultation and entrust us with the cleanout and restoration of your estate.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How long does an estate cleanout take?', 'a': 'Most single-family homes: 1–2 days. Larger estates with multiple outbuildings or decades of accumulation can take 2–4 days. We\'ll walk the property and give you a realistic timeline on the spot.'},
             {'q': 'How do you handle sentimental or high-value items?', 'a': 'We move only what you designate for removal. Items you want kept, donated, or appraised are flagged before we start — we never make those decisions for you. We can coordinate pickup with local estate sale companies or appraisers.'},
@@ -620,7 +634,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters for professional and compassionate eviction property cleanouts. Contact us at 615-881-2505 or schedule online.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How fast can you turn around an eviction cleanout?', 'a': 'We offer next-day and often same-day scheduling for eviction cleanouts. We know landlords and property managers are often on tight legal timelines. Call 615-881-2505 and tell us your situation.'},
             {'q': 'Do you handle biohazard situations?', 'a': 'We handle standard eviction debris. For units with confirmed biohazard contamination (blood, sewage, mold), we recommend a certified biohazard remediation company first — we can refer you. Once the hazard is cleared, we handle the remainder.'},
@@ -653,7 +667,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Our pricing approach is designed to provide competitive rates while delivering high-quality and reliable foreclosure cleanout services to our clients. We strive to exceed expectations and ensure a smooth and stress-free experience from start to finish. Call us at 615-881-2505 or book online today to find out why we are the preeminent service provider in the area.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Can you coordinate with a bank or asset manager?', 'a': 'Yes. We\'re experienced working with REO asset managers, bank-assigned property managers, and listing agents. We can coordinate access, provide itemized removal reports, and turn properties over quickly.'},
             {'q': 'What about abandoned vehicles on the property?', 'a': 'Abandoned vehicles require a title or legal authorization to remove — we\'ll advise you on the process, but we don\'t tow vehicles ourselves. We handle all other property contents.'},
@@ -687,7 +701,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC is proud to help Middle TN & Southern KY businesses and homeowners recycle responsibly. Call 615-881-2505 to schedule your bulk cardboard pickup anywhere in Nashville, Clarksville, or Bowling Green today.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
     },
 
     'garage-clean-out': {
@@ -715,7 +729,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Ready to reclaim your garage space? Schedule your garage clean-out with Junk Busters today by visiting our website at calling us directly at 615-881-2505 to discuss your needs and set up a service time.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Can you sort donations from trash?', 'a': 'Yes. Tell us what you want to keep, donate, or trash before we start. We\'ll stage items accordingly and coordinate donation pickups with local charities.'},
             {'q': 'What about old paint cans, chemicals, or motor oil?', 'a': 'We don\'t haul hazardous materials — wet paint, motor oil, pesticides, herbicides, and pool chemicals require household hazardous waste drop-off events (most counties hold them quarterly). We\'ll help you identify what qualifies so you can plan ahead.'},
@@ -747,7 +761,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Trust Junk Busters LLC for professional storage unit clean-outs across Middle TN & Southern KY — Nashville, Clarksville, and Bowling Green. Contact us at 615-881-2505 or schedule online.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Springfield, TN', 'Gallatin, TN', 'White House, TN', 'Goodlettsville, TN', 'Portland, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'How much does a storage unit cleanout cost?', 'a': 'Storage unit cleanouts typically run $150–$450 depending on how full the unit is and what\'s inside. We price by volume — the more truck space your items take up, the higher the cost. We can give you a firm quote over the phone if you describe the unit size and how full it is.'},
             {'q': 'Do I need to be at the storage facility during the cleanout?', 'a': 'You need to be there to unlock the unit at the start, but you don\'t have to stay for the duration. Many clients hand us the key and come back when we\'re done. We\'ll call you when the unit is cleared and ready for your final walkthrough.'},
@@ -781,7 +795,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC provides competitive pricing and transparent quotes, with no hidden fees. Residents across Middle TN and Southern KY — Nashville, Clarksville, Bowling Green, and beyond — can trust us for efficient and reliable hot tub removal. Call 615-881-2505 today.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN', 'Portland, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'faqs': [
             {'q': 'Do I need to disconnect the electrical before you arrive?', 'a': 'Yes — the electrical connection must be disconnected by a licensed electrician (or at the breaker) before we arrive. We don\'t perform electrical work. Most electricians can cap off a hot tub circuit in under an hour.'},
             {'q': 'How do you get a hot tub out?', 'a': 'We disassemble the hot tub on-site using reciprocating saws and hand tools, breaking it into sections that fit through standard gates and doorways. No cranes needed in most cases.'},
@@ -813,7 +827,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC delivers reliable residential cleaning for a better living experience. We help keep your property clean, making sure all areas receive proper care. Our experienced cleaning crew in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, pays attention to every room, making sure all areas receive proper care. If you want to learn more about our residential cleaning services in White House & Nashville, reach out to us today.',
-        'local_areas': ['White House', 'Nashville TN', 'Goodlettsville', 'Springfield', 'Gallatin', 'Hendersonville', 'Davidson County', 'Robertson County', 'Sumner County'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Davidson County, TN', 'Robertson County, TN', 'Sumner County, TN'],
     },
 
     'air-bnb-cleaning': {
@@ -839,7 +853,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC delivers reliable AirBnB cleaning for a better guest experience. We help keep your rental property clean, making sure all areas receive proper care. Our experienced cleaning crew in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, pays attention to every room, making sure all areas receive proper care. Hosts benefit from fast turnovers, allowing new guests to check in without delay. To find out more information about our services and scheduling options, reach out to us today.',
-        'local_areas': ['Nashville TN', 'White House', 'Hendersonville', 'Gallatin', 'Goodlettsville'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
     },
 
     'move-in-move-out-cleaning': {
@@ -872,7 +886,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Experience the thoroughness of Junk Busters\' move-in/move-out deep cleaning services. Call 615-881-2505 or book online today to schedule your appointment and enjoy a pristine property.',
-        'local_areas': ['White House', 'Nashville TN', 'Davidson County', 'Robertson County', 'Williamson County', 'Sumner County', 'Wilson County'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Davidson County, TN', 'Robertson County, TN', 'Williamson County, TN', 'Sumner County, TN', 'Wilson County, TN'],
     },
 
     'recurring-maid-services': {
@@ -898,7 +912,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'At Junk Busters LLC we value thorough cleaning methods, keeping homes spotless without unnecessary effort from homeowners. Our professionals follow a detailed process, focusing on essential areas that collect dust and grime. Cleaning routines allow residents to enjoy a tidy home without constant maintenance. Communication remains a priority, with clear scheduling options that fit different lifestyles. If you want to learn more about our recurring maid services in Middle TN & Southern KY — including Nashville, Clarksville, and Bowling Green, call now.',
-        'local_areas': ['White House', 'Nashville TN', 'Goodlettsville', 'Hendersonville', 'Gallatin', 'Springfield', 'Robertson County', 'Davidson County', 'Sumner County', 'Williamson County'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Davidson County, TN', 'Robertson County, TN', 'Sumner County, TN', 'Williamson County, TN'],
     },
 
 
@@ -930,7 +944,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'When life brings you to a moment that requires clearing out a loved one\'s home or restoring a property from years of accumulation, Junk Busters LLC is the team you can trust to handle it with professionalism and genuine care. Call 615-881-2505 for a free on-site estimate — we\'ll come to you, assess the property, and provide a transparent quote with no obligation.',
-        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
         'faqs': [
             {'q': 'How much does a hoarder home cleanout cost?', 'a': 'Most hoarder home cleanouts range from $500 to $2,500+ depending on the size of the home and the severity of accumulation. We price by volume — you only pay for the truck space we use. We provide a free on-site estimate before any work begins so there are no surprises.'},
             {'q': 'Do you work with probate attorneys and real estate agents?', 'a': 'Yes. We regularly coordinate with executors, probate attorneys, and listing agents to meet court-ordered or market-deadline timelines. We can provide written confirmation of removal and before/after photos for legal documentation upon request.'},
@@ -966,7 +980,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Ready to add Junk Busters LLC to your vendor list? Call 615-881-2505 to discuss your portfolio needs and get a free baseline quote. We offer same-day estimates and can often be on-site within 24 hours of your first call.',
-        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Goodlettsville, TN'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
     },
 
     'scrap-metal-pickup': {
@@ -996,7 +1010,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Stop hauling scrap across town. Junk Busters LLC comes to your location anywhere in Middle TN or Southern KY, weighs your material honestly, and pays you fairly. Call 615-881-2505 today to schedule your mobile scrap pickup and get a free estimate on your load.',
-        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Franklin, KY', 'Portland, TN', 'Gallatin, TN'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
     },
 
     'short-term-rental-turnover': {
@@ -1023,7 +1037,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Your guests deserve a hotel-quality experience. Junk Busters LLC delivers exactly that — every turnover, every time. Call 615-881-2505 to schedule your first turnover cleaning and discuss a recurring plan that matches your booking calendar. Serving Nashville, Clarksville, Bowling Green, and the full Middle TN & Southern KY region.',
-        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
     },
 
     'move-out-deep-cleaning': {
@@ -1050,7 +1064,7 @@ SERVICES = {
         'section2_body': [],
         'step_cards': [],
         'trust_body': 'Whether you\'re moving out and want your full deposit back, or moving in and want a genuinely clean start, Junk Busters LLC delivers a deep clean that passes inspection. Call 615-881-2505 for a free estimate. We serve Clarksville, Nashville, Bowling Green, and the full Middle TN & Southern KY region.',
-        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
     },
 
     'light-demolition': {
@@ -1079,7 +1093,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC combines light demolition expertise with our full-service hauling operation — meaning the same crew that tears it down loads it up and drives it away. No subcontractors, no coordination headaches. Call 615-881-2505 for a free on-site estimate anywhere in Nashville, Clarksville, Bowling Green, or the surrounding Middle TN & Southern KY area.',
-        'local_areas': ['Nashville, TN', 'Orlinda, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Franklin, KY', 'Portland, TN'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Orlinda, TN'],
         'faqs': [
             {'q': 'Do I need a permit to demolish a shed?', 'a': 'In most Tennessee and Kentucky municipalities, sheds under 200 sq ft don\'t require a demolition permit — but rules vary by county. We recommend confirming with your local codes office. We\'re not responsible for permit compliance.'},
             {'q': 'How long does shed demolition take?', 'a': 'Most residential sheds: 2–4 hours including cleanup and haul-away. Larger structures or those with concrete slabs take longer.'},
@@ -1116,7 +1130,7 @@ SERVICES = {
         ],
         'step_cards': [],
         'trust_body': 'Junk Busters LLC is growing its trailer fleet to give more customers the flexibility to handle jobs on their own terms. Right now we run one trailer and we take care of it like it\'s the only one we\'ve got — because it is. You\'ll get the same on-time, professional service we bring to every full-service job. Call 615-881-2505 to reserve your trailer today.',
-        'local_areas': ['Nashville, TN', 'White House, TN', 'Springfield, TN', 'Gallatin, TN', 'Hendersonville, TN', 'Goodlettsville, TN', 'Portland, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Franklin, KY', 'Simpson County, KY'],
+        'local_areas': ['Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY', 'Greenbrier, TN', 'Orlinda, TN', 'Simpson County, KY'],
     },
 }
 
@@ -1146,7 +1160,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'We come to your Nashville location and pay cash on the spot for copper, aluminum & brass.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC has served hundreds of Nashville homeowners, landlords, and property managers with fast turnarounds and upfront pricing. We are locally owned, fully insured, and committed to leaving your space clutter-free. Call 615-881-2505 today for a free estimate.',
-        'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Goodlettsville, TN', 'Berry Hill, TN'],
+        'local_areas': ['Nashville, TN', 'East Nashville, TN', 'Antioch, TN', 'Donelson, TN', 'Bellevue, TN', 'Hermitage, TN', 'Madison, TN', 'Berry Hill, TN', 'Old Hickory, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': "Nashville's waste disposal landscape changed significantly in 2022 when WM's Southern Services C&D landfill — the only commercial C&D facility in Davidson County — stopped accepting third-party haulers to preserve remaining capacity. A TN Court of Appeals ruling in September 2023 denied their expansion permit. As a result, we route construction debris and large loads to surrounding county facilities, which adds transport time and tipping costs on larger jobs. We're upfront about this on every quote.",
     },
     'white-house': {
@@ -1174,7 +1188,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the White House area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'As a Robertson County-based company, Junk Busters LLC is your local junk removal expert in White House, TN. We offer same-day and next-day service, upfront pricing, and a crew that treats your property with respect. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['White House, TN', 'Greenbrier, TN', 'Millersville, TN', 'Orlinda, TN', 'Cottontown, TN', 'Cedar Hill, TN', 'Ridgetop, TN', 'Goodlettsville, TN', 'Springfield, TN', 'Bethpage, TN', 'Gallatin, TN', 'Hendersonville, TN'],
+        'local_areas': ['White House, TN', 'Greenbrier, TN', 'Millersville, TN', 'Orlinda, TN', 'Cottontown, TN', 'Cedar Hill, TN', 'Ridgetop, TN', 'Bethpage, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'hendersonville': {
@@ -1202,7 +1216,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Hendersonville area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC brings dependable, upfront-priced junk removal and cleanout services to Hendersonville and all of Sumner County. Locally owned, fully insured, and always on time. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Cottontown, TN', 'Millersville, TN', 'Madison, TN', 'Old Hickory, TN', 'Ridgetop, TN'],
+        'local_areas': ['Hendersonville, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Cottontown, TN', 'Madison, TN', 'Old Hickory, TN', 'Ridgetop, TN', 'Millersville, TN', 'Nashville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
     'gallatin': {
@@ -1230,7 +1244,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in the Gallatin area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is your dependable junk removal partner in Gallatin, TN. We offer same-day and next-day scheduling, transparent flat-rate pricing, and crews that treat your property with care. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Gallatin, TN', 'Hendersonville, TN', 'Portland, TN', 'Westmoreland, TN', 'White House, TN', 'Goodlettsville, TN', 'Millersville, TN', 'Bethpage, TN', 'Cottontown, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Old Hickory, TN'],
+        'local_areas': ['Gallatin, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Cottontown, TN', 'Millersville, TN', 'Mitchellville, TN', 'Old Hickory, TN', 'Nashville, TN', 'Hendersonville, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
     'springfield': {
@@ -1258,7 +1272,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Springfield area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is Robertson County\'s local junk removal and cleanout company. Headquartered in Orlinda, we\'re just minutes from Springfield and ready to serve. Upfront pricing, no hidden fees, and crews that show up when they say they will. Call 615-881-2505 today.',
-        'local_areas': ['Springfield, TN', 'White House, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Robertson County, TN'],
+        'local_areas': ['Springfield, TN', 'Greenbrier, TN', 'Orlinda, TN', 'Cedar Hill, TN', 'Coopertown, TN', 'Adams, TN', 'Ridgetop, TN', 'Millersville, TN', 'Cottontown, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'goodlettsville': {
@@ -1286,7 +1300,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash paid on the spot for copper, aluminum & brass in Goodlettsville.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is Goodlettsville\'s go-to junk removal and cleanout crew. We offer upfront pricing, same-day availability, and a team that takes pride in every job. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Goodlettsville, TN', 'Millersville, TN', 'Greenbrier, TN', 'White House, TN', 'Madison, TN', 'Hendersonville, TN', 'Ridgetop, TN', 'Old Hickory, TN', 'Gallatin, TN', 'Nashville, TN', 'Cottontown, TN', 'Antioch, TN'],
+        'local_areas': ['Goodlettsville, TN', 'Millersville, TN', 'Greenbrier, TN', 'Madison, TN', 'Ridgetop, TN', 'Old Hickory, TN', 'Cottontown, TN', 'Antioch, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN', 'Franklin, KY'],
         'disposal_note': 'Robertson County charges $65/ton for in-county waste and $75/ton for out-of-county loads. These fees apply to larger commercial hauls and are reflected transparently in your estimate.',
     },
     'portland': {
@@ -1314,7 +1328,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in the Portland area.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC makes the drive to Portland and northern Sumner County so you don\'t have to haul it yourself. We offer upfront pricing, same-day scheduling when available, and a professional crew that gets the job done right. Call 615-881-2505 for a free estimate.',
-        'local_areas': ['Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Gallatin, TN', 'White House, TN', 'Hendersonville, TN', 'Mitchellville, TN', 'Sumner County, TN', 'Greenbrier, TN', 'Cottontown, TN', 'Orlinda, TN', 'Springfield, TN'],
+        'local_areas': ['Portland, TN', 'Westmoreland, TN', 'Bethpage, TN', 'Mitchellville, TN', 'Greenbrier, TN', 'Cottontown, TN', 'Orlinda, TN', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Franklin, KY'],
         'disposal_note': 'The Sumner County Resource Authority is the local disposal facility. Current rates are $75/ton for in-county waste and $85/ton for out-of-county waste. Following a facility fire in April 2024 — caused by a hydraulic hose burst — the authority now charges separately for mattresses AND box springs. These fees are factored into pricing on larger loads, and we\'ll always break it down for you before we start.',
     },
 
@@ -1348,7 +1362,7 @@ CITY_PAGES = {
             {'name': 'Mobile Scrap Metal Pickup', 'desc': 'Cash on the spot for copper, aluminum & brass in Simpson County.', 'slug': 'scrap-metal-pickup'},
         ],
         'trust_body': 'Junk Busters LLC is your reliable junk removal partner in Franklin, KY. We offer transparent flat-rate pricing, flexible scheduling, and a professional crew that works efficiently and respectfully. Call 615-881-2505 for a free estimate today.',
-        'local_areas': ['Franklin, KY', 'Simpson County, KY', 'Nashville, TN', 'Springfield, TN'],
+        'local_areas': ['Franklin, KY', 'Simpson County, KY', 'Bowling Green, KY', 'Russellville, KY', 'Scottsville, KY', 'Adairville, KY', 'Auburn, KY', 'Lewisburg, KY', 'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN', 'Goodlettsville, TN', 'White House, TN', 'Springfield, TN', 'Portland, TN'],
         'disposal_note': 'Simpson County Convenience Center charges $45/yard for C&D debris and $25 for large truck loads. We factor these fees into estimates for heavier hauls out of Franklin, KY.',
     },
 
@@ -1396,21 +1410,17 @@ ALL_SERVICES = [
 ]
 
 SERVICE_AREAS = [
-    # Tennessee — cities
-    'Nashville, TN', 'Goodlettsville, TN', 'Springfield, TN', 'White House, TN',
-    'Gallatin, TN', 'Hendersonville, TN', 'Portland, TN', 'Clarksville, TN',
-    'Franklin, TN', 'Brentwood, TN', 'Spring Hill, TN', 'Nolensville, TN',
-    'Lebanon, TN', 'Mt. Juliet, TN', 'Murfreesboro, TN', 'Smyrna, TN',
-    'La Vergne, TN', 'Ashland City, TN', 'Orlinda, TN',
-    # Tennessee — counties
+    # Tennessee — hub cities and sub-towns named as content
+    'Nashville, TN', 'Hendersonville, TN', 'Gallatin, TN',
+    'Goodlettsville, TN', 'White House, TN', 'Springfield, TN',
+    'Portland, TN', 'Orlinda, TN', 'Greenbrier, TN', 'Millersville, TN',
+    'Westmoreland, TN', 'Bethpage, TN', 'Ridgetop, TN', 'Old Hickory, TN',
+    'Antioch, TN',
+    # Kentucky — hub city and sub-towns named as content
+    'Franklin, KY',
+    # Counties (retargeted via CITY_URL_MAP)
     'Davidson County, TN', 'Robertson County, TN', 'Sumner County, TN',
-    'Williamson County, TN', 'Wilson County, TN', 'Rutherford County, TN',
-    'Cheatham County, TN', 'Montgomery County, TN',
-    # Kentucky — cities
-    'Bowling Green, KY', 'Russellville, KY', 'Franklin, KY', 'Scottsville, KY',
-    'Adairville, KY',
-    # Kentucky — counties
-    'Warren County, KY', 'Logan County, KY', 'Simpson County, KY', 'Allen County, KY',
+    'Simpson County, KY',
 ]
 
 
@@ -1441,6 +1451,7 @@ def service_page(request, slug):
     return render(request, template, {
         'svc': svc,
         'local_areas': enrich_areas(svc.get('local_areas', [])),
+        'hub_cities': SERVICE_AREAS_PRIMARY,
     })
 
 
@@ -1453,9 +1464,12 @@ def _render_city(request, city_key):
         'referrer':   request.META.get('HTTP_REFERER', ''),
         'utm_source': request.session.get('utm_source', ''),
     })
+    this_slug = city.get('slug', '')
+    neighbor_hubs = [h for h in SERVICE_AREAS_PRIMARY if h['url'].strip('/') != this_slug]
     return render(request, 'website/city_landing.html', {
         'city': city,
         'local_areas': enrich_areas(city.get('local_areas', [])),
+        'neighbor_hubs': neighbor_hubs,
     })
 
 
@@ -2183,45 +2197,6 @@ def pricing(request):
 
 def faq(request):
     return render(request, 'website/faq.html')
-
-
-# ── Service area GeoJSON proxy ──────────────────────────────────────────────────
-import os as _os
-import urllib.request as _urlreq
-
-_COUNTY_GEOJSON = None
-_COUNTY_FIPS = {'47037','47147','47165','47187','47189','47149','47021','47125',
-                '21227','21141','21213','21003'}
-_GEOJSON_CACHE_PATH = '/tmp/jb_service_area.geojson'
-
-def service_area_geojson(request):
-    global _COUNTY_GEOJSON
-    if _COUNTY_GEOJSON:
-        return JsonResponse(_COUNTY_GEOJSON)
-    if _os.path.exists(_GEOJSON_CACHE_PATH):
-        try:
-            with open(_GEOJSON_CACHE_PATH) as _f:
-                _COUNTY_GEOJSON = _json.load(_f)
-            return JsonResponse(_COUNTY_GEOJSON)
-        except Exception:
-            pass
-    try:
-        with _urlreq.urlopen(
-            'https://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_050_00_500k.json',
-            timeout=20
-        ) as _resp:
-            _raw = _json.loads(_resp.read())
-        _features = [f for f in _raw['features']
-                     if f['properties']['STATE'] + f['properties']['COUNTY'] in _COUNTY_FIPS]
-        _COUNTY_GEOJSON = {'type': 'FeatureCollection', 'features': _features}
-        try:
-            with open(_GEOJSON_CACHE_PATH, 'w') as _f:
-                _json.dump(_COUNTY_GEOJSON, _f)
-        except Exception:
-            pass
-        return JsonResponse(_COUNTY_GEOJSON)
-    except Exception:
-        return JsonResponse({'type': 'FeatureCollection', 'features': []}, status=503)
 
 
 # ── Gift Cards ──────────────────────────────────────────────────────────────────

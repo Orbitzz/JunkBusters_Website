@@ -78,6 +78,10 @@
     <p style="color:var(--text-muted);font-size:15px;line-height:1.75;margin-bottom:14px;">{{ para }}</p>
     {% endfor %}
 
+    {% if neighbor_hubs %}
+    <p style="color:var(--text-muted);font-size:15px;line-height:1.75;margin-bottom:14px;">Beyond {{ city.city_name }}, our crews run regular routes to our seven other Middle Tennessee and Southern Kentucky hub cities. See our dedicated service pages for {% for hub in neighbor_hubs %}<a href="{{ hub.url }}" style="color:var(--yellow-dark);font-weight:600;">{{ hub.name }}</a>{% if not forloop.last %}{% if forloop.revcounter == 2 %}, and {% else %}, {% endif %}{% endif %}{% endfor %} — each page covers that community's local disposal fees, same-day availability, and the neighborhoods we serve most often.</p>
+    {% endif %}
+
     <h2 style="font-size:22px;font-weight:800;margin:36px 0 16px;">Our Services in {{ city.city_name }}</h2>
     <div class="yellow-cards">
       {% for svc in city.services %}
