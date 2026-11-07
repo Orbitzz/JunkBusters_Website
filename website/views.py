@@ -58,7 +58,8 @@ def _post_to_fc(endpoint, payload):
         )
         _ur.urlopen(req, timeout=3)
     except Exception:
-        pass
+        # A lead that doesn't reach OmniHQ must be visible (Sentry), not silent.
+        log.exception('forward to OmniHQ failed: endpoint=%s', endpoint)
 
 
 import json as _json
@@ -1517,8 +1518,11 @@ def quote(request):
                     last_name=d.get('last_name') or '.',
                     email=d['email'],
                     phone=d['phone'],
-                    service_requested=d['service_type'] + ((' — ' + d['description']) if d.get('description') else ''),
-                    address=d.get('address', ''),
+                    # service_requested is CharField(200); the full description
+                    # is kept in notes. Long descriptions used to raise DataError
+                    # and the lead was never saved here (Sentry JUNKBUSTERS-9).
+                    service_requested=(d['service_type'] + ((' — ' + d['description']) if d.get('description') else ''))[:200],
+                    address=(d.get('address', '') or '')[:200],  # form allows 255
                     city=d.get('city', ''),
                     state=d.get('state', ''),
                     zip_code=d.get('zip_code', ''),
@@ -1607,18 +1611,18 @@ def booking(request):
                     last_name=d['last_name'],
                     email=d['email'],
                     phone=d['phone'],
-                    service_requested=d['service_type'],
-                    address=d.get('address', ''),
+                    service_requested=(d['service_type'] or '')[:200],
+                    address=(d.get('address', '') or '')[:200],
                     city=d.get('city', ''),
                     state=d.get('state', ''),
                     zip_code=d.get('zip_code', ''),
                     preferred_date=d.get('preferred_date'),
                     preferred_time=d.get('preferred_time', ''),
                     notes=d.get('notes', ''),
-                    ip_address=request.META.get('REMOTE_ADDR'),
+                    ip_address=get_client_ip(request),
                 )
             except Exception:
-                pass
+                log.exception('schedule: failed to save BookingRequest')
 
             # Forward to OmniHQ — creates Customer + Scheduled Job
             _post_to_fc('schedule', {
@@ -2355,7 +2359,7 @@ def gift_card_success(request):
             code = session.metadata.get('gift_card_code', '')
             gift_card = GiftCard.objects.filter(code=code).first()
         except Exception:
-            pass
+            log.exception('gift_card_success: could not load Stripe session')
     return render(request, 'website/gift_card_success.html', {'gift_card': gift_card})
 
 
