@@ -27,3 +27,44 @@ class QuoteSavesLongDescriptionTests(TestCase):
         self.assertLessEqual(len(b.service_requested), 200)
         self.assertLessEqual(len(b.address), 200)
         self.assertEqual(b.notes, long_text.strip())  # full description kept
+
+
+class OmniHQCallsIdentifyThemselvesTests(TestCase):
+    """Cloudflare 403s the default Python-urllib User-Agent; every OmniHQ call must send ours
+    and go to OMNIHQ_EMBED_URL (https in prod), never a hard-coded http://host:8000."""
+
+    def _capture(self):
+        from unittest import mock
+        seen = []
+
+        class _Resp:
+            status = 200
+            def read(self):
+                return b'{"success": true, "messages": []}'
+            def __enter__(self):
+                return self
+            def __exit__(self, *a):
+                return False
+
+        def fake_urlopen(req, timeout=None):
+            seen.append(req)
+            return _Resp()
+        return seen, mock.patch('urllib.request.urlopen', side_effect=fake_urlopen)
+
+    def test_all_embed_calls_send_named_user_agent_to_configured_url(self):
+        from django.test import override_settings
+        from django.test.client import RequestFactory
+        from website import views
+        from website.omnihq_client import USER_AGENT
+        seen, patcher = self._capture()
+        url = 'https://ohq.example/marketing/api/embed/{endpoint}/'
+        with override_settings(OMNIHQ_EMBED_URL=url), patcher:
+            views._call_fc('availability', {'month': '2026-11'})
+            views._post_to_fc('quote', {'name': 'x'})
+            views._call_fc_multipart('chat', {'name': 'x'}, {'attachment': ('a.png', b'123', 'image/png')})
+            views.chat_poll(RequestFactory().get('/api/chat/poll/', {'thread_id': '5'}))
+        self.assertEqual(len(seen), 4)
+        for req in seen:
+            self.assertEqual(req.get_header('User-agent'), USER_AGENT)
+            self.assertTrue(req.full_url.startswith('https://ohq.example/marketing/api/embed/'), req.full_url)
+        self.assertIn('/embed/chat/poll/?', seen[3].full_url)

@@ -1,6 +1,7 @@
 import json
 import os
 import urllib.request
+from website.omnihq_client import ohq_headers
 
 WEBHOOK_URL = os.environ.get('OMNIHQ_REPORT_WEBHOOK_URL', '')
 REPORT_TOKEN = os.environ.get('OMNIHQ_REPORT_TOKEN', '')
@@ -24,10 +25,10 @@ def post_report(gsc_data, ga4_data, audit_data, sitemap_data, speed_data,
         req = urllib.request.Request(
             WEBHOOK_URL,
             data=payload,
-            headers={
+            headers=ohq_headers({
                 'Content-Type': 'application/json',
                 'X-Report-Token': REPORT_TOKEN,
-            },
+            }),
         )
         resp = urllib.request.urlopen(req, timeout=10)
         return f'ok (HTTP {resp.status})'

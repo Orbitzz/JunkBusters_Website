@@ -354,8 +354,9 @@ def _fetch_omnihq_reviews():
     if not api_url or not api_key:
         return None, None
     try:
+        from website.omnihq_client import ohq_headers
         url = f'{api_url.rstrip("/")}/?key={urllib.parse.quote(api_key, safe="")}'
-        req = urllib.request.Request(url)
+        req = urllib.request.Request(url, headers=ohq_headers())
         with urllib.request.urlopen(req, timeout=10) as resp:
             data = json.loads(resp.read())
         if not data.get('success'):

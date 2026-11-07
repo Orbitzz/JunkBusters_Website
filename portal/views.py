@@ -1,4 +1,6 @@
 import json
+import logging
+from website.omnihq_client import ohq_headers
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
@@ -36,14 +38,15 @@ def _call_ohq(endpoint, payload):
         req = _ur.Request(
             OHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
-            headers={
+            headers=ohq_headers({
                 'Content-Type': 'application/json',
                 'X-FC-EMBED-KEY': OHQ_API_KEY,
-            }
+            })
         )
         with _ur.urlopen(req, timeout=3) as resp:
             return _j.loads(resp.read())
     except Exception:
+        logging.getLogger('portal').exception('call to OmniHQ failed: endpoint=%s', endpoint)
         return None
 
 

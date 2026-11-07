@@ -6,6 +6,7 @@ from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 from .forms import QuoteForm, BookingForm
 from .models import BookingRequest, GiftCard
+from .omnihq_client import ohq_headers
 from .spam import is_spam, check_honeypot, rate_limit_ok, get_client_ip, notify_spam_flag, notify_lead, verify_turnstile
 
 log = logging.getLogger(__name__)
@@ -32,14 +33,15 @@ def _call_fc(endpoint, payload):
         req = _ur.Request(
             settings.OMNIHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
-            headers={
+            headers=ohq_headers({
                 'Content-Type': 'application/json',
                 'X-FC-EMBED-KEY': settings.OMNIHQ_EMBED_API_KEY,
-            }
+            })
         )
         with _ur.urlopen(req, timeout=3) as resp:
             return _j.loads(resp.read())
     except Exception:
+        log.exception('call to OmniHQ failed: endpoint=%s', endpoint)
         return None
 
 
@@ -51,10 +53,10 @@ def _post_to_fc(endpoint, payload):
         req = _ur.Request(
             settings.OMNIHQ_EMBED_URL.format(endpoint=endpoint),
             data=data,
-            headers={
+            headers=ohq_headers({
                 'Content-Type': 'application/json',
                 'X-FC-EMBED-KEY': settings.OMNIHQ_EMBED_API_KEY,
-            }
+            })
         )
         _ur.urlopen(req, timeout=3)
     except Exception:
@@ -64,14 +66,9 @@ def _post_to_fc(endpoint, payload):
 
 import json as _json
 import uuid as _uuid
-import http.client as _http
-from urllib.parse import urlparse as _urlparse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
-_ohq_parsed = _urlparse(settings.OMNIHQ_EMBED_URL.format(endpoint=''))
-_OHQ_HOST = _ohq_parsed.hostname or '127.0.0.1'
-_OHQ_PORT = _ohq_parsed.port or 8000
 _OHQ_KEY  = settings.OMNIHQ_EMBED_API_KEY
 
 
@@ -92,20 +89,19 @@ def _call_fc_multipart(endpoint, fields, files=None):
     parts.append(f'--{boundary}--\r\n'.encode())
     body = b''.join(parts)
     try:
-        conn = _http.HTTPConnection(_OHQ_HOST, _OHQ_PORT, timeout=5)
-        conn.request(
-            'POST',
-            f'/marketing/api/embed/{endpoint}/',
-            body=body,
-            headers={
+        import urllib.request as _ur
+        req = _ur.Request(
+            settings.OMNIHQ_EMBED_URL.format(endpoint=endpoint),
+            data=body,
+            headers=ohq_headers({
                 'Content-Type': f'multipart/form-data; boundary={boundary}',
-                'Content-Length': str(len(body)),
                 'X-FC-EMBED-KEY': _OHQ_KEY,
-            }
+            }),
         )
-        resp = conn.getresponse()
-        return _json.loads(resp.read())
+        with _ur.urlopen(req, timeout=5) as resp:
+            return _json.loads(resp.read())
     except Exception:
+        log.exception('multipart call to OmniHQ failed: endpoint=%s', endpoint)
         return None
 
 
@@ -251,11 +247,12 @@ def chat_poll(request):
         return JsonResponse({'messages': []})
     try:
         params = _up.urlencode({'thread_id': thread_id, 'since': since, 'key': _OHQ_KEY})
-        url = f'http://{_OHQ_HOST}:{_OHQ_PORT}/marketing/api/embed/chat/poll/?{params}'
-        req = _ur.Request(url)
+        url = settings.OMNIHQ_EMBED_URL.format(endpoint='chat/poll') + '?' + params
+        req = _ur.Request(url, headers=ohq_headers())
         with _ur.urlopen(req, timeout=4) as resp:
             return JsonResponse(_json.loads(resp.read()))
     except Exception:
+        log.warning('chat poll to OmniHQ failed', exc_info=True)
         return JsonResponse({'messages': []})
 
 
