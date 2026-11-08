@@ -1956,6 +1956,24 @@ def track(request):
 def referral(request):
     sent = False
     if request.method == 'POST':
+        # Bots filled this form for months (88 fake referrers). Same gates as the quote form;
+        # a blocked submission still sees "sent" so bots learn nothing.
+        p = request.POST
+        names = f"{p.get('referrer_first_name', '')} {p.get('referrer_last_name', '')} {p.get('referred_name', '')}"
+        blocked = None
+        if not rate_limit_ok(request, 'referral', limit=5, window=3600):
+            blocked = 'rate_limit'
+        elif check_honeypot(request):
+            blocked = 'honeypot'
+        elif not verify_turnstile(request):
+            blocked = 'turnstile'
+        else:
+            flagged, reasons = is_spam(name=names, phone=p.get('referrer_phone', ''))
+            if flagged:
+                blocked = ','.join(reasons)
+        if blocked:
+            log.warning('referral blocked (%s) from %s', blocked, get_client_ip(request))
+            return render(request, 'website/referral.html', {'sent': True})
         _ref_src, _ref_ref = _utm_info(request.session)
         _post_to_fc('referral', {
             'referrer_first_name': request.POST.get('referrer_first_name', ''),

@@ -87,6 +87,15 @@ def _is_na_phone(phone):
     return len(digits) == 10 or (len(digits) == 11 and digits.startswith('1'))
 
 
+def looks_random(text):
+    """True for bot filler like 'pXJfFSpnKPTdrTNrTBd': a long word that keeps
+    flipping between lower and upper case (real names flip once or twice)."""
+    for word in (text or '').split():
+        if len(word) >= 10 and sum(1 for a, b in zip(word, word[1:]) if a.islower() and b.isupper()) >= 3:
+            return True
+    return False
+
+
 def is_spam(name='', phone='', email='', message='', **_ignored):
     """Return (flagged: bool, reasons: list[str]). Short-circuits at first match."""
     reasons = []
@@ -100,6 +109,8 @@ def is_spam(name='', phone='', email='', message='', **_ignored):
         reasons.append('non_na_phone')
     if _ALLCAPS_JUNK_RE.match((name or '').replace(' ', '')):
         reasons.append('allcaps_name')
+    if looks_random(name):
+        reasons.append('random_name')
     for kw in SPAM_KEYWORDS:
         if kw in haystack:
             reasons.append(f'keyword:{kw}')

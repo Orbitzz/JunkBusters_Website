@@ -68,3 +68,32 @@ class OmniHQCallsIdentifyThemselvesTests(TestCase):
             self.assertEqual(req.get_header('User-agent'), USER_AGENT)
             self.assertTrue(req.full_url.startswith('https://ohq.example/marketing/api/embed/'), req.full_url)
         self.assertIn('/embed/chat/poll/?', seen[3].full_url)
+
+
+class ReferralSpamGateTests(TestCase):
+    def _post(self, **kw):
+        data = {'referrer_first_name': 'Jane', 'referrer_last_name': 'Doe', 'referrer_email': 'jane@example.com',
+                'referrer_phone': '6155550142', 'referred_name': 'Bob Smith', 'referred_phone': '6155550199',
+                'referred_email': 'bob@example.com'}
+        data.update(kw)
+        return self.client.post('/referral/', data)
+
+    def test_random_bot_names_never_reach_omnihq(self):
+        with mock.patch('website.views.verify_turnstile', return_value=True), \
+             mock.patch('website.views._post_to_fc') as fwd:
+            r = self._post(referrer_first_name='OZQSOZJzHyxxnfQjqrdfwpq', referred_name='pXJfFSpnKPTdrTNrTBd')
+            self.assertEqual(r.status_code, 200)
+            fwd.assert_not_called()
+
+    def test_honeypot_and_failed_turnstile_blocked(self):
+        with mock.patch('website.views.verify_turnstile', return_value=True), mock.patch('website.views._post_to_fc') as fwd:
+            self._post(website_url='http://spam')
+            fwd.assert_not_called()
+        with mock.patch('website.views.verify_turnstile', return_value=False), mock.patch('website.views._post_to_fc') as fwd:
+            self._post()
+            fwd.assert_not_called()
+
+    def test_real_referral_forwarded(self):
+        with mock.patch('website.views.verify_turnstile', return_value=True), mock.patch('website.views._post_to_fc') as fwd:
+            self._post(referrer_first_name='McKenzie', referred_name='DeShawn MacDonald')
+            fwd.assert_called_once()
